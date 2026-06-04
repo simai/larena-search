@@ -1,0 +1,21 @@
+{
+  "schema": "larena.graph_sync_proposal.v1",
+  "package": "larena/search",
+  "batch": "data-content/batch-1/search-current",
+  "status": "no_canonical_graph_change_requested",
+  "canonical_update_allowed": false,
+  "must_not_apply_automatically": true,
+  "implemented_feature_refs": [
+    "search.indexing",
+    "search.source_provider_registry",
+    "search.engine_profiles",
+    "search.result_exposure_policy",
+    "search.reindex_jobs"
+  ],
+  "implementation_state": "contract_skeletons_added",
+  "canonical_updates_requested": [],
+  "notes": [
+    "Package implementation added contract skeletons only.",
+    "No package spec, feature spec or graph relation change is requested by this package repo evidence."
+  ]
+}

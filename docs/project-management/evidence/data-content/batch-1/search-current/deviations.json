@@ -1,0 +1,18 @@
+{
+  "schema": "larena.package_batch_deviations.v1",
+  "package": "larena/search",
+  "batch": "data-content/batch-1/search-current",
+  "deviations": [],
+  "out_of_scope_confirmed": [
+    "real_search_engine_runtime",
+    "indexing_persistence_runtime",
+    "query_endpoint_runtime",
+    "admin_diagnostics_ui_implementation",
+    "queue_job_runtime",
+    "external_engine_runtime",
+    "semantic_vector_runtime",
+    "production_result_rendering",
+    "route_or_controller_runtime",
+    "migration_or_route_change"
+  ]
+}

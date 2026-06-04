@@ -15,6 +15,21 @@ $requiredFiles = [
     '.larena/launch-context.json',
     'tools/larena-scope-check.php',
 ];
+$contractFiles = [
+    'src/Contracts/EngineProfile.php',
+    'src/Contracts/IndexDocument.php',
+    'src/Contracts/QueryContext.php',
+    'src/Contracts/ReindexJob.php',
+    'src/Contracts/ResultExposurePolicy.php',
+    'src/Contracts/ScopedSearchResult.php',
+    'src/Contracts/SearchRuntime.php',
+    'src/Contracts/SourceProvider.php',
+    'src/Enums/EngineProfileType.php',
+    'src/Enums/ReindexJobStatus.php',
+    'src/Enums/ResultExposureDecision.php',
+    'tests/Unit/SearchContractTest.php',
+    'tests/Unit/SearchFailsClosedTest.php',
+];
 $errors = [];
 foreach ($requiredFiles as $file) {
     if (!is_file($file)) {
@@ -33,8 +48,21 @@ if (($specRef['canonical_update_allowed'] ?? null) !== false) {
 if (($launchContext['package'] ?? null) !== 'larena/search') {
     $errors[] = '.larena/launch-context.json package must be larena/search';
 }
-if (($launchContext['coding_started'] ?? null) !== false) {
-    $errors[] = 'coding_started must be false before a coding launch record.';
+$codingStarted = ($launchContext['coding_started'] ?? null) === true;
+$status = (string) ($launchContext['status'] ?? '');
+$allowedStatuses = [
+    'repository_prepared_pending_review',
+    'coding_started',
+    'contract_skeleton_review_passed',
+];
+if (!in_array($status, $allowedStatuses, true)) {
+    $errors[] = 'launch-context status must be a known Larena package preparation/coding state.';
+}
+if (!$codingStarted && $status !== 'repository_prepared_pending_review') {
+    $errors[] = 'coding_started=false is only valid for repository_prepared_pending_review.';
+}
+if ($codingStarted && !str_contains((string) ($launchContext['launch_record_ref'] ?? ''), 'search-batch-1-contract-skeletons-current.json')) {
+    $errors[] = 'coding_started requires the search batch 1 contract skeleton launch record.';
 }
 if (!str_starts_with((string) ($launchContext['evidence_path'] ?? ''), 'docs/project-management/evidence/')) {
     $errors[] = 'launch-context evidence_path must start with docs/project-management/evidence/';
@@ -42,9 +70,17 @@ if (!str_starts_with((string) ($launchContext['evidence_path'] ?? ''), 'docs/pro
 if (!str_starts_with((string) ($launchContext['graph_sync_proposal_path'] ?? ''), (string) ($launchContext['evidence_path'] ?? '__missing__'))) {
     $errors[] = 'graph_sync_proposal_path must be inside evidence_path';
 }
-foreach (['src', 'config', 'database', 'routes', 'resources', 'tests', 'lang'] as $runtimePath) {
-    if (is_dir($runtimePath)) {
-        $errors[] = "{$runtimePath}/ is not allowed in this clean pre-codegen baseline commit.";
+if ($codingStarted) {
+    foreach ($contractFiles as $file) {
+        if (!is_file($file)) {
+            $errors[] = "Missing required search contract skeleton file: {$file}";
+        }
+    }
+} else {
+    foreach (['src', 'config', 'database', 'routes', 'resources', 'tests', 'lang'] as $runtimePath) {
+        if (is_dir($runtimePath)) {
+            $errors[] = "{$runtimePath}/ is not allowed in this clean pre-codegen baseline commit.";
+        }
     }
 }
 if ($errors !== []) {
@@ -53,4 +89,6 @@ if ($errors !== []) {
     }
     exit(1);
 }
-echo "Larena Search clean pre-codegen baseline is valid.\n";
+echo $codingStarted
+    ? "Larena Search contract skeleton launch context is valid.\n"
+    : "Larena Search clean pre-codegen baseline is valid.\n";

@@ -1,0 +1,36 @@
+{
+  "schema": "larena.package_batch_file_map.v1",
+  "package": "larena/search",
+  "batch": "data-content/batch-1/search-current",
+  "changed_files": [
+    ".larena/launch-context.json",
+    "phpstan.neon.dist",
+    "scripts/lint.php",
+    "scripts/test-placeholder.php",
+    "scripts/validate-larena-package.php",
+    "src/Contracts/EngineProfile.php",
+    "src/Contracts/IndexDocument.php",
+    "src/Contracts/QueryContext.php",
+    "src/Contracts/ReindexJob.php",
+    "src/Contracts/ResultExposurePolicy.php",
+    "src/Contracts/ScopedSearchResult.php",
+    "src/Contracts/SearchRuntime.php",
+    "src/Contracts/SourceProvider.php",
+    "src/Enums/EngineProfileType.php",
+    "src/Enums/ReindexJobStatus.php",
+    "src/Enums/ResultExposureDecision.php",
+    "tests/Unit/SearchContractTest.php",
+    "tests/Unit/SearchFailsClosedTest.php"
+  ],
+  "evidence_files": [
+    "docs/project-management/evidence/data-content/batch-1/search-current/README.md",
+    "docs/project-management/evidence/data-content/batch-1/search-current/implementation-summary.md",
+    "docs/project-management/evidence/data-content/batch-1/search-current/tests.md",
+    "docs/project-management/evidence/data-content/batch-1/search-current/smoke.md",
+    "docs/project-management/evidence/data-content/batch-1/search-current/file-map.json",
+    "docs/project-management/evidence/data-content/batch-1/search-current/deviations.json",
+    "docs/project-management/evidence/data-content/batch-1/search-current/graph-sync-proposal.json",
+    "docs/project-management/evidence/data-content/batch-1/search-current/independent-review.md",
+    "docs/project-management/evidence/data-content/batch-1/search-current/code-review-feedback.md"
+  ]
+}

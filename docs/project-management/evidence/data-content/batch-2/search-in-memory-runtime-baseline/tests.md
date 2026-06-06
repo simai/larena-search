@@ -1,17 +1,26 @@
 # Tests
 
-Commands run with ServBay PHP/Composer path:
+## Commands
 
 ```bash
-PATH=/Applications/ServBay/package/php/8.4/8.4.20/bin:/Applications/ServBay/bin:$PATH composer run test
-PATH=/Applications/ServBay/package/php/8.4/8.4.20/bin:/Applications/ServBay/bin:$PATH composer run scope:check
-PATH=/Applications/ServBay/package/php/8.4/8.4.20/bin:/Applications/ServBay/bin:$PATH composer run analyse
+composer validate --strict
+composer run validate:larena
+composer run lint
+composer run analyse
+composer test
+composer run evidence:check
+composer run scope:check
+composer run quality:gate
 ```
 
-Observed results:
+## Test Coverage
 
-- unit runtime baseline tests passed;
-- scope check passed for the currently changed files;
-- PHPStan reported no errors.
+- `SearchContractTest.php`
+- `SearchFailsClosedTest.php`
+- `InMemorySearchRuntimeTest.php`
+- `InMemorySearchRuntimeFailsClosedTest.php`
 
-Full final quality-gate results are recorded in the goal final report and repository commit.
+## Expected Result
+
+All commands pass. Composer on local ServBay/PHP may emit dependency
+deprecation notices while still exiting successfully.

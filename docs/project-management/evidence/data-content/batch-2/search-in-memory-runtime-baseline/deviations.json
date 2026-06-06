@@ -1,12 +1,23 @@
 {
-  "schema": "larena.evidence_deviations.v1",
+  "schema": "larena.deviations.v1",
   "package": "larena/search",
-  "batch": "data-content/batch-2/search-in-memory-runtime-baseline",
-  "deviations": [],
-  "known_limitations": [
-    "The runtime is in-memory only and does not persist indexes.",
-    "No HTTP/API route or admin diagnostics UI exists in this batch.",
-    "Reindex planning is descriptor-only and does not dispatch queue jobs."
+  "batch": "search-in-memory-runtime-baseline",
+  "known_deviations": [
+    {
+      "id": "no_production_search_engine",
+      "status": "accepted_scope_limit",
+      "reason": "This batch proves the contract and in-memory planning runtime only."
+    },
+    {
+      "id": "no_persistent_index",
+      "status": "accepted_scope_limit",
+      "reason": "Persistent indexing requires a later launch record and storage/queue decisions."
+    },
+    {
+      "id": "no_audit_event_emission",
+      "status": "accepted_boundary",
+      "reason": "Audit remains an external package boundary in this batch."
+    }
   ],
-  "canonical_graph_update_required": false
+  "critical_deviations": []
 }

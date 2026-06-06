@@ -1,55 +1,28 @@
 {
   "schema": "larena.evidence_file_map.v1",
   "package": "larena/search",
-  "batch": "data-content/batch-2/search-in-memory-runtime-baseline",
-  "changed_files": [
-    ".larena/launch-context.json",
-    "README.md",
-    "docs/developer/README.md",
-    "docs/developer/api-reference.md",
-    "docs/developer/examples.md",
-    "docs/developer/runtime.md",
-    "docs/developer/testing.md",
-    "docs/developer/troubleshooting.md",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/README.md",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/code-review-feedback.md",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/deviations.json",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/file-map.json",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/graph-sync-proposal.json",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/implementation-summary.md",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/independent-review.md",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/smoke.md",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/tests.md",
-    "scripts/test-placeholder.php",
+  "batch": "search-in-memory-runtime-baseline",
+  "code_refs": [
     "src/Runtime/InMemorySearchRuntime.php",
+    "src/Contracts/SourceProvider.php",
+    "src/Contracts/IndexDocument.php",
+    "src/Contracts/QueryContext.php",
+    "src/Contracts/ResultExposurePolicy.php",
+    "src/Contracts/ScopedSearchResult.php",
+    "src/Contracts/SearchRuntime.php",
+    "src/Contracts/EngineProfile.php",
+    "src/Contracts/ReindexJob.php"
+  ],
+  "test_refs": [
+    "tests/Unit/SearchContractTest.php",
+    "tests/Unit/SearchFailsClosedTest.php",
     "tests/Unit/InMemorySearchRuntimeTest.php",
     "tests/Unit/InMemorySearchRuntimeFailsClosedTest.php"
   ],
-  "runtime_files": [
-    "src/Runtime/InMemorySearchRuntime.php"
-  ],
-  "test_files": [
-    "tests/Unit/InMemorySearchRuntimeTest.php",
-    "tests/Unit/InMemorySearchRuntimeFailsClosedTest.php"
-  ],
-  "documentation_files": [
-    "README.md",
-    "docs/developer/README.md",
-    "docs/developer/api-reference.md",
-    "docs/developer/examples.md",
-    "docs/developer/runtime.md",
-    "docs/developer/testing.md",
-    "docs/developer/troubleshooting.md"
-  ],
-  "evidence_files": [
+  "evidence_refs": [
     "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/README.md",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/code-review-feedback.md",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/deviations.json",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/file-map.json",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/graph-sync-proposal.json",
     "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/implementation-summary.md",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/independent-review.md",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/smoke.md",
-    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/tests.md"
+    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/tests.md",
+    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/smoke.md"
   ]
 }

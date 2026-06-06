@@ -1,23 +1,26 @@
-# Search In-Memory Runtime Baseline Evidence
+# Search In-Memory Runtime Baseline
 
-Batch: `data-content/batch-2/search-in-memory-runtime-baseline`
+## Summary
 
-Launch record: `specs/implementation-planning/launch-records/search-batch-2-in-memory-runtime-baseline.json`
+This evidence package records the first developer-testable `larena/search`
+runtime baseline. The runtime is intentionally in-memory and non-production. It
+supports safe source declaration, document projection, access-scoped querying,
+result exposure policy and reindex job planning without creating persistent
+indexes, routes, queues, migrations, admin UI or external search engines.
 
-This evidence package proves that `larena/search` now has a guarded in-memory runtime baseline over the existing contract skeletons.
+## Scope
 
-Implemented surfaces:
+- Source provider declaration.
+- Safe index document projection.
+- In-memory document ingest.
+- Access-scoped query planning.
+- Result exposure policy.
+- Baseline reindex job descriptor.
+- Fail-closed behavior for invalid providers, private payloads, invalid queries
+  and gated engines.
 
-- `Larena\Search\Runtime\InMemorySearchRuntime`
-- `tests/Unit/InMemorySearchRuntimeTest.php`
-- `tests/Unit/InMemorySearchRuntimeFailsClosedTest.php`
+## Status Cap
 
-Non-goals preserved:
-
-- no persistence;
-- no routes/controllers;
-- no admin UI;
-- no queue worker runtime;
-- no external or semantic provider;
-- no production search engine;
-- no direct canonical graph update from this package repo.
+This evidence supports `developer_testable` only. It must not be used to claim
+production indexing, public search, admin search UI, external engine support,
+semantic search, queue processing or release readiness.

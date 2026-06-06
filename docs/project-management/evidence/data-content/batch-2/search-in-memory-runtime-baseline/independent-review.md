@@ -1,19 +1,15 @@
 # Independent Review
 
-Review status: `accepted_with_scope_limits`
+## Verdict
 
-The batch keeps the intended boundary:
+The current search runtime baseline is suitable for data/content foundation
+integration because it provides enough behavior for safe planning and smoke
+composition without introducing production indexing.
 
-- Search indexes and queries safe projections only.
-- Source packages keep ownership of canonical data.
-- Access exposure still depends on explicit `QueryContext` and `ResultExposurePolicy`.
-- The runtime returns no exposed result for invalid query contexts or denied access scope.
-- No production persistence, route, admin UI, queue worker or external engine was introduced.
+## Acceptance
 
-Follow-up required before production search:
-
-- choose index storage model;
-- define stale index cleanup;
-- integrate concrete access query-scope adapter;
-- define endpoint/admin diagnostics separately;
-- add audit events for sensitive query/reindex operations.
+- Source provider boundary is explicit.
+- Result exposure is access-scoped.
+- Private payloads fail closed.
+- Reindex behavior is a descriptor, not a job runtime.
+- No production search engine or persistence is introduced.

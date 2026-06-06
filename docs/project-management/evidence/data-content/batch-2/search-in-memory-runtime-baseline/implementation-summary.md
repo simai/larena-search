@@ -1,7 +1,28 @@
 # Implementation Summary
 
-`larena/search` now includes `InMemorySearchRuntime`, a local runtime baseline that can register valid source providers, create safe projected index documents, ingest indexable documents in process memory, query them with explicit `QueryContext`, expose results through `ResultExposurePolicy`, and plan descriptor-only reindex jobs.
+## Implemented Runtime Surface
 
-The batch stays inside the launch scope. It does not add persistence, migrations, routes, admin screens, queue execution, external engine calls, semantic/vector support or production result rendering.
+- `Larena\Search\Runtime\InMemorySearchRuntime`
+- `SourceProvider`
+- `IndexDocument`
+- `QueryContext`
+- `ResultExposurePolicy`
+- `ScopedSearchResult`
+- `EngineProfile`
+- `ReindexJob`
 
-The implementation is intentionally small because its purpose is to make the data/content foundation developer-testable after `storage` and `filesystem`, not to complete Search as a production service.
+## Behavior
+
+The runtime stores source providers and index documents in memory, creates
+safe projections from declared fields, rejects private-looking projections,
+matches simple query terms against safe tokens/projection values and applies
+result exposure policy before returning results.
+
+## Boundaries
+
+- Access decisions are represented through `QueryContext` and
+  `ResultExposurePolicy`; `larena/search` does not own ACL.
+- Audit is an external boundary; this batch does not emit audit events.
+- Persistence is out of scope; this batch does not write an index.
+- Engine integration is out of scope; this batch only plans a baseline job
+  descriptor.

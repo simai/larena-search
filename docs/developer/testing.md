@@ -20,6 +20,8 @@ composer run quality:gate
 
 - `tests/Unit/SearchContractTest.php`
 - `tests/Unit/SearchFailsClosedTest.php`
+- `tests/Unit/InMemorySearchRuntimeTest.php`
+- `tests/Unit/InMemorySearchRuntimeFailsClosedTest.php`
 
 The tests verify:
 
@@ -29,12 +31,14 @@ The tests verify:
 - query context requires access scope;
 - result exposure denies or redacts unsafe results;
 - reindex job descriptors do not start without valid state.
+- in-memory runtime registers, ingests and queries safe documents;
+- in-memory runtime rejects invalid providers, private-looking projections, invalid query contexts and gated engines.
 
 ## Evidence
 
 Batch evidence is recorded at:
 
-`docs/project-management/evidence/data-content/batch-1/search-current/`
+`docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/`
 
 The evidence package confirms contract skeleton scope only.
 

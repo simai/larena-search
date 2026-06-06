@@ -1,0 +1,12 @@
+{
+  "schema": "larena.evidence_deviations.v1",
+  "package": "larena/search",
+  "batch": "data-content/batch-2/search-in-memory-runtime-baseline",
+  "deviations": [],
+  "known_limitations": [
+    "The runtime is in-memory only and does not persist indexes.",
+    "No HTTP/API route or admin diagnostics UI exists in this batch.",
+    "Reindex planning is descriptor-only and does not dispatch queue jobs."
+  ],
+  "canonical_graph_update_required": false
+}

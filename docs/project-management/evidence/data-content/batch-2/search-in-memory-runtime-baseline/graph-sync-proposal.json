@@ -1,0 +1,20 @@
+{
+  "schema": "larena.graph_sync_proposal.v1",
+  "package": "larena/search",
+  "batch": "data-content/batch-2/search-in-memory-runtime-baseline",
+  "status": "no_canonical_graph_change_requested",
+  "canonical_update_allowed": false,
+  "must_not_apply_automatically": true,
+  "summary": "The batch implements an in-memory runtime baseline already covered by existing search indexing, source provider registry, engine profiles, result exposure policy and reindex job features.",
+  "accepted_code_evidence_refs": [
+    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/implementation-summary.md",
+    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/tests.md",
+    "docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/smoke.md"
+  ],
+  "proposed_graph_updates": [],
+  "deferred_items": [
+    "Production index persistence requires a later launch record.",
+    "Admin diagnostics remains unmapped to runtime implementation in this batch.",
+    "Queue-backed reindex execution requires a later queue/scheduler integration batch."
+  ]
+}

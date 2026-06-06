@@ -30,6 +30,11 @@ $contractFiles = [
     'tests/Unit/SearchContractTest.php',
     'tests/Unit/SearchFailsClosedTest.php',
 ];
+$runtimeFiles = [
+    'src/Runtime/InMemorySearchRuntime.php',
+    'tests/Unit/InMemorySearchRuntimeTest.php',
+    'tests/Unit/InMemorySearchRuntimeFailsClosedTest.php',
+];
 $errors = [];
 foreach ($requiredFiles as $file) {
     if (!is_file($file)) {
@@ -61,8 +66,22 @@ if (!in_array($status, $allowedStatuses, true)) {
 if (!$codingStarted && $status !== 'repository_prepared_pending_review') {
     $errors[] = 'coding_started=false is only valid for repository_prepared_pending_review.';
 }
-if ($codingStarted && !str_contains((string) ($launchContext['launch_record_ref'] ?? ''), 'search-batch-1-contract-skeletons-current.json')) {
-    $errors[] = 'coding_started requires the search batch 1 contract skeleton launch record.';
+$launchRecordRef = (string) ($launchContext['launch_record_ref'] ?? '');
+$knownCodingLaunchRecords = [
+    'search-batch-1-contract-skeletons-current.json',
+    'search-batch-2-in-memory-runtime-baseline.json',
+];
+if ($codingStarted) {
+    $knownLaunchRecord = false;
+    foreach ($knownCodingLaunchRecords as $knownCodingLaunchRecord) {
+        if (str_contains($launchRecordRef, $knownCodingLaunchRecord)) {
+            $knownLaunchRecord = true;
+            break;
+        }
+    }
+    if (!$knownLaunchRecord) {
+        $errors[] = 'coding_started requires a known Search coding launch record.';
+    }
 }
 if (!str_starts_with((string) ($launchContext['evidence_path'] ?? ''), 'docs/project-management/evidence/')) {
     $errors[] = 'launch-context evidence_path must start with docs/project-management/evidence/';
@@ -74,6 +93,13 @@ if ($codingStarted) {
     foreach ($contractFiles as $file) {
         if (!is_file($file)) {
             $errors[] = "Missing required search contract skeleton file: {$file}";
+        }
+    }
+    if (str_contains($launchRecordRef, 'search-batch-2-in-memory-runtime-baseline.json')) {
+        foreach ($runtimeFiles as $file) {
+            if (!is_file($file)) {
+                $errors[] = "Missing required search in-memory runtime baseline file: {$file}";
+            }
         }
     }
 } else {
@@ -90,5 +116,5 @@ if ($errors !== []) {
     exit(1);
 }
 echo $codingStarted
-    ? "Larena Search contract skeleton launch context is valid.\n"
+    ? "Larena Search coding launch context is valid.\n"
     : "Larena Search clean pre-codegen baseline is valid.\n";

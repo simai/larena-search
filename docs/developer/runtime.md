@@ -2,13 +2,21 @@
 
 ## What Exists Now
 
-The current package contains contract skeletons and tests. The contracts can be loaded through Composer autoload and validated through package-local checks.
+The current package contains contract skeletons, tests and a guarded in-memory runtime baseline. The runtime can:
+
+- register valid package-owned source providers;
+- create safe index documents from declared projection fields;
+- reject private-looking projected payloads;
+- ingest indexable documents in process memory;
+- query in-memory documents through explicit query context;
+- expose results only through result exposure policy;
+- plan descriptor-only reindex jobs.
 
 ## What Does Not Exist Yet
 
 The package does not yet include:
 
-- engine adapter implementation;
+- production engine adapter implementation;
 - database tables;
 - migrations;
 - queued reindex worker;
@@ -28,6 +36,7 @@ Search is high-risk because stale indexes and snippets can leak protected conten
 - query context requires actor and access scope;
 - exposure policy hides or denies results without matched access;
 - gated engines degrade safely.
+- in-memory runtime returns no result when query context or access exposure is invalid.
 
 ## Cross-Package Boundaries
 
@@ -47,6 +56,10 @@ Search must cooperate with:
 - `larena/access` for query-scope filtering;
 - `larena/audit` for future sensitive query/reindex events;
 - `larena/queue` for future heavy reindex jobs.
+
+## Current Runtime Boundary
+
+`InMemorySearchRuntime` is intentionally non-persistent and non-routing. It is acceptable for package-local tests and developer smoke, but it must not be treated as the final engine for production search.
 
 ## Next Runtime Decisions
 

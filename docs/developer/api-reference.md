@@ -87,4 +87,19 @@ Defines the future runtime boundary:
 - `exposeResult(...)`
 - `planReindex(...)`
 
-No implementation is provided in the current batch.
+The current implementation is `Larena\Search\Runtime\InMemorySearchRuntime`.
+
+## `InMemorySearchRuntime`
+
+Namespace: `Larena\Search\Runtime`
+
+Provides the current guarded runtime baseline:
+
+- `registerSource(SourceProvider $sourceProvider)`;
+- `createDocument(SourceProvider $sourceProvider, array $projection, array $tokens)`;
+- `ingest(IndexDocument $document)`;
+- `query(QueryContext $queryContext, ResultExposurePolicy $policy)`;
+- `exposeResult(IndexDocument $document, QueryContext $queryContext, ResultExposurePolicy $policy)`;
+- `planReindex(SourceProvider $sourceProvider, EngineProfile $engineProfile)`.
+
+It stores valid providers and indexable documents in memory only. It is useful for local package tests and cross-package smoke, but it is not index persistence, an HTTP query endpoint, a queue worker or a production search backend.

@@ -5,6 +5,8 @@ declare(strict_types=1);
 $tests = [
     __DIR__ . '/../tests/Unit/SearchContractTest.php',
     __DIR__ . '/../tests/Unit/SearchFailsClosedTest.php',
+    __DIR__ . '/../tests/Unit/InMemorySearchRuntimeTest.php',
+    __DIR__ . '/../tests/Unit/InMemorySearchRuntimeFailsClosedTest.php',
 ];
 
 foreach ($tests as $test) {
@@ -15,4 +17,4 @@ foreach ($tests as $test) {
     require $test;
 }
 
-echo "Larena Search contract skeleton tests passed.\n";
+echo "Larena Search runtime baseline tests passed.\n";

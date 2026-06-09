@@ -1,8 +1,8 @@
 package: larena/search
 title: Larena Search
-status: repository_prepared
+status: coding_started
 cluster: data-content
-batch: batch-0-clean-pre-codegen-baseline
+batch: search-batch-2-in-memory-runtime-baseline
 features:
   - search.admin_diagnostics
   - search.engine_profiles
@@ -14,4 +14,4 @@ runtime:
   php: "^8.3"
   laravel: "^13.0"
 evidence:
-  path: docs/project-management/evidence/data-content/batch-0/search-clean-baseline/
+  path: docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/

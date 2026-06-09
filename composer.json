@@ -26,8 +26,15 @@
     "phpstan/phpstan": "^2.0"
   },
   "scripts": {
-    "test": "php scripts/test-placeholder.php",
-    "test:unit": "php scripts/test-placeholder.php",
+    "test": [
+      "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchContractTest.php",
+      "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchFailsClosedTest.php",
+      "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemorySearchRuntimeTest.php",
+      "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemorySearchRuntimeFailsClosedTest.php"
+    ],
+    "test:unit": [
+      "@test"
+    ],
     "lint": "php scripts/lint.php",
     "analyse": "php scripts/analyse.php",
     "validate:larena": "php scripts/validate-larena-package.php",

@@ -22,6 +22,7 @@
     "docs/developer/examples.md",
     "docs/developer/testing.md",
     "docs/developer/troubleshooting.md",
+    "composer.json",
     "phpstan.neon.dist",
     "scripts/lint.php",
     "scripts/test-placeholder.php",

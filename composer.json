@@ -1,58 +1,60 @@
 {
-  "name": "larena/search",
-  "description": "Larena Search: Search and indexing layer for access-aware discovery across storage records, content, documentation, file metadata, file-manager views, REST/MCP contexts and future package-defined sources.",
-  "type": "library",
-  "license": "Apache-2.0",
-  "authors": [
-    {
-      "name": "Rim Zabarov",
-      "homepage": "https://github.com/zabarov"
-    }
-  ],
-  "require": {
-    "php": "^8.3"
-  },
-  "autoload": {
-    "psr-4": {
-      "Larena\\Search\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Larena\\Search\\Tests\\": "tests/"
-    }
-  },
-  "require-dev": {
-    "phpstan/phpstan": "^2.0"
-  },
-  "scripts": {
-    "test": [
-      "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchContractTest.php",
-      "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchFailsClosedTest.php",
-      "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemorySearchRuntimeTest.php",
-      "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemorySearchRuntimeFailsClosedTest.php"
+    "name": "larena/search",
+    "description": "Larena Search: Search and indexing layer for access-aware discovery across storage records, content, documentation, file metadata, file-manager views, REST/MCP contexts and future package-defined sources.",
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Rim Zabarov",
+            "homepage": "https://github.com/zabarov"
+        }
     ],
-    "test:unit": [
-      "@test"
-    ],
-    "lint": "php scripts/lint.php",
-    "analyse": "php scripts/analyse.php",
-    "validate:larena": "php scripts/validate-larena-package.php",
-    "evidence:check": "php scripts/check-evidence.php",
-    "scope:check": "php tools/larena-scope-check.php",
-    "quality:gate": [
-      "@validate:larena",
-      "@lint",
-      "@analyse",
-      "@test",
-      "@evidence:check",
-      "@scope:check"
-    ]
-  },
-  "config": {
-    "sort-packages": true,
-    "allow-plugins": {}
-  },
-  "minimum-stability": "stable",
-  "prefer-stable": true
+    "require": {
+        "php": "^8.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Larena\\Search\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Larena\\Search\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.0"
+    },
+    "scripts": {
+        "test": [
+            "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchContractTest.php",
+            "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchFailsClosedTest.php",
+            "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemorySearchRuntimeTest.php",
+            "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemorySearchRuntimeFailsClosedTest.php"
+        ],
+        "test:unit": [
+            "@test"
+        ],
+        "lint": "php scripts/lint.php",
+        "analyse": "php scripts/analyse.php",
+        "validate:larena": "php scripts/validate-larena-package.php",
+        "evidence:check": "php scripts/check-evidence.php",
+        "scope:check": "php tools/larena-scope-check.php",
+        "quality:gate": [
+            "@validate:larena",
+            "@lint",
+            "@analyse",
+            "@test",
+            "@larena:metadata:check",
+            "@evidence:check",
+            "@scope:check"
+        ],
+        "larena:metadata:check": "php scripts/check-metadata-sync.php"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {}
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

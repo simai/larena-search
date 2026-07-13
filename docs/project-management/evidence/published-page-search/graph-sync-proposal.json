@@ -1,0 +1,18 @@
+{
+  "schema": "larena.graph-sync-proposal.v1",
+  "package": "larena/search",
+  "canonical_update_allowed": false,
+  "status": "proposal_only",
+  "proposals": [
+    "record_database_native_persistent_index_runtime",
+    "record_monotonic_source_revision_and_tombstone_contract",
+    "record_resumable_generation_rebuild_contract",
+    "record_durable_provider_generation_fence_contract",
+    "record_search_reindex_access_and_audit_contracts"
+  ],
+  "evidence": "docs/project-management/evidence/published-page-search/",
+  "nonclaims": {
+    "production_ready": false,
+    "all_packages_ready": false
+  }
+}

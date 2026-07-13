@@ -9,7 +9,12 @@ $requiredFiles = [
     '.githooks/pre-commit',
     '.githooks/pre-push',
     'composer.json',
+    'composer.lock',
     'module.yaml',
+    'access.yaml',
+    'audit.yaml',
+    'README.md',
+    'CHANGELOG.md',
     'phpstan.neon.dist',
     '.larena/spec-ref.json',
     '.larena/launch-context.json',
@@ -34,6 +39,30 @@ $runtimeFiles = [
     'src/Runtime/InMemorySearchRuntime.php',
     'tests/Unit/InMemorySearchRuntimeTest.php',
     'tests/Unit/InMemorySearchRuntimeFailsClosedTest.php',
+];
+$persistentFiles = [
+    'src/Contracts/ReindexBatch.php',
+    'src/Contracts/ReindexRun.php',
+    'src/Contracts/ReindexSource.php',
+    'src/Contracts/SearchHit.php',
+    'src/Contracts/SearchProjection.php',
+    'src/Contracts/SearchQuery.php',
+    'src/Contracts/SearchWriteResult.php',
+    'src/Persistence/DatabaseSearchIndex.php',
+    'src/Persistence/LockedProviderState.php',
+    'src/Persistence/ProviderGenerationFence.php',
+    'src/Runtime/SearchSourceRegistry.php',
+    'src/Reindex/SearchReindexService.php',
+    'src/Providers/SearchServiceProvider.php',
+    'src/Commands/ReindexSearchCommand.php',
+    'src/Audit/SearchReindexAuditEventDescriptor.php',
+    'database/migrations/2026_07_13_000001_create_larena_search_documents.php',
+    'database/migrations/2026_07_13_000002_create_larena_search_source_states.php',
+    'database/migrations/2026_07_13_000003_create_larena_search_reindex_runs.php',
+    'database/migrations/2026_07_13_000004_create_larena_search_provider_states.php',
+    'tests/Unit/DatabaseSearchIndexTest.php',
+    'tests/Unit/SearchReindexServiceTest.php',
+    'tests/Unit/SearchLaravelPackageContractTest.php',
 ];
 $errors = [];
 foreach ($requiredFiles as $file) {
@@ -70,6 +99,7 @@ $launchRecordRef = (string) ($launchContext['launch_record_ref'] ?? '');
 $knownCodingLaunchRecords = [
     'search-batch-1-contract-skeletons-current.json',
     'search-batch-2-in-memory-runtime-baseline.json',
+    'published-page-search.json',
 ];
 if ($codingStarted) {
     $knownLaunchRecord = false;
@@ -102,12 +132,46 @@ if ($codingStarted) {
             }
         }
     }
+    if (str_contains($launchRecordRef, 'published-page-search.json')) {
+        foreach ($persistentFiles as $file) {
+            if (!is_file($file)) {
+                $errors[] = "Missing published-page Search runtime file: {$file}";
+            }
+        }
+    }
 } else {
     foreach (['src', 'config', 'database', 'routes', 'resources', 'tests', 'lang'] as $runtimePath) {
         if (is_dir($runtimePath)) {
             $errors[] = "{$runtimePath}/ is not allowed in this clean pre-codegen baseline commit.";
         }
     }
+}
+
+$composer = json_decode((string) file_get_contents('composer.json'), true, 512, JSON_THROW_ON_ERROR);
+if (($composer['extra']['laravel']['providers'] ?? []) !== ['Larena\\Search\\Providers\\SearchServiceProvider']) {
+    $errors[] = 'composer.json must auto-discover SearchServiceProvider.';
+}
+$lock = json_decode((string) file_get_contents('composer.lock'), true, 512, JSON_THROW_ON_ERROR);
+$expectedRevisions = [
+    'larena/access' => 'af45111b2a620d1b46331e2fe009a571f22230ad',
+    'larena/audit' => 'b5f6d215fb020f7b8b071cc40b7dde4e2ed2cea1',
+    'larena/ui' => '86c43b86db972b8f8d1964ab4f494f562cb53acc',
+    'larena/dataview' => 'b84e964b4ed78e1ca08a46c88e7651b02744ee47',
+];
+$lockedRevisions = [];
+foreach ($lock['packages'] ?? [] as $package) {
+    $name = (string) ($package['name'] ?? '');
+    if (isset($expectedRevisions[$name])) {
+        $lockedRevisions[$name] = (string) ($package['dist']['reference'] ?? '');
+    }
+}
+foreach ($expectedRevisions as $package => $revision) {
+    if (($lockedRevisions[$package] ?? null) !== $revision) {
+        $errors[] = "composer.lock must pin {$package} to {$revision}.";
+    }
+}
+if (is_dir('routes') || is_dir('resources/views') || is_dir('src/Http')) {
+    $errors[] = 'Published-page Search runtime must not add routes, views or HTTP controllers.';
 }
 if ($errors !== []) {
     foreach ($errors as $error) {

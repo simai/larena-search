@@ -1,105 +1,52 @@
 # API Reference
 
-## `SourceProvider`
+## Persistent index
 
-Namespace: `Larena\Search\Contracts`
+`Larena\Search\Persistence\DatabaseSearchIndex` is constructed with an `Illuminate\Database\ConnectionInterface`.
 
-Creates a package-owned source descriptor.
+- `connection(): ConnectionInterface`
+- `upsert(SearchProjection $projection, ?string $generationRef = null): SearchWriteResult`
+- `remove(string $providerId, string $sourceRef, int $sourceRevision, ?string $generationRef = null): SearchWriteResult`
+- `query(SearchQuery $query): array<SearchHit>`
+- `removeMissingFromGeneration(string $providerId, string $generationRef): int`
 
-Important methods:
+Laravel binds the index transiently so a connection purge/reconnect cannot leave it pinned to an obsolete connection.
 
-- `SourceProvider::declare(...)`
-- `isValid()`
+The optional non-null `generationRef` is reserved for the reindex service and must match the provider's locked active generation. Ordinary realtime callers omit it; Search resolves the generation only after acquiring the durable provider fence. `removeMissingFromGeneration()` is likewise a trusted reindex-internal operation and fails closed unless that generation is still active.
 
-Use it when a package wants to expose a safe searchable projection. Do not pass private fields, raw file contents, tokens, credentials or hidden metadata.
+## Projection and query DTOs
 
-## `IndexDocument`
+`SearchProjection` carries `providerId`, `sourceRef`, monotonic positive `sourceRevision`, safe title/locator/snippet/locale/access scope/searchable text and a scalar-only payload. Sensitive-looking payload field names fail closed.
 
-Represents one projected document.
+`SearchQuery` requires a non-empty term, one to twenty explicit access scopes and a limit from 1 to 100. Provider and locale filters are optional and exact. Matching is a case-insensitive literal substring; SQL wildcard characters are escaped.
 
-Important method:
+`SearchHit` returns only the persisted safe projection. Canonical source data is never loaded by Search query.
 
-- `isIndexable()`
+## Reindex source
 
-The document must have a valid source provider, projection fields and tokens. It fails closed when `containsPrivatePayload` is true.
+```php
+interface ReindexSource
+{
+    public function providerId(): string;
+    public function readBatch(?string $afterCursor, int $limit): ReindexBatch;
+}
+```
 
-## `EngineProfile`
+`ReindexBatch` contains a list of `SearchProjection`, the opaque next keyset cursor and `hasMore`. A non-advancing or missing cursor fails closed when more data is declared.
 
-Represents a search backend profile.
+Register sources through `Larena\Search\Runtime\SearchSourceRegistry::register()`.
 
-Important methods:
+## Reindex service
 
-- `databaseBaseline()`
-- `canRun()`
-- `isDegraded()`
+`Larena\Search\Reindex\SearchReindexService` exposes:
 
-External and semantic engines require capability gates. They must not run by default.
+- `schedule(providerId, actor, ?runRef, ?correlationId): ReindexRun`;
+- `run(runRef, actor, batchSize = 100, maxBatches = 0): ReindexRun`;
+- `resume(runRef, actor, batchSize = 100, maxBatches = 0, ?expectedProviderId = null): ReindexRun`;
+- `find(runRef): ?ReindexRun` for trusted internal diagnostics/tests.
 
-## `QueryContext`
+The CLI never calls `find()` before the resume permission is checked. The optional expected provider is validated inside the locked processing transaction.
 
-Represents a search request context.
+## Compatibility contracts
 
-Important method:
-
-- `isValid()`
-
-The context must include query text, surface, actor reference and access scope.
-
-## `ResultExposurePolicy`
-
-Evaluates whether a projected document can be returned.
-
-Important methods:
-
-- `denyByDefault()`
-- `decide(IndexDocument $document, QueryContext $context)`
-
-The policy returns a `ResultExposureDecision`.
-
-## `ScopedSearchResult`
-
-Represents a result after exposure policy evaluation.
-
-Important methods:
-
-- `canReturnToCaller()`
-- `exposesSnippet()`
-
-Only `allowed` and `redacted` decisions can be returned to callers.
-
-## `ReindexJob`
-
-Represents a reindex job descriptor.
-
-Important methods:
-
-- `canStart()`
-- `hasSafeDiagnostics()`
-
-This is not a worker. It does not execute indexing.
-
-## `SearchRuntime`
-
-Defines the future runtime boundary:
-
-- `registerSource(...)`
-- `createDocument(...)`
-- `exposeResult(...)`
-- `planReindex(...)`
-
-The current implementation is `Larena\Search\Runtime\InMemorySearchRuntime`.
-
-## `InMemorySearchRuntime`
-
-Namespace: `Larena\Search\Runtime`
-
-Provides the current guarded runtime baseline:
-
-- `registerSource(SourceProvider $sourceProvider)`;
-- `createDocument(SourceProvider $sourceProvider, array $projection, array $tokens)`;
-- `ingest(IndexDocument $document)`;
-- `query(QueryContext $queryContext, ResultExposurePolicy $policy)`;
-- `exposeResult(IndexDocument $document, QueryContext $queryContext, ResultExposurePolicy $policy)`;
-- `planReindex(SourceProvider $sourceProvider, EngineProfile $engineProfile)`.
-
-It stores valid providers and indexable documents in memory only. It is useful for local package tests and cross-package smoke, but it is not index persistence, an HTTP query endpoint, a queue worker or a production search backend.
+The earlier `SourceProvider`, `IndexDocument`, `QueryContext`, `ResultExposurePolicy`, `ReindexJob`, `SearchRuntime` and `InMemorySearchRuntime` remain available for compatibility and isolated developer tests. They are not used as persistent storage.

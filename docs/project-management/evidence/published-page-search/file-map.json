@@ -1,0 +1,15 @@
+{
+  "schema": "larena.search.file-map.v1",
+  "areas": {
+    "public_contracts": "src/Contracts/{ReindexBatch,ReindexRun,ReindexSource,SearchHit,SearchProjection,SearchQuery,SearchWriteResult}.php",
+    "persistence": "src/Persistence/{DatabaseSearchIndex,LockedProviderState,ProviderGenerationFence}.php",
+    "reindex": "src/Reindex/SearchReindexService.php",
+    "provider_and_cli": "src/{Providers,Commands}/",
+    "access_and_audit": ["access.yaml", "audit.yaml", "src/Audit/"],
+    "schema": "database/migrations/",
+    "tests": "tests/{Support,Unit}/",
+    "docs": ["README.md", "CHANGELOG.md", "docs/developer/"],
+    "delivery": ["composer.json", "composer.lock", "module.yaml", ".larena/", "scripts/", "tools/"]
+  },
+  "forbidden_surfaces_touched": []
+}

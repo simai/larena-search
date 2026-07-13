@@ -2,45 +2,28 @@
 
 ## Search Returns Nothing
 
-For the current package version, this can be expected when using an invalid query context, unmatched access scope, non-indexable document, missing tokens or a result exposure policy that hides denied existence. No HTTP/API query endpoint exists yet.
+Check exact access scopes, optional provider/locale filters and whether the source state is a tombstone. Matching is literal and case-insensitive. No HTTP/API query endpoint exists in this package.
 
-## Provider Is Invalid
+## Reindex Source Is Unknown
 
-Check that the provider has:
+Ensure the package registered its `ReindexSource` in the singleton `SearchSourceRegistry` during provider boot. Registration is idempotent by provider id.
 
-- `providerId`;
-- `ownerPackage`;
-- projection fields;
-- access scope;
-- no private payload marker.
+## `search_revision_conflict`
 
-## Document Is Not Indexable
+The same `(provider, source, revision)` was supplied with different public content. Source revisions must be immutable; allocate a higher revision instead of overwriting.
 
-Check that the document has:
+## `search_persistence_failed`
 
-- non-empty document id;
-- valid source provider;
-- non-empty projection;
-- non-empty tokens;
-- `containsPrivatePayload` set to false.
+The public error is intentionally sanitized. Check application database logs, migrations and connection state in the trusted runtime. Do not remap this to a source revision conflict.
 
-## Engine Is Degraded
+## Run Stays Failed
 
-External and semantic engines require capability gates. If the capability is not allowed or the engine is unavailable, `canRun()` returns false and `isDegraded()` returns true.
+Failed runs retain `active_provider_id` and the matching active references in `larena_search_provider_states`, so realtime writes remain safe. Correct the source/database issue and resume the same run with `--run` and the `search.reindex.resume` permission. A provider-fence mismatch is treated as sanitized persistence corruption; do not clear it manually or schedule a replacement run over it.
 
-## Result Is Hidden Or Denied
+## Scope Check Fails
 
-This is the safe default when:
+Files must match `.larena/launch-context.json`. Do not broaden scope to routes, UI, external engines or other packages.
 
-- query context is invalid;
-- document is not indexable;
-- access scope does not match;
-- policy requires denied existence to be hidden.
+## In-Memory Runtime
 
-## Scope Check Fails After Documentation Edits
-
-Documentation files must be listed in `.larena/launch-context.json` for this traceability batch. Do not broaden the launch scope to runtime directories to fix a docs-only failure.
-
-## In-Memory Runtime Should Not Be Used As Production Search
-
-`InMemorySearchRuntime` is a developer-testable baseline. It does not persist indexes, clean stale records, run queue jobs or expose routes. Production search requires a later launch record.
+`InMemorySearchRuntime` is retained for compatibility tests. Use `DatabaseSearchIndex` for persistent runtime; neither runtime is a production-readiness claim.

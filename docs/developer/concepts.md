@@ -2,53 +2,36 @@
 
 ## Search Is A Projection Layer
 
-Search indexes safe projections from other packages. It must not own canonical storage records, files, links, workflow items or documentation pages. The source package owns the original data and decides which fields can be projected.
+Search indexes safe projections from other packages. It does not own canonical pages, storage records, files, workflow items or documentation revisions. The source package decides which immutable public fields can be projected.
 
-## Source Provider
+## Source Revision Fence
 
-`SourceProvider` identifies a package-owned searchable source. It requires:
+The persistent identity is `(provider_id, source_ref)`. Every change carries a positive monotonic `source_revision`:
 
-- provider id;
-- owner package;
-- projection fields;
-- access scope;
-- no private payload marker.
+- lower revision: ignored as stale;
+- equal indexed revision and equal hash: idempotent, with generation refresh/self-heal;
+- equal indexed revision and different hash: rejected;
+- equal tombstone: tombstone wins and cannot be resurrected;
+- higher revision: replaces the current state.
 
-If owner, projection or access scope is missing, the provider is invalid.
+## Tombstones
 
-## Index Document
+Deletion removes the document but preserves source revision/state in `larena_search_source_states`. This prevents stale rebuild data from resurrecting unpublished content.
 
-`IndexDocument` represents a searchable projection. It is indexable only when:
+## Rebuild Generation
 
-- document id exists;
-- source provider is valid;
-- projection is explicit;
-- tokens are present;
-- private payload is not included.
+Each rebuild owns a generation. `larena_search_provider_states` keeps one permanent row per observed provider and atomically maps it to the active run/generation. The row remains after completion with both active references cleared.
 
-Raw secrets, protected payloads, private file contents and link tokens must not be indexed.
+Schedule and realtime writes first create-or-find and lock this same provider row. If schedule linearizes first, the later realtime write observes and joins its generation. If publication linearizes first, the later source pass sees the committed source revision and its idempotent projection refreshes the document into the generation. A failed or paused run keeps the active references.
 
-## Engine Profile
+Final cleanup holds the same provider fence while it locks source state before document state, rechecks generation, tombstones only documents still outside the active generation, clears the active references and completes the run. A realtime write therefore either commits in the active generation before cleanup or waits and commits after cleanup; it cannot be inserted with `generation_ref = null` inside that window.
 
-`EngineProfile` describes whether a backend can run. The current baseline supports a database profile as a contract, while external and semantic profiles require capability gates.
+The Search-owned lock graph is acyclic: an existing reindex operation takes `run -> provider -> source state -> document`; realtime writes take `provider -> source state -> document`; schedule takes `provider` and inserts a new run that no other transaction can yet hold.
 
-Unsupported or capability-gated engines degrade safely instead of silently running.
+## Access Scope
 
-## Query Context
+Search does not infer authorization. A trusted caller supplies explicit already-authorized access scopes to `SearchQuery`; an empty scope list is invalid. No HTTP/API surface exists in this package.
 
-`QueryContext` carries query text, surface, actor reference and access scope. A search result cannot be evaluated safely without explicit access scope.
+## Resumable Reindex
 
-## Result Exposure Policy
-
-`ResultExposurePolicy` decides whether a document can be returned to the caller:
-
-- `allowed`: title and snippet may be returned;
-- `redacted`: safe title can be returned, snippet is hidden;
-- `denied`: result is denied;
-- `hidden`: denied result existence is hidden.
-
-The default posture is deny/hidden until access scope is matched.
-
-## Reindex Job
-
-`ReindexJob` is a descriptor, not a queue worker. It models planned, queued, running, paused, completed and failed states so future runtime batches can add queue/scheduler behavior safely.
+Only one active run can exist per provider. A keyset cursor and counters persist in `larena_search_reindex_runs`; the provider row is the serialization source of truth for the active generation. Each projection batch, checkpoint state and checkpoint Audit event share one database transaction. Failed runs retain their active provider fence and can resume.

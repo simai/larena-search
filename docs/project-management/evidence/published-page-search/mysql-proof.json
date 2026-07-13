@@ -1,0 +1,23 @@
+{
+  "schema": "larena.search.mysql-proof.v1",
+  "status": "passed_root_disposable_acceptance",
+  "owner": "simai/larena root acceptance",
+  "package_claim": "not_inferred_from_sqlite",
+  "result": {
+    "tests": 2,
+    "assertions": 163,
+    "generated_schemas": 2,
+    "remaining_schemas": 0,
+    "existing_database_used": false
+  },
+  "required": [
+    "migration_apply",
+    "query_and_revision_cas",
+    "rollback_reapply",
+    "rebuild_resume",
+    "schedule_first_vs_first_realtime_upsert_barrier",
+    "publish_first_vs_schedule_barrier",
+    "concurrent_generation_safety_and_no_equal_revision_tombstone",
+    "isolated_schema_cleanup"
+  ]
+}

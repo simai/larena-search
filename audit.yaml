@@ -1,0 +1,26 @@
+schema: larena.audit.package-events.v1
+package: larena/search
+storage_owner: larena/audit
+retention: security
+atomic_completion: true
+events:
+  - {type: search.reindex.started, category: search_reindex, severity: security}
+  - {type: search.reindex.resumed, category: search_reindex, severity: security}
+  - {type: search.reindex.checkpointed, category: search_reindex, severity: security}
+  - {type: search.reindex.completed, category: search_reindex, severity: security}
+  - {type: search.reindex.failed, category: search_reindex, severity: security}
+forbidden_payload_fields:
+  - password
+  - password_hash
+  - session_id
+  - cookie
+  - token
+  - secret
+  - query
+  - title
+  - snippet
+  - body
+  - payload
+nonclaims:
+  production_ready: false
+  all_packages_ready: false

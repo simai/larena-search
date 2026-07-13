@@ -1,117 +1,60 @@
 # Examples
 
-## Safe Provider And Redacted Result
+## Persistent projection and literal query
 
 ```php
-use Larena\Search\Contracts\IndexDocument;
-use Larena\Search\Contracts\QueryContext;
-use Larena\Search\Contracts\ResultExposurePolicy;
-use Larena\Search\Contracts\ScopedSearchResult;
-use Larena\Search\Contracts\SourceProvider;
+use Larena\Search\Contracts\SearchProjection;
+use Larena\Search\Contracts\SearchQuery;
 
-$provider = SourceProvider::declare(
-    providerId: 'storage.records',
-    ownerPackage: 'larena/storage',
-    projectionFields: ['title', 'summary'],
-    accessScope: 'storage.records.read',
-);
+$index->upsert(new SearchProjection(
+    providerId: 'docara.published_pages',
+    sourceRef: 'page:welcome',
+    sourceRevision: 7,
+    title: 'Welcome',
+    locator: '/docs/welcome',
+    snippet: 'Public summary',
+    locale: 'en',
+    accessScope: 'public',
+    searchableText: 'Only immutable published content',
+    payload: ['slug' => 'welcome'],
+));
 
-$document = new IndexDocument(
-    documentId: 'storage:1',
-    sourceProvider: $provider,
-    projection: ['title' => 'Example', 'summary' => 'Safe summary'],
-    tokens: ['example', 'safe'],
-);
-
-$context = new QueryContext(
-    query: 'example',
-    surface: 'admin',
-    actorReference: 'user:1',
-    accessScope: 'storage.records.read',
-);
-
-$policy = new ResultExposurePolicy(
-    accessScopeMatched: true,
-    snippetAllowed: false,
-);
-
-$decision = $policy->decide($document, $context);
-$result = new ScopedSearchResult($document, $decision, 'Example', '');
+$hits = $index->query(new SearchQuery(
+    term: 'published',
+    providerId: 'docara.published_pages',
+    locale: 'en',
+    accessScopes: ['public'],
+    limit: 20,
+));
 ```
 
-The result may return the title, but not the snippet.
+Use `remove(providerId, sourceRef, sourceRevision)` when the source becomes non-public. Never reuse a revision for different content.
 
-## Fail-Closed Private Document
+## Resumable source
 
 ```php
-use Larena\Search\Contracts\IndexDocument;
-use Larena\Search\Contracts\SourceProvider;
+use Larena\Search\Contracts\ReindexBatch;
+use Larena\Search\Contracts\ReindexSource;
 
-$provider = new SourceProvider('', '', [], '', true);
+final class PublishedPageSource implements ReindexSource
+{
+    public function providerId(): string
+    {
+        return 'docara.published_pages';
+    }
 
-$document = new IndexDocument(
-    documentId: 'secret:1',
-    sourceProvider: $provider,
-    projection: ['secret' => 'raw'],
-    tokens: ['raw'],
-    containsPrivatePayload: true,
-);
+    public function readBatch(?string $afterCursor, int $limit): ReindexBatch
+    {
+        // Read immutable published revisions with a keyset (`source_ref > cursor`).
+        return new ReindexBatch($projections, $nextCursor, $hasMore);
+    }
+}
 
-assert($document->isIndexable() === false);
+$registry->register(new PublishedPageSource());
 ```
 
-This document cannot be indexed.
+The source owns its canonical query and safe projection. Search owns checkpointing, index CAS and cleanup.
 
-## Capability-Gated Engine
+## Compatibility in-memory runtime
 
-```php
-use Larena\Search\Contracts\EngineProfile;
-use Larena\Search\Enums\EngineProfileType;
-
-$engine = new EngineProfile(
-    profileId: 'external',
-    type: EngineProfileType::External,
-    capabilityAllowed: false,
-    engineAvailable: true,
-);
-
-assert($engine->canRun() === false);
-assert($engine->isDegraded() === true);
-```
-
-External and semantic engines must not run unless the capability gate allows them.
-
-## In-Memory Runtime Baseline
-
-```php
-use Larena\Search\Contracts\QueryContext;
-use Larena\Search\Contracts\ResultExposurePolicy;
-use Larena\Search\Contracts\SourceProvider;
-use Larena\Search\Runtime\InMemorySearchRuntime;
-
-$runtime = new InMemorySearchRuntime();
-
-$provider = SourceProvider::declare(
-    providerId: 'storage.records',
-    ownerPackage: 'larena/storage',
-    projectionFields: ['title', 'summary'],
-    accessScope: 'storage.records.read',
-);
-
-$runtime->registerSource($provider);
-
-$document = $runtime->createDocument(
-    sourceProvider: $provider,
-    projection: ['title' => 'Safe Record', 'summary' => 'Safe metadata'],
-    tokens: ['safe', 'record'],
-);
-
-$runtime->ingest($document);
-
-$results = $runtime->query(
-    queryContext: new QueryContext('record', 'admin', 'user:1', 'storage.records.read'),
-    policy: new ResultExposurePolicy(accessScopeMatched: true, snippetAllowed: false),
-);
-```
-
-The result can expose the safe title, but the snippet stays redacted when the policy denies snippets.
+The earlier `SourceProvider`, `IndexDocument`, `QueryContext`, `ResultExposurePolicy` and `InMemorySearchRuntime` remain usable for isolated compatibility tests. They do not persist data and must not be substituted for `DatabaseSearchIndex`.

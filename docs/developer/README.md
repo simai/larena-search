@@ -1,41 +1,33 @@
 # Larena Search Developer Guide
 
-`larena/search` defines the search and indexing contract layer for Larena. It lets packages describe searchable projections, query context, exposure policy and reindex descriptors without making Search the owner of source data.
-
-Current implementation includes interface-first contract skeletons and a guarded in-memory runtime baseline. The package exposes value objects, enums, interfaces and `InMemorySearchRuntime` so source registration, safe document projection, in-memory ingest/query, result exposure and reindex planning can be tested without persistence, routes, admin UI or queue runtime.
+`larena/search` stores searchable safe projections without taking ownership of source records. Source packages own canonical data, immutable revision semantics and the projection they expose.
 
 ## Current Scope
 
-Implemented contract surfaces:
+Implemented runtime surfaces:
 
-- source provider declaration;
-- safe index document projection;
-- engine profile capability/degraded state;
-- access-aware query context;
-- fail-closed result exposure policy;
-- scoped search result shape;
-- reindex job descriptor state;
-- `SearchRuntime` interface.
-- `InMemorySearchRuntime` baseline for local non-persistent runtime smoke.
+- `SearchProjection`, `SearchQuery`, `SearchHit` and monotonic write results;
+- `ReindexSource`, `ReindexBatch` and `SearchSourceRegistry`;
+- `DatabaseSearchIndex` on the application's current default database connection;
+- persistent document, tombstone, rebuild-run and durable provider-fence migrations;
+- resumable `SearchReindexService` and `search:reindex` CLI;
+- Access descriptors and sanitized Security Audit events;
+- compatibility in-memory contracts from the earlier baseline.
 
-Out of scope for the current batch:
+Out of scope:
 
-- production database/native search engine runtime;
-- index storage tables or migrations;
 - HTTP/API query endpoints;
 - admin diagnostics UI;
-- queue-backed reindex execution;
+- queue-backed or scheduled execution beyond the resumable CLI;
 - external search services;
 - semantic/vector search providers;
-- production result rendering.
+- production result rendering and production-readiness claims.
 
 ## Source Of Truth
 
 Canonical package requirements live in `simai/larena-specs`. This documentation explains the current package code and evidence state; it is not a canonical graph update.
 
-Key evidence path:
-
-`docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/`
+Evidence path: `docs/project-management/evidence/published-page-search/`.
 
 ## Reading Order
 

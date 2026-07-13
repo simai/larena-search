@@ -1,0 +1,17 @@
+{
+  "schema": "larena.search.deviations.v1",
+  "deviations": [
+    {
+      "id": "mysql_evidence_owned_by_root",
+      "status": "resolved_by_root_disposable_acceptance",
+      "reason": "Package quality uses disposable SQLite; root acceptance separately passed 2 MySQL tests with 163 assertions and removed both generated schemas."
+    },
+    {
+      "id": "queue_worker_out_of_scope",
+      "status": "accepted_non_goal",
+      "reason": "The goal requires resumable CLI execution, not queue or scheduler integration."
+    }
+  ],
+  "production_ready": false,
+  "all_packages_ready": false
+}

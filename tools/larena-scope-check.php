@@ -22,9 +22,24 @@ function matches_pattern(string $file, string $pattern): bool
     if ($file === $pattern) {
         return true;
     }
+    if (str_contains($pattern, '*') && fnmatch($pattern, $file, FNM_PATHNAME)) {
+        return true;
+    }
     if (str_ends_with($pattern, '/*')) {
         return str_starts_with($file, substr($pattern, 0, -1));
     }
+    return false;
+}
+
+/** @param list<string> $patterns */
+function matches_any_pattern(string $file, array $patterns): bool
+{
+    foreach ($patterns as $pattern) {
+        if (matches_pattern($file, $pattern)) {
+            return true;
+        }
+    }
+
     return false;
 }
 
@@ -73,7 +88,7 @@ foreach ($diffOutputs as $diffOutput) {
 }
 $errors = [];
 foreach (array_keys($changedFiles) as $file) {
-    $exactlyAllowed = in_array($file, $allowedFiles, true);
+    $exactlyAllowed = matches_any_pattern($file, $allowedFiles);
     $evidenceAllowed = $evidencePath !== '' && str_starts_with($file, $evidencePath . '/');
     foreach (['src/', 'config/', 'database/', 'routes/', 'resources/', 'tests/', 'lang/'] as $runtimeRoot) {
         if (str_starts_with($file, $runtimeRoot) && !$codingStarted) {

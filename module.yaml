@@ -2,7 +2,7 @@ package: larena/search
 title: Larena Search
 status: coding_started
 cluster: data-content
-batch: search-batch-2-in-memory-runtime-baseline
+batch: published-page-search
 features:
   - search.admin_diagnostics
   - search.engine_profiles
@@ -13,5 +13,22 @@ features:
 runtime:
   php: "^8.3"
   laravel: "^13.0"
+  engine: database_native
+dependencies:
+  - larena/access
+  - larena/audit
+access_operations:
+  - search.reindex.schedule
+  - search.reindex.run
+  - search.reindex.resume
+audit_events:
+  - search.reindex.started
+  - search.reindex.resumed
+  - search.reindex.checkpointed
+  - search.reindex.completed
+  - search.reindex.failed
 evidence:
-  path: docs/project-management/evidence/data-content/batch-2/search-in-memory-runtime-baseline/
+  path: docs/project-management/evidence/published-page-search/
+nonclaims:
+  production_ready: false
+  all_packages_ready: false

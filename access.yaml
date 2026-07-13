@@ -1,0 +1,12 @@
+schema: larena.access.descriptor.v1
+package: larena/search
+operations:
+  - code: search.reindex.schedule
+    risk: critical
+    audit: always
+  - code: search.reindex.run
+    risk: critical
+    audit: always
+  - code: search.reindex.resume
+    risk: critical
+    audit: always

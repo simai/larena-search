@@ -100,6 +100,7 @@ $knownCodingLaunchRecords = [
     'search-batch-1-contract-skeletons-current.json',
     'search-batch-2-in-memory-runtime-baseline.json',
     'published-page-search.json',
+    'canonical-mysql-reproducibility.json',
 ];
 if ($codingStarted) {
     $knownLaunchRecord = false;
@@ -132,7 +133,8 @@ if ($codingStarted) {
             }
         }
     }
-    if (str_contains($launchRecordRef, 'published-page-search.json')) {
+    if (str_contains($launchRecordRef, 'published-page-search.json')
+        || str_contains($launchRecordRef, 'canonical-mysql-reproducibility.json')) {
         foreach ($persistentFiles as $file) {
             if (!is_file($file)) {
                 $errors[] = "Missing published-page Search runtime file: {$file}";

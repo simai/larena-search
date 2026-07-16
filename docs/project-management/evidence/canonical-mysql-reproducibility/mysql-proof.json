@@ -1,0 +1,16 @@
+{
+  "schema": "larena.search.mysql-proof.v1",
+  "status": "pending_root_integration",
+  "owner": "simai/larena canonical root acceptance",
+  "package_claim": "not_inferred_from_sqlite",
+  "required": [
+    "migration_apply",
+    "query_and_revision_cas",
+    "rollback_reapply",
+    "rebuild_resume",
+    "schedule_first_vs_first_realtime_upsert_barrier",
+    "publish_first_vs_schedule_barrier",
+    "concurrent_generation_safety_and_no_equal_revision_tombstone",
+    "isolated_schema_cleanup"
+  ]
+}

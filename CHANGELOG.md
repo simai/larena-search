@@ -4,6 +4,12 @@ All notable package changes are recorded here. The package does not currently pu
 
 ## Unreleased
 
+### Fixed
+
+- Provider-state migration backfill timestamps now derive from retained reindex
+  runs, with a migration-identity fallback, so rollback/reapply is
+  deterministic on SQLite and MySQL.
+
 ### Added
 
 - Database/native persistent Search index, monotonic source-state tombstones and bounded literal query.

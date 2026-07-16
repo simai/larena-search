@@ -1,0 +1,15 @@
+{
+  "schema": "larena.package_evidence_file_map.v1",
+  "package": "larena/search",
+  "batch": "canonical-mysql-reproducibility",
+  "files": {
+    ".larena/launch-context.json": "exact package scope",
+    "module.yaml": "current batch and evidence pointer",
+    "CHANGELOG.md": "deterministic migration repair entry",
+    "scripts/validate-larena-package.php": "recognize the scoped reproducibility launch record",
+    "database/migrations/2026_07_13_000004_create_larena_search_provider_states.php": "deterministic provider-state backfill timestamps",
+    "tests/Unit/DatabaseSearchIndexTest.php": "backfill and timestamp regression evidence",
+    "docs/project-management/launch-records/canonical-mysql-reproducibility.json": "package launch record",
+    "docs/project-management/evidence/canonical-mysql-reproducibility/*": "package evidence and parent-acceptance boundary"
+  }
+}

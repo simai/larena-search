@@ -1,0 +1,8 @@
+{
+  "schema": "larena.graph_sync_proposal.v1",
+  "package": "larena/search",
+  "batch": "canonical-mysql-reproducibility",
+  "canonical_update_allowed": false,
+  "proposal_status": "not_required",
+  "reason": "The repair makes an existing migration deterministic without changing Search capabilities or runtime semantics."
+}

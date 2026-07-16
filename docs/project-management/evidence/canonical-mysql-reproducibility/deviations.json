@@ -1,0 +1,12 @@
+{
+  "schema": "larena.package_evidence_deviations.v1",
+  "package": "larena/search",
+  "batch": "canonical-mysql-reproducibility",
+  "deviations": [],
+  "deferred_parent_acceptance": [
+    "root exact package revision update",
+    "disposable MySQL copy rollback and reapply",
+    "protected post-reapply backend smoke",
+    "final independent assembly review"
+  ]
+}

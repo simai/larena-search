@@ -1,0 +1,53 @@
+{
+  "schema": "larena.package_launch_record.v1",
+  "id": "larena.search.canonical_mysql_reproducibility",
+  "created_at": "2026-07-16",
+  "status": "coding_started",
+  "package": "larena/search",
+  "parent_goal": "canonical_developer_alpha_integration",
+  "milestone": "mysql_copy_rollback_reapply",
+  "batch_id": "search_canonical_mysql_reproducibility",
+  "objective": "Make provider-state backfill timestamps deterministic across rollback and reapply while preserving active reindex state.",
+  "base_commit": "3f3057ee280be8246184fda1a88deed3bb40b966",
+  "branch": "codex/canonical-mysql-reproducibility",
+  "selected_contracts": [
+    "provider-state timestamps derive from retained reindex runs",
+    "fallback seed values are encoded by the migration identity",
+    "active run and generation references survive the additive migration",
+    "Search query and reindex runtime semantics remain unchanged"
+  ],
+  "allowed_files": [
+    ".larena/launch-context.json",
+    "module.yaml",
+    "CHANGELOG.md",
+    "scripts/validate-larena-package.php",
+    "database/migrations/2026_07_13_000004_create_larena_search_provider_states.php",
+    "tests/Unit/DatabaseSearchIndexTest.php",
+    "docs/project-management/launch-records/canonical-mysql-reproducibility.json",
+    "docs/project-management/evidence/canonical-mysql-reproducibility/*"
+  ],
+  "forbidden_behavior": [
+    "Search runtime semantics change",
+    "wall-clock migration seed",
+    "destructive retained reindex run mutation",
+    "production readiness claim",
+    "all packages readiness claim"
+  ],
+  "required_tests": [
+    "package quality gate",
+    "database Search index migration test",
+    "root disposable MySQL copy rollback and reapply acceptance"
+  ],
+  "evidence_path": "docs/project-management/evidence/canonical-mysql-reproducibility/",
+  "rollback_plan": [
+    "restore the previous exact Search package revision in the root manifest and composer.lock",
+    "revert this package revision",
+    "rerun the package quality gate and root disposable MySQL copy acceptance"
+  ],
+  "non_claims": {
+    "production_ready": false,
+    "release_ready": false,
+    "all_packages_ready": false,
+    "deployment_performed": false
+  }
+}

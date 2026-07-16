@@ -105,7 +105,8 @@ try {
 
     $fenceMigration = require dirname(__DIR__, 2) . '/database/migrations/2026_07_13_000004_create_larena_search_provider_states.php';
     $fenceMigration->down();
-    $timestamp = gmdate('Y-m-d H:i:s');
+    $createdAt = '2026-07-13 00:00:03';
+    $updatedAt = '2026-07-13 00:03:03';
     $database->connection()->table('larena_search_reindex_runs')->insert([
         'run_ref' => 'upgrade-active-run',
         'provider_id' => 'upgrade.pages',
@@ -118,8 +119,39 @@ try {
         'requested_by' => 'user:upgrade',
         'correlation_id' => 'upgrade-active-run',
         'error_code' => 'search_reindex_source_failed',
-        'created_at' => $timestamp,
-        'updated_at' => $timestamp,
+        'created_at' => $createdAt,
+        'updated_at' => $updatedAt,
+    ]);
+    $database->connection()->table('larena_search_reindex_runs')->insert([
+        'run_ref' => 'upgrade-null-timestamp-run',
+        'provider_id' => 'upgrade.null-timestamps',
+        'active_provider_id' => 'upgrade.null-timestamps',
+        'generation_ref' => 'upgrade-null-timestamp-generation',
+        'state' => 'failed',
+        'cursor' => null,
+        'processed_count' => 0,
+        'batch_count' => 0,
+        'requested_by' => 'user:upgrade',
+        'correlation_id' => 'upgrade-null-timestamp-run',
+        'error_code' => 'search_reindex_source_failed',
+        'created_at' => null,
+        'updated_at' => null,
+    ]);
+    $oneSidedTimestamp = '2026-07-13 00:06:04';
+    $database->connection()->table('larena_search_reindex_runs')->insert([
+        'run_ref' => 'upgrade-created-missing-run',
+        'provider_id' => 'upgrade.created-missing',
+        'active_provider_id' => 'upgrade.created-missing',
+        'generation_ref' => 'upgrade-created-missing-generation',
+        'state' => 'failed',
+        'cursor' => null,
+        'processed_count' => 0,
+        'batch_count' => 0,
+        'requested_by' => 'user:upgrade',
+        'correlation_id' => 'upgrade-created-missing-run',
+        'error_code' => 'search_reindex_source_failed',
+        'created_at' => null,
+        'updated_at' => $oneSidedTimestamp,
     ]);
     $fenceMigration->up();
     $backfilledFence = $database->connection()->table('larena_search_provider_states')
@@ -128,8 +160,44 @@ try {
     search_index_assert(
         $backfilledFence !== null
         && (string) $backfilledFence->active_run_ref === 'upgrade-active-run'
-        && (string) $backfilledFence->active_generation_ref === 'upgrade-generation',
+        && (string) $backfilledFence->active_generation_ref === 'upgrade-generation'
+        && (string) $backfilledFence->created_at === $createdAt
+        && (string) $backfilledFence->updated_at === $updatedAt,
         'The additive provider-fence migration must preserve active failed/resumable runs during upgrade.',
+    );
+    $fallbackFence = $database->connection()->table('larena_search_provider_states')
+        ->where('provider_id', 'upgrade.null-timestamps')
+        ->first();
+    search_index_assert(
+        $fallbackFence !== null
+        && (string) $fallbackFence->created_at === '2026-07-13 00:00:04'
+        && (string) $fallbackFence->updated_at === '2026-07-13 00:00:04',
+        'Legacy active runs without timestamps must use the canonical migration fallback.',
+    );
+    $oneSidedFence = $database->connection()->table('larena_search_provider_states')
+        ->where('provider_id', 'upgrade.created-missing')
+        ->first();
+    search_index_assert(
+        $oneSidedFence !== null
+        && (string) $oneSidedFence->created_at === $oneSidedTimestamp
+        && (string) $oneSidedFence->updated_at === $oneSidedTimestamp,
+        'A retained timestamp must win over the migration fallback for one-sided legacy runs.',
+    );
+    $canonicalFenceRows = static function () use ($database): array {
+        return array_map(
+            static fn (object $row): array => (array) $row,
+            $database->connection()->table('larena_search_provider_states')
+                ->orderBy('provider_id')
+                ->get(['provider_id', 'active_run_ref', 'active_generation_ref', 'created_at', 'updated_at'])
+                ->all(),
+        );
+    };
+    $firstBackfill = $canonicalFenceRows();
+    $fenceMigration->down();
+    $fenceMigration->up();
+    search_index_assert(
+        $canonicalFenceRows() === $firstBackfill,
+        'Provider-state backfill must remain byte-equivalent after rollback and reapply.',
     );
 } finally {
     $database->close();

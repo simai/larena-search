@@ -1,0 +1,14 @@
+{
+  "schema": "larena.search.restart-proof.v1",
+  "status": "passed",
+  "database": "disposable_file_backed_sqlite",
+  "test": "tests/Unit/DatabaseSearchIndexTest.php",
+  "proof": [
+    "projection_queryable_after_reconnect",
+    "provider_fence_present_after_reconnect",
+    "active_failed_run_backfilled",
+    "deterministic_timestamp_fallback",
+    "ordered_rows_exact_after_rollback_reapply"
+  ],
+  "cleanup": ["database", "wal", "shm", "journal"]
+}

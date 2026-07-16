@@ -1,0 +1,15 @@
+{
+  "schema": "larena.search.revision-map.v1",
+  "package": {
+    "name": "larena/search",
+    "base": "3f3057ee280be8246184fda1a88deed3bb40b966",
+    "result": "self"
+  },
+  "dependencies": {
+    "larena/access": "af45111b2a620d1b46331e2fe009a571f22230ad",
+    "larena/audit": "b5f6d215fb020f7b8b071cc40b7dde4e2ed2cea1",
+    "larena/ui": "86c43b86db972b8f8d1964ab4f494f562cb53acc",
+    "larena/dataview": "b84e964b4ed78e1ca08a46c88e7651b02744ee47"
+  },
+  "lock_policy": "package test dependencies remain exact; root assembly pins this package separately"
+}

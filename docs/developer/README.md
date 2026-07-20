@@ -28,7 +28,8 @@ Out of scope:
 
 Canonical package requirements live in `simai/larena-specs`. This documentation explains the current package code and evidence state; it is not a canonical graph update.
 
-Evidence path: `docs/project-management/evidence/published-page-search/`.
+Current lifetime-correction evidence:
+`docs/project-management/evidence/content-model-administration-api-v1-search-lifetime/`.
 
 ## Reading Order
 

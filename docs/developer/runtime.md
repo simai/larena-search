@@ -29,6 +29,9 @@ Legacy `register(ReindexSource)` remains available for sources whose lifetime
 is intentionally static. Factory/provider identity drift is rejected before a
 batch can read canonical data. Other factory construction failures cross the
 reindex boundary only as the sanitized `search_reindex_source_failed` reason.
+A factory-supplied exception class or reason code is never trusted; only the
+registry's own post-resolution provider-ID comparison can emit
+`search_reindex_source_provider_mismatch`.
 
 ## Provider Generation Fence
 

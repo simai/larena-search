@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Container\Container;
 use Larena\Access\Contracts\ActorOperationAuthorizer;
 use Larena\Access\Exceptions\AccessMutationRejected;
 use Larena\Audit\Contracts\AuditEvent;
@@ -10,6 +11,7 @@ use Larena\Audit\Contracts\AuditSink;
 use Larena\Audit\Runtime\AuditEventPipeline;
 use Larena\Audit\Runtime\DefaultAuditRedactor;
 use Larena\Audit\Sinks\DatabaseAuditSink;
+use Larena\Search\Commands\ReindexSearchCommand;
 use Larena\Search\Contracts\ReindexBatch;
 use Larena\Search\Contracts\ReindexSource;
 use Larena\Search\Contracts\ReindexSourceFactory;
@@ -21,6 +23,7 @@ use Larena\Search\Persistence\DatabaseSearchIndex;
 use Larena\Search\Reindex\SearchReindexService;
 use Larena\Search\Runtime\SearchSourceRegistry;
 use Larena\Search\Tests\Support\SearchTestDatabase;
+use Symfony\Component\Console\Tester\CommandTester;
 
 require dirname(__DIR__, 2) . '/vendor/autoload.php';
 
@@ -112,7 +115,28 @@ final readonly class SearchReindexThrowingFactory implements ReindexSourceFactor
 
     public function create(): ReindexSource
     {
-        throw new InvalidArgumentException('raw factory detail must not escape');
+        throw new SearchReindexRejected('raw_sensitive_factory_detail');
+    }
+}
+
+final readonly class SearchReindexMismatchedFactory implements ReindexSourceFactory
+{
+    public function providerId(): string
+    {
+        return 'factory.expected';
+    }
+
+    public function create(): ReindexSource
+    {
+        return new SearchReindexTestSource('factory.actual', []);
+    }
+}
+
+final class SearchReindexTestConsoleApplication extends Container
+{
+    public function runningUnitTests(): bool
+    {
+        return true;
     }
 }
 
@@ -321,10 +345,55 @@ try {
         $service->run($factoryFailureRun->runRef, 'user:admin_identity:1');
     } catch (SearchReindexRejected $exception) {
         $factoryFailureSanitized = $exception->reasonCode === 'search_reindex_source_failed'
-            && !str_contains($exception->getMessage(), 'raw factory detail');
+            && !str_contains($exception->getMessage(), 'raw_sensitive_factory_detail');
     }
     search_reindex_assert($factoryFailureSanitized, 'Factory failures must cross the public boundary as a sanitized reason.');
-    search_reindex_assert($service->find($factoryFailureRun->runRef)?->state === 'failed', 'A factory failure must leave a resumable failed run.');
+    $persistedFactoryFailure = $service->find($factoryFailureRun->runRef);
+    search_reindex_assert(
+        $persistedFactoryFailure?->state === 'failed'
+        && $persistedFactoryFailure->errorCode === 'search_reindex_source_failed',
+        'A forged factory reason must persist only the sanitized failure code.',
+    );
+    $factoryFailureAuditPayload = (string) $connection->table('larena_audit_events')
+        ->where('event_type', 'search.reindex.failed')
+        ->where('correlation_id', $factoryFailureRun->correlationId)
+        ->orderByDesc('id')
+        ->value('payload');
+    search_reindex_assert(
+        str_contains($factoryFailureAuditPayload, 'search_reindex_source_failed')
+        && !str_contains($factoryFailureAuditPayload, 'raw_sensitive_factory_detail'),
+        'Factory failure Audit must contain only the sanitized reason.',
+    );
+
+    $factoryFailureCommand = new ReindexSearchCommand($service);
+    $factoryFailureCommand->setLaravel(new SearchReindexTestConsoleApplication());
+    $factoryFailureCommandTester = new CommandTester($factoryFailureCommand);
+    $factoryFailureExitCode = $factoryFailureCommandTester->execute([
+        'provider' => 'factory.fail',
+        '--actor' => 'user:admin_identity:1',
+        '--run' => $factoryFailureRun->runRef,
+    ]);
+    $factoryFailureDisplay = $factoryFailureCommandTester->getDisplay();
+    search_reindex_assert($factoryFailureExitCode === ReindexSearchCommand::FAILURE, 'CLI must fail for a factory resolution error.');
+    search_reindex_assert(
+        str_contains($factoryFailureDisplay, 'search_reindex_source_failed')
+        && !str_contains($factoryFailureDisplay, 'raw_sensitive_factory_detail'),
+        'CLI output must expose only the sanitized factory failure reason.',
+    );
+
+    $registry->registerFactory(new SearchReindexMismatchedFactory());
+    $factoryMismatchRun = $service->schedule('factory.expected', 'user:admin_identity:1', 'run-factory-mismatch');
+    $factoryMismatchRejected = false;
+    try {
+        $service->run($factoryMismatchRun->runRef, 'user:admin_identity:1');
+    } catch (SearchReindexRejected $exception) {
+        $factoryMismatchRejected = $exception->reasonCode === 'search_reindex_source_provider_mismatch';
+    }
+    search_reindex_assert($factoryMismatchRejected, 'Registry-generated provider mismatch must retain its exact stable reason.');
+    search_reindex_assert(
+        $service->find($factoryMismatchRun->runRef)?->errorCode === 'search_reindex_source_provider_mismatch',
+        'Registry-generated provider mismatch must persist only its exact stable reason.',
+    );
 
     $deniedAuthorizer = new SearchReindexTestAuthorizer(false);
     $denied = new SearchReindexService($connection, $index, $registry, $deniedAuthorizer, $goodPipeline);

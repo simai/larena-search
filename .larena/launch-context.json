@@ -6,7 +6,7 @@
   "launch_record_ref": "docs/project-management/launch-records/content-model-administration-api-v1-search-lifetime.json",
   "architecture_checkpoint_ref": "/Users/rim/Documents/GitHub/larena-workspace/source/QA/2026-07-20-larena-content-model-administration-api-v1/ARCHITECTURE-CHECKPOINT.md",
   "specs_repo": "simai/larena-specs",
-  "specs_commit": "82ccd0d4a8eaba84ddef3074a7bb0e954fad03f2",
+  "specs_commit": "2c51fd9638f699f32678440482369f18e1a60464",
   "base_commit": "e7206b2491991790edd2858c993d142184c749ef",
   "selected_features": [
     "search.reindex_jobs",
@@ -64,6 +64,7 @@
     "each processed batch resolves immediately before read",
     "legacy static registration remains compatible",
     "factory source provider mismatch fails closed",
+    "factory thrown reason codes are sanitized in persistence Audit and CLI",
     "published-only projection and generation sweep regressions remain green",
     "package quality gate"
   ],

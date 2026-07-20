@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use Larena\Search\Contracts\ReindexSource;
 use Larena\Search\Contracts\ReindexSourceFactory;
 use Larena\Search\Exceptions\SearchReindexRejected;
+use Throwable;
 
 final class SearchSourceRegistry
 {
@@ -46,12 +47,22 @@ final class SearchSourceRegistry
             return null;
         }
 
-        if ($factory->providerId() !== $providerId) {
+        try {
+            $factoryProviderId = $factory->providerId();
+        } catch (Throwable $exception) {
+            throw new SearchReindexRejected('search_reindex_source_failed', $exception);
+        }
+        if ($factoryProviderId !== $providerId) {
             throw new SearchReindexRejected('search_reindex_source_provider_mismatch');
         }
 
-        $source = $factory->create();
-        if ($source->providerId() !== $providerId) {
+        try {
+            $source = $factory->create();
+            $sourceProviderId = $source->providerId();
+        } catch (Throwable $exception) {
+            throw new SearchReindexRejected('search_reindex_source_failed', $exception);
+        }
+        if ($sourceProviderId !== $providerId) {
             throw new SearchReindexRejected('search_reindex_source_provider_mismatch');
         }
 

@@ -221,11 +221,22 @@ final readonly class SearchReindexService
 
                 try {
                     $source = $this->sources->get($run->providerId);
-                    if ($source === null) {
-                        throw new SearchReindexRejected('search_reindex_source_unknown');
+                } catch (SearchReindexRejected $exception) {
+                    if ($exception->reasonCode === 'search_reindex_source_provider_mismatch') {
+                        throw $exception;
                     }
+
+                    throw new SearchReindexRejected('search_reindex_source_failed', $exception);
+                } catch (Throwable $exception) {
+                    throw new SearchReindexRejected('search_reindex_source_failed', $exception);
+                }
+                if ($source === null) {
+                    throw new SearchReindexRejected('search_reindex_source_unknown');
+                }
+
+                try {
                     $batch = $source->readBatch($run->cursor, $batchSize);
-                } catch (SearchReindexRejected|SearchPersistenceFailed $exception) {
+                } catch (SearchPersistenceFailed $exception) {
                     throw $exception;
                 } catch (Throwable $exception) {
                     throw new SearchReindexRejected('search_reindex_source_failed', $exception);

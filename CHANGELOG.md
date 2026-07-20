@@ -29,7 +29,9 @@ All notable package changes are recorded here. The package does not currently pu
 ### Security
 
 - Factory/source identity mismatch is a stable Search rejection, while
-  arbitrary factory exceptions are sanitized as `search_reindex_source_failed`.
+  every factory-thrown exception, including a forged `SearchReindexRejected`,
+  is sanitized as `search_reindex_source_failed` before persistence, Audit or
+  CLI output.
 - Equal-revision content conflicts fail closed, tombstones win equal revisions and database failures cross package boundaries only as `SearchPersistenceFailed`.
 - CLI resume checks Access before validating run existence or provider.
 - First schedule, realtime upsert/remove and final sweep serialize through one database-owned provider fence so a concurrent publication cannot be swept into an equal-revision tombstone.

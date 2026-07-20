@@ -34,12 +34,14 @@ The persistent tests cover:
   mismatch;
 - scheduling without source resolution and one fresh factory resolution per
   processed batch;
-- sanitized factory construction failure with no raw exception detail;
+- a factory-thrown forged `SearchReindexRejected` sanitized in the returned
+  exception, persisted run error, Audit payload and CLI output;
 - one active run per provider and stale-generation cleanup;
 - separate Access operations and denial non-mutation;
 - Audit rollback, event taxonomy and payload redaction;
 - Laravel provider/CLI auto-discovery contract.
 
-Evidence is stored at `docs/project-management/evidence/published-page-search/`.
+Current lifetime-correction evidence is stored at
+`docs/project-management/evidence/content-model-administration-api-v1-search-lifetime/`.
 
 The package suite is SQLite-focused and proves both legal linearized outcomes. True two-connection row-lock races, including a barrier between first schedule and first realtime write, are proved by the root MySQL acceptance harness and are not inferred from package-only green checks.

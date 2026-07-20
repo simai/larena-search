@@ -2,8 +2,11 @@
   "schema": "larena.package_revision_map.v1",
   "package": "larena/search",
   "base": "e7206b2491991790edd2858c993d142184c749ef",
-  "result": "working_tree_uncommitted",
-  "specs": "82ccd0d4a8eaba84ddef3074a7bb0e954fad03f2",
+  "result": "committed_candidate",
+  "result_revision_source": "parent_selected_git_commit",
+  "embedded_result_revision": null,
+  "result_note": "The exact immutable revision is selected from Git by the parent assembly; this committed evidence does not embed a self-referential commit SHA.",
+  "specs": "2c51fd9638f699f32678440482369f18e1a60464",
   "dependency_scope": "standalone_search_package_composer_lock",
   "dependencies": {
     "larena/access": "af45111b2a620d1b46331e2fe009a571f22230ad",

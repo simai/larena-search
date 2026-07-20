@@ -15,5 +15,7 @@ Local package checks on ServBay PHP 8.4:
 
 The focused canary proves no source construction during registration,
 `has()` or provider-ID enumeration; same-scope reuse; a fresh source and
-connection graph after scope clearing; fail-closed identity mismatch; and no
-raw factory exception detail crossing the reindex boundary.
+connection graph after scope clearing; fail-closed identity mismatch; and a
+factory-forged `SearchReindexRejected` reduced to
+`search_reindex_source_failed` in the exception, persisted run, Audit payload
+and CLI output.

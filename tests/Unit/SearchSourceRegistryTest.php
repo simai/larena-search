@@ -152,6 +152,23 @@ try {
 }
 search_source_registry_assert($mismatchRejected, 'Factory/source provider mismatch must fail closed.');
 
+$forgedReasonRegistry = new SearchSourceRegistry();
+$forgedReasonFactory = new SearchSourceRegistryTestFactory(
+    'content.forged',
+    static function (): ReindexSource {
+        throw new SearchReindexRejected('raw_sensitive_factory_detail');
+    },
+);
+$forgedReasonRegistry->registerFactory($forgedReasonFactory);
+$forgedReasonSanitized = false;
+try {
+    $forgedReasonRegistry->get('content.forged');
+} catch (SearchReindexRejected $exception) {
+    $forgedReasonSanitized = $exception->reasonCode === 'search_reindex_source_failed'
+        && !str_contains($exception->getMessage(), 'raw_sensitive_factory_detail');
+}
+search_source_registry_assert($forgedReasonSanitized, 'A factory must not forge a trusted Search rejection reason.');
+
 $driftRegistry = new SearchSourceRegistry();
 $driftFactory = new SearchSourceRegistryTestFactory(
     'content.stable',

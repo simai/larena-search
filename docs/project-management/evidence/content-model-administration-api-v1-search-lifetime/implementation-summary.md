@@ -7,5 +7,7 @@
 - Changed scheduling to use provider metadata only.
 - Resolve each source immediately before its batch read.
 - Reject factory/source provider identity mismatch.
-- Sanitize arbitrary factory construction failures at the reindex boundary.
+- Sanitize every factory-thrown exception at the reindex boundary, including a
+  forged `SearchReindexRejected`, while retaining registry-generated provider
+  mismatch as the exact stable rejection.
 - Preserved legacy `register(ReindexSource)` and `all()` behavior.

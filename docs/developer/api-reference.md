@@ -30,11 +30,34 @@ interface ReindexSource
     public function providerId(): string;
     public function readBatch(?string $afterCursor, int $limit): ReindexBatch;
 }
+
+interface ReindexSourceFactory
+{
+    public function providerId(): string;
+    public function create(): ReindexSource;
+}
 ```
 
 `ReindexBatch` contains a list of `SearchProjection`, the opaque next keyset cursor and `hasMore`. A non-advancing or missing cursor fails closed when more data is declared.
 
-Register sources through `Larena\Search\Runtime\SearchSourceRegistry::register()`.
+The singleton `Larena\Search\Runtime\SearchSourceRegistry` exposes:
+
+- `registerFactory(ReindexSourceFactory $factory): bool`;
+- `has(string $providerId): bool`;
+- `providerIds(): list<string>`;
+- `get(string $providerId): ?ReindexSource`;
+- the backward-compatible `register(ReindexSource $source): bool` and
+  `all(): list<ReindexSource>`.
+
+`registerFactory()`, `has()` and `providerIds()` never construct a source.
+`get()` invokes the factory every time, so the factory may resolve a scoped
+source from the current Laravel container scope. The registry verifies that
+the resolved source has the factory's registered provider ID. A mismatch fails
+closed as `search_reindex_source_provider_mismatch`.
+
+Use `register()` only for a genuinely static, lifecycle-neutral source. It
+wraps the source in `StaticReindexSourceFactory`; it does not restore eager
+resolution for factory registrations.
 
 ## Reindex service
 
@@ -46,6 +69,9 @@ Register sources through `Larena\Search\Runtime\SearchSourceRegistry::register()
 - `find(runRef): ?ReindexRun` for trusted internal diagnostics/tests.
 
 The CLI never calls `find()` before the resume permission is checked. The optional expected provider is validated inside the locked processing transaction.
+Scheduling checks only registered provider metadata and does not construct or
+read the source. Batch processing resolves the source immediately before each
+`readBatch()` call.
 
 ## Compatibility contracts
 

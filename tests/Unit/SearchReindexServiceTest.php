@@ -12,6 +12,7 @@ use Larena\Audit\Runtime\DefaultAuditRedactor;
 use Larena\Audit\Sinks\DatabaseAuditSink;
 use Larena\Search\Contracts\ReindexBatch;
 use Larena\Search\Contracts\ReindexSource;
+use Larena\Search\Contracts\ReindexSourceFactory;
 use Larena\Search\Contracts\SearchProjection;
 use Larena\Search\Contracts\SearchQuery;
 use Larena\Search\Exceptions\SearchPersistenceFailed;
@@ -81,6 +82,40 @@ final class SearchReindexTestSource implements ReindexSource
     }
 }
 
+final class SearchReindexTestFactory implements ReindexSourceFactory
+{
+    public int $createCount = 0;
+
+    public function __construct(private readonly ReindexSource $source)
+    {
+    }
+
+    public function providerId(): string
+    {
+        return $this->source->providerId();
+    }
+
+    public function create(): ReindexSource
+    {
+        $this->createCount++;
+
+        return $this->source;
+    }
+}
+
+final readonly class SearchReindexThrowingFactory implements ReindexSourceFactory
+{
+    public function providerId(): string
+    {
+        return 'factory.fail';
+    }
+
+    public function create(): ReindexSource
+    {
+        throw new InvalidArgumentException('raw factory detail must not escape');
+    }
+}
+
 final readonly class SearchReindexThrowingSink implements AuditSink
 {
     public function accepts(AuditEventDescriptor $descriptor): bool
@@ -105,7 +140,8 @@ try {
         new SearchProjection('docara.pages', 'page:b', 1, 'Page B', '/docs/b', searchableText: 'beta public'),
         new SearchProjection('docara.pages', 'page:c', 1, 'Page C', '/docs/c', searchableText: 'gamma public'),
     ]);
-    $registry->register($source);
+    $sourceFactory = new SearchReindexTestFactory($source);
+    $registry->registerFactory($sourceFactory);
     $authorizer = new SearchReindexTestAuthorizer();
     $goodPipeline = new AuditEventPipeline(new DefaultAuditRedactor(), [new DatabaseAuditSink($connection)]);
     $service = new SearchReindexService($connection, $index, $registry, $authorizer, $goodPipeline);
@@ -113,6 +149,7 @@ try {
     $index->upsert(new SearchProjection('docara.pages', 'page:orphan', 1, 'Orphan', '/docs/orphan', searchableText: 'remove me'));
     $scheduled = $service->schedule('docara.pages', 'user:admin_identity:1', 'run-main', 'correlation-main');
     search_reindex_assert($scheduled->state === 'scheduled', 'Schedule must persist a resumable run.');
+    search_reindex_assert($sourceFactory->createCount === 0, 'Scheduling must not resolve or read the source.');
     $scheduledFence = $connection->table('larena_search_provider_states')->where('provider_id', 'docara.pages')->first();
     search_reindex_assert(
         $scheduledFence !== null
@@ -148,6 +185,7 @@ try {
 
     $interrupted = $service->run($scheduled->runRef, 'user:admin_identity:1', 1, 1);
     search_reindex_assert($interrupted->state === 'running' && $interrupted->cursor === 'page:a', 'maxBatches must leave a resumable checkpoint.');
+    search_reindex_assert($sourceFactory->createCount === 1, 'Each processed batch must resolve its source exactly once.');
 
     $source->fail = true;
     $sourceFailureSanitized = false;
@@ -158,6 +196,7 @@ try {
             && !str_contains($exception->getMessage(), 'raw source detail');
     }
     search_reindex_assert($sourceFailureSanitized, 'Source failure must cross the public boundary as a sanitized reason.');
+    search_reindex_assert($sourceFactory->createCount === 2, 'A failed batch must resolve the source immediately before its read.');
     search_reindex_assert($service->find($scheduled->runRef)?->state === 'failed', 'Failed run must remain resumable and active.');
     $failedFence = $connection->table('larena_search_provider_states')->where('provider_id', 'docara.pages')->first();
     search_reindex_assert(
@@ -177,6 +216,7 @@ try {
     $source->fail = false;
     $completed = $service->resume($scheduled->runRef, 'user:admin_identity:1', 1);
     search_reindex_assert($completed->isComplete(), 'Resume must complete from the durable cursor.');
+    search_reindex_assert($sourceFactory->createCount === 4, 'Every resumed batch must resolve the source again without registry caching.');
     search_reindex_assert(count($index->query(new SearchQuery('realtime newest'))) === 1, 'Final sweep must retain concurrent active-generation writes.');
     search_reindex_assert(count($index->query(new SearchQuery('remove me'))) === 0, 'Final sweep must tombstone documents absent from the source.');
     search_reindex_assert(
@@ -273,6 +313,18 @@ try {
         $authorizedOperations === ['search.reindex.resume', 'search.reindex.run', 'search.reindex.schedule'],
         'Schedule, run and resume must have separate canonical Access checks.',
     );
+
+    $registry->registerFactory(new SearchReindexThrowingFactory());
+    $factoryFailureRun = $service->schedule('factory.fail', 'user:admin_identity:1', 'run-factory-failure');
+    $factoryFailureSanitized = false;
+    try {
+        $service->run($factoryFailureRun->runRef, 'user:admin_identity:1');
+    } catch (SearchReindexRejected $exception) {
+        $factoryFailureSanitized = $exception->reasonCode === 'search_reindex_source_failed'
+            && !str_contains($exception->getMessage(), 'raw factory detail');
+    }
+    search_reindex_assert($factoryFailureSanitized, 'Factory failures must cross the public boundary as a sanitized reason.');
+    search_reindex_assert($service->find($factoryFailureRun->runRef)?->state === 'failed', 'A factory failure must leave a resumable failed run.');
 
     $deniedAuthorizer = new SearchReindexTestAuthorizer(false);
     $denied = new SearchReindexService($connection, $index, $registry, $deniedAuthorizer, $goodPipeline);

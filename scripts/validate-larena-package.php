@@ -44,6 +44,7 @@ $persistentFiles = [
     'src/Contracts/ReindexBatch.php',
     'src/Contracts/ReindexRun.php',
     'src/Contracts/ReindexSource.php',
+    'src/Contracts/ReindexSourceFactory.php',
     'src/Contracts/SearchHit.php',
     'src/Contracts/SearchProjection.php',
     'src/Contracts/SearchQuery.php',
@@ -52,6 +53,7 @@ $persistentFiles = [
     'src/Persistence/LockedProviderState.php',
     'src/Persistence/ProviderGenerationFence.php',
     'src/Runtime/SearchSourceRegistry.php',
+    'src/Runtime/StaticReindexSourceFactory.php',
     'src/Reindex/SearchReindexService.php',
     'src/Providers/SearchServiceProvider.php',
     'src/Commands/ReindexSearchCommand.php',
@@ -62,6 +64,7 @@ $persistentFiles = [
     'database/migrations/2026_07_13_000004_create_larena_search_provider_states.php',
     'tests/Unit/DatabaseSearchIndexTest.php',
     'tests/Unit/SearchReindexServiceTest.php',
+    'tests/Unit/SearchSourceRegistryTest.php',
     'tests/Unit/SearchLaravelPackageContractTest.php',
 ];
 $errors = [];
@@ -101,6 +104,7 @@ $knownCodingLaunchRecords = [
     'search-batch-2-in-memory-runtime-baseline.json',
     'published-page-search.json',
     'canonical-mysql-reproducibility.json',
+    'content-model-administration-api-v1-search-lifetime.json',
 ];
 if ($codingStarted) {
     $knownLaunchRecord = false;
@@ -134,7 +138,8 @@ if ($codingStarted) {
         }
     }
     if (str_contains($launchRecordRef, 'published-page-search.json')
-        || str_contains($launchRecordRef, 'canonical-mysql-reproducibility.json')) {
+        || str_contains($launchRecordRef, 'canonical-mysql-reproducibility.json')
+        || str_contains($launchRecordRef, 'content-model-administration-api-v1-search-lifetime.json')) {
         foreach ($persistentFiles as $file) {
             if (!is_file($file)) {
                 $errors[] = "Missing published-page Search runtime file: {$file}";

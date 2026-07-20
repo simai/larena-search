@@ -11,6 +11,25 @@ Search owns four tables:
 
 All writes use the application's current default connection. Source packages that need atomic publication must resolve Search against the same connection and call it inside their transaction.
 
+## Source Lifetime
+
+`SearchSourceRegistry` is a singleton, but it stores only
+`ReindexSourceFactory` instances. A factory's `providerId()` must be stable and
+must not resolve application services or touch a database. `registerFactory()`,
+`has()` and `providerIds()` therefore remain safe during application boot and
+reindex scheduling.
+
+`SearchReindexService` resolves a source immediately before every batch read.
+A container-backed factory should call `Container::make()` for a scoped source:
+repeated resolution inside one scope returns the same source and connection
+graph, while `forgetScopedInstances()` causes the next batch/request to receive
+a fresh graph. The singleton registry never caches the factory result.
+
+Legacy `register(ReindexSource)` remains available for sources whose lifetime
+is intentionally static. Factory/provider identity drift is rejected before a
+batch can read canonical data. Other factory construction failures cross the
+reindex boundary only as the sanitized `search_reindex_source_failed` reason.
+
 ## Provider Generation Fence
 
 Every `upsert()` and `remove()` transaction performs `insertOrIgnore` for the permanent provider row and then locks it before reading `active_generation_ref` or touching source/document state. On MySQL the unique provider key plus `SELECT ... FOR UPDATE` serializes first use; on SQLite the first write serializes writers and the same protocol remains fail-closed.

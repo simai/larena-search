@@ -34,7 +34,9 @@ Use `remove(providerId, sourceRef, sourceRevision)` when the source becomes non-
 
 ```php
 use Larena\Search\Contracts\ReindexBatch;
+use Illuminate\Contracts\Container\Container;
 use Larena\Search\Contracts\ReindexSource;
+use Larena\Search\Contracts\ReindexSourceFactory;
 
 final class PublishedPageSource implements ReindexSource
 {
@@ -50,10 +52,34 @@ final class PublishedPageSource implements ReindexSource
     }
 }
 
-$registry->register(new PublishedPageSource());
+final readonly class PublishedPageSourceFactory implements ReindexSourceFactory
+{
+    public function __construct(private Container $container)
+    {
+    }
+
+    public function providerId(): string
+    {
+        return 'docara.published_pages';
+    }
+
+    public function create(): ReindexSource
+    {
+        return $this->container->make(PublishedPageSource::class);
+    }
+}
+
+$registry->registerFactory(new PublishedPageSourceFactory($container));
 ```
 
-The source owns its canonical query and safe projection. Search owns checkpointing, index CAS and cleanup.
+Bind `PublishedPageSource` as scoped. The factory stays lightweight and may be
+held by the singleton registry; it resolves the current scoped source only
+when Search processes a batch. The source owns its canonical query and safe
+projection. Search owns checkpointing, index CAS and cleanup.
+
+For a lifecycle-neutral source, legacy
+`$registry->register(new PublishedPageSource())` remains supported through the
+static compatibility adapter.
 
 ## Compatibility in-memory runtime
 

@@ -53,7 +53,7 @@ final readonly class SearchReindexService
         $this->assertProviderId($providerId);
         $this->assertActor($actor);
         $this->authorizer->assertAllowed($actor, 'search.reindex.schedule');
-        if ($this->sources->get($providerId) === null) {
+        if (!$this->sources->has($providerId)) {
             throw new SearchReindexRejected('search_reindex_source_unknown');
         }
 
@@ -208,11 +208,6 @@ final readonly class SearchReindexService
                 $providerState = $this->providerFence->lock($run->providerId);
                 $this->providerFence->assertActive($providerState, $run->runRef, $run->generationRef);
 
-                $source = $this->sources->get($run->providerId);
-                if ($source === null) {
-                    throw new SearchReindexRejected('search_reindex_source_unknown');
-                }
-
                 if ($firstBatch) {
                     $this->database->table('larena_search_reindex_runs')->where('run_ref', $runRef)->update([
                         'state' => 'running',
@@ -225,8 +220,12 @@ final readonly class SearchReindexService
                 }
 
                 try {
+                    $source = $this->sources->get($run->providerId);
+                    if ($source === null) {
+                        throw new SearchReindexRejected('search_reindex_source_unknown');
+                    }
                     $batch = $source->readBatch($run->cursor, $batchSize);
-                } catch (SearchPersistenceFailed $exception) {
+                } catch (SearchReindexRejected|SearchPersistenceFailed $exception) {
                     throw $exception;
                 } catch (Throwable $exception) {
                     throw new SearchReindexRejected('search_reindex_source_failed', $exception);

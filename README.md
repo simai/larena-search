@@ -7,7 +7,8 @@ The current database/native baseline provides:
 - persistent documents and monotonic source-state tombstones;
 - source-revision compare-and-set rules that reject conflicting equal revisions;
 - bounded literal query with provider, locale and access-scope filters;
-- package-owned resumable keyset sources and a source registry;
+- package-owned resumable keyset sources and a singleton factory registry that
+  resolves request/connection-bound sources only while processing a batch;
 - one active rebuild per provider, a durable provider-level generation fence, checkpoints and generation-safe cleanup;
 - separate `search.reindex.schedule`, `search.reindex.run` and `search.reindex.resume` permissions;
 - sanitized Security Audit events for start, resume, checkpoint, completion and failure;

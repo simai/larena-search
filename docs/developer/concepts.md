@@ -35,3 +35,13 @@ Search does not infer authorization. A trusted caller supplies explicit already-
 ## Resumable Reindex
 
 Only one active run can exist per provider. A keyset cursor and counters persist in `larena_search_reindex_runs`; the provider row is the serialization source of truth for the active generation. Each projection batch, checkpoint state and checkpoint Audit event share one database transaction. Failed runs retain their active provider fence and can resume.
+
+## Source Lifetime
+
+The source registry owns discovery, not source lifetime. It keeps lightweight
+factories in its singleton state and resolves a source for each batch. This
+prevents a request-scoped repository, database connection or participant graph
+from leaking into a later request after Laravel clears scoped instances.
+
+Provider discovery and scheduling use registered IDs only. They must not open a
+source connection or execute a canonical source query.

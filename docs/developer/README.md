@@ -7,7 +7,8 @@
 Implemented runtime surfaces:
 
 - `SearchProjection`, `SearchQuery`, `SearchHit` and monotonic write results;
-- `ReindexSource`, `ReindexBatch` and `SearchSourceRegistry`;
+- `ReindexSource`, `ReindexSourceFactory`, `ReindexBatch` and the lazy
+  `SearchSourceRegistry`;
 - `DatabaseSearchIndex` on the application's current default database connection;
 - persistent document, tombstone, rebuild-run and durable provider-fence migrations;
 - resumable `SearchReindexService` and `search:reindex` CLI;

@@ -1,0 +1,10 @@
+{
+  "schema": "larena.package_deviations.v1",
+  "deviations": [],
+  "pending_parent_acceptance": [
+    "exact root package revision and lock parity",
+    "isolated MySQL Content Search scope-reset canary",
+    "fresh-process root restart",
+    "independent P0 and P1 verdict"
+  ]
+}

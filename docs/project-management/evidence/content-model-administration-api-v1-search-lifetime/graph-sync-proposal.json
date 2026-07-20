@@ -1,0 +1,16 @@
+{
+  "schema": "larena.graph_sync_proposal.v1",
+  "package": "larena/search",
+  "canonical_update_allowed": false,
+  "proposal": {
+    "feature": "search.lazy_source_factories",
+    "contracts": [
+      "ReindexSourceFactory",
+      "SearchSourceRegistry.registerFactory",
+      "SearchSourceRegistry.has",
+      "SearchSourceRegistry.providerIds"
+    ],
+    "invariant": "singleton registry stores factories and never caches request or connection bound source instances"
+  },
+  "status": "proposal_only"
+}

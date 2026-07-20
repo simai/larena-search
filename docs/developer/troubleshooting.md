@@ -6,7 +6,16 @@ Check exact access scopes, optional provider/locale filters and whether the sour
 
 ## Reindex Source Is Unknown
 
-Ensure the package registered its `ReindexSource` in the singleton `SearchSourceRegistry` during provider boot. Registration is idempotent by provider id.
+Ensure the package registered a lightweight `ReindexSourceFactory` in the
+singleton `SearchSourceRegistry` during provider boot. Registration is
+idempotent by provider ID and does not construct the source. Bind
+request/connection-bound sources as scoped and resolve them from
+`ReindexSourceFactory::create()`.
+
+`search_reindex_source_provider_mismatch` means the registered factory ID or
+its created source ID drifted. Correct the package registration; do not alias
+or silently remap the provider because persisted runs and Search documents use
+that ID as their owner boundary.
 
 ## `search_revision_conflict`
 

@@ -1,0 +1,11 @@
+{
+  "schema": "larena.search.source_lifetime_proof.v1",
+  "status": "passed_scope_lifetime_canary",
+  "test": "tests/Unit/SearchSourceRegistryTest.php",
+  "proved": [
+    "same container scope returns the same source and connection graph",
+    "clearing scoped instances returns a new source and connection graph",
+    "the singleton registry retains no created source"
+  ],
+  "root_fresh_process_restart": "pending_parent_goal_acceptance"
+}

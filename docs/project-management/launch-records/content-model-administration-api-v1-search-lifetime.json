@@ -1,0 +1,71 @@
+{
+  "schema": "larena.package_launch_record.v1",
+  "id": "larena.search.content_model_administration_api_v1_search_lifetime",
+  "created_at": "2026-07-20",
+  "status": "coding_started",
+  "package": "larena/search",
+  "parent_goal": "content_model_administration_api_v1",
+  "milestone": "search_provider_lifetime_p2",
+  "batch_id": "content-model-administration-api-v1-search-lifetime",
+  "objective": "Keep the Search source registry singleton while resolving request and connection bound reindex sources lazily from the current scope.",
+  "base_commit": "e7206b2491991790edd2858c993d142184c749ef",
+  "specs_commit": "82ccd0d4a8eaba84ddef3074a7bb0e954fad03f2",
+  "branch": "codex/content-model-administration-api-v1",
+  "selected_contracts": [
+    "singleton registry stores ReindexSourceFactory instances only",
+    "registration discovery and scheduling never construct a source",
+    "every batch resolves a source immediately before readBatch",
+    "container scope reset yields a fresh source and connection graph",
+    "legacy static source registration remains compatible",
+    "factory and source provider mismatch fails closed"
+  ],
+  "allowed_files": [
+    ".larena/launch-context.json",
+    ".larena/spec-ref.json",
+    "module.yaml",
+    "README.md",
+    "CHANGELOG.md",
+    "composer.json",
+    "scripts/check-evidence.php",
+    "scripts/validate-larena-package.php",
+    "src/Contracts/ReindexSourceFactory.php",
+    "src/Reindex/SearchReindexService.php",
+    "src/Runtime/SearchSourceRegistry.php",
+    "src/Runtime/StaticReindexSourceFactory.php",
+    "tests/Unit/SearchLaravelPackageContractTest.php",
+    "tests/Unit/SearchReindexServiceTest.php",
+    "tests/Unit/SearchSourceRegistryTest.php",
+    "docs/developer/*",
+    "docs/project-management/launch-records/content-model-administration-api-v1-search-lifetime.json",
+    "docs/project-management/evidence/content-model-administration-api-v1-search-lifetime/*"
+  ],
+  "forbidden_behavior": [
+    "resolve sources during package boot provider discovery or scheduling",
+    "cache a created source in singleton state",
+    "accept provider identity mismatch",
+    "change Search database schema or migrations",
+    "change the active Larena runtime",
+    "claim production readiness or all packages readiness"
+  ],
+  "required_tests": [
+    "SearchSourceRegistryTest",
+    "SearchReindexServiceTest",
+    "SearchLaravelPackageContractTest",
+    "full Search package test suite",
+    "lint and PHPStan",
+    "root Content integration scope reset canary"
+  ],
+  "evidence_path": "docs/project-management/evidence/content-model-administration-api-v1-search-lifetime/",
+  "rollback_plan": [
+    "restore the previous exact Search package revision in the root manifest and composer.lock",
+    "revert this package revision",
+    "rerun Search quality gate and the root Content Search lifetime canary"
+  ],
+  "non_claims": {
+    "production_ready": false,
+    "release_ready": false,
+    "all_packages_ready": false,
+    "deployment_performed": false,
+    "search_schema_changed": false
+  }
+}

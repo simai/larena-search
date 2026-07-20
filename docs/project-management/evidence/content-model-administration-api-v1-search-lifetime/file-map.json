@@ -1,0 +1,17 @@
+{
+  "schema": "larena.package_file_map.v1",
+  "public_contract": "src/Contracts/ReindexSourceFactory.php",
+  "compatibility_adapter": "src/Runtime/StaticReindexSourceFactory.php",
+  "registry": "src/Runtime/SearchSourceRegistry.php",
+  "batch_runtime": "src/Reindex/SearchReindexService.php",
+  "focused_tests": [
+    "tests/Unit/SearchSourceRegistryTest.php",
+    "tests/Unit/SearchReindexServiceTest.php",
+    "tests/Unit/SearchLaravelPackageContractTest.php"
+  ],
+  "documentation": [
+    "README.md",
+    "CHANGELOG.md",
+    "docs/developer/"
+  ]
+}

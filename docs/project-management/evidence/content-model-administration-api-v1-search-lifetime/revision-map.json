@@ -1,0 +1,18 @@
+{
+  "schema": "larena.package_revision_map.v1",
+  "package": "larena/search",
+  "base": "e7206b2491991790edd2858c993d142184c749ef",
+  "result": "working_tree_uncommitted",
+  "specs": "82ccd0d4a8eaba84ddef3074a7bb0e954fad03f2",
+  "dependency_scope": "standalone_search_package_composer_lock",
+  "dependencies": {
+    "larena/access": "af45111b2a620d1b46331e2fe009a571f22230ad",
+    "larena/audit": "b5f6d215fb020f7b8b071cc40b7dde4e2ed2cea1"
+  },
+  "root_b2_dependencies": {
+    "larena/access": "8c0e75897fe422a8f4d97fc012f1d095ffdba3b2",
+    "larena/audit": "ab2546b1a0fdd577faba895755a3d6c44f0f9da8"
+  },
+  "dependency_note": "The standalone Search package lock is its package-local test graph; Root B2 pins are authoritative for assembled acceptance and are verified separately.",
+  "active_runtime_changed": false
+}

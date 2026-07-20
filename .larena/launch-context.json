@@ -3,24 +3,37 @@
   "package": "larena/search",
   "repository_class": "continuation_repository",
   "repository_contains_prior_implementation": true,
-  "launch_record_ref": "docs/project-management/launch-records/canonical-mysql-reproducibility.json",
+  "launch_record_ref": "docs/project-management/launch-records/content-model-administration-api-v1-search-lifetime.json",
+  "architecture_checkpoint_ref": "/Users/rim/Documents/GitHub/larena-workspace/source/QA/2026-07-20-larena-content-model-administration-api-v1/ARCHITECTURE-CHECKPOINT.md",
   "specs_repo": "simai/larena-specs",
-  "specs_commit": "66938800984dcbd1b8bbe38be440d775ac07851f",
-  "base_commit": "3f3057ee280be8246184fda1a88deed3bb40b966",
+  "specs_commit": "82ccd0d4a8eaba84ddef3074a7bb0e954fad03f2",
+  "base_commit": "e7206b2491991790edd2858c993d142184c749ef",
   "selected_features": [
-    "search.reindex_jobs"
+    "search.reindex_jobs",
+    "search.lazy_source_factories"
   ],
   "allowed_files": [
     ".larena/launch-context.json",
+    ".larena/spec-ref.json",
     "module.yaml",
+    "README.md",
     "CHANGELOG.md",
+    "composer.json",
+    "scripts/check-evidence.php",
     "scripts/validate-larena-package.php",
-    "database/migrations/2026_07_13_000004_create_larena_search_provider_states.php",
-    "tests/Unit/DatabaseSearchIndexTest.php",
-    "docs/project-management/launch-records/canonical-mysql-reproducibility.json",
-    "docs/project-management/evidence/canonical-mysql-reproducibility/*"
+    "src/Contracts/ReindexSourceFactory.php",
+    "src/Reindex/SearchReindexService.php",
+    "src/Runtime/SearchSourceRegistry.php",
+    "src/Runtime/StaticReindexSourceFactory.php",
+    "tests/Unit/SearchLaravelPackageContractTest.php",
+    "tests/Unit/SearchReindexServiceTest.php",
+    "tests/Unit/SearchSourceRegistryTest.php",
+    "docs/developer/*",
+    "docs/project-management/launch-records/content-model-administration-api-v1-search-lifetime.json",
+    "docs/project-management/evidence/content-model-administration-api-v1-search-lifetime/*"
   ],
   "forbidden_files": [
+    "database/*",
     "routes/*",
     "resources/views/*",
     "resources/css/*",
@@ -31,17 +44,28 @@
     "src/Semantic/*",
     "../access/*",
     "../audit/*",
-    "../docara/*"
+    "../content/*"
   ],
   "forbidden_behavior": [
-    "search_runtime_semantics_change",
-    "non_deterministic_migration_seed",
-    "destructive_existing_reindex_run_mutation",
+    "source_resolution_during_registration_discovery_or_schedule",
+    "singleton_registry_source_cache",
+    "factory_source_provider_mismatch_acceptance",
+    "search_schema_or_migration_change",
     "existing_application_database_write",
     "credential_output_or_commit",
     "direct_larena_specs_update_by_package_agent",
     "production_readiness_claim",
-    "all_41_packages_readiness_claim"
+    "all_packages_readiness_claim"
+  ],
+  "required_tests": [
+    "factory registration has and provider enumeration do not construct sources",
+    "same scope returns the same source and cleared scope returns a new connection graph",
+    "schedule does not resolve a source",
+    "each processed batch resolves immediately before read",
+    "legacy static registration remains compatible",
+    "factory source provider mismatch fails closed",
+    "published-only projection and generation sweep regressions remain green",
+    "package quality gate"
   ],
   "required_evidence_files": [
     "README.md",
@@ -57,15 +81,15 @@
     "graph-sync-proposal.json",
     "independent-review.md"
   ],
-  "evidence_path": "docs/project-management/evidence/canonical-mysql-reproducibility/",
-  "graph_sync_proposal_path": "docs/project-management/evidence/canonical-mysql-reproducibility/graph-sync-proposal.json",
+  "evidence_path": "docs/project-management/evidence/content-model-administration-api-v1-search-lifetime/",
+  "graph_sync_proposal_path": "docs/project-management/evidence/content-model-administration-api-v1-search-lifetime/graph-sync-proposal.json",
   "status": "coding_started",
   "coding_allowed": true,
   "coding_started": true,
   "repository_enforcement_installed": true,
   "review_completed": false,
   "next_transition": "implementation_written",
-  "coding_branch": "codex/canonical-mysql-reproducibility",
+  "coding_branch": "codex/content-model-administration-api-v1",
   "test_database_policy": {
     "environment": "local_test_only",
     "sqlite": "disposable_file",

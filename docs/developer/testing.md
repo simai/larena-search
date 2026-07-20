@@ -16,6 +16,7 @@ composer run quality:gate
 - `InMemorySearchRuntimeTest.php`
 - `InMemorySearchRuntimeFailsClosedTest.php`
 - `DatabaseSearchIndexTest.php`
+- `SearchSourceRegistryTest.php`
 - `SearchReindexServiceTest.php`
 - `SearchLaravelPackageContractTest.php`
 
@@ -28,6 +29,12 @@ The persistent tests cover:
 - additive provider-fence migration backfill for an active failed/resumable run;
 - deterministic publish-first and schedule-first ordering with generation refresh/join and no tombstone lockout;
 - interrupted/failing/resumed rebuild with realtime generation join and persistent fence ownership;
+- factory registration/discovery without source construction, same-scope reuse,
+  fresh source/connection graph after scope clearing and fail-closed provider
+  mismatch;
+- scheduling without source resolution and one fresh factory resolution per
+  processed batch;
+- sanitized factory construction failure with no raw exception detail;
 - one active run per provider and stale-generation cleanup;
 - separate Access operations and denial non-mutation;
 - Audit rollback, event taxonomy and payload redaction;

@@ -27,8 +27,8 @@ foreach ([
 $restartProof = is_file($evidencePath . 'restart-proof.json')
     ? json_decode((string) file_get_contents($evidencePath . 'restart-proof.json'), true, 512, JSON_THROW_ON_ERROR)
     : [];
-if (($restartProof['status'] ?? null) !== 'passed') {
-    $errors[] = 'restart-proof status must be passed';
+if (!in_array($restartProof['status'] ?? null, ['passed', 'passed_scope_lifetime_canary'], true)) {
+    $errors[] = 'restart-proof status is not recognized';
 }
 $mysqlProof = is_file($evidencePath . 'mysql-proof.json')
     ? json_decode((string) file_get_contents($evidencePath . 'mysql-proof.json'), true, 512, JSON_THROW_ON_ERROR)

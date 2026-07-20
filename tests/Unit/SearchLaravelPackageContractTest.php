@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 use Larena\Access\Runtime\AccessOperationRegistry;
 use Larena\Search\Commands\ReindexSearchCommand;
+use Larena\Search\Contracts\ReindexSourceFactory;
 use Larena\Search\Providers\SearchServiceProvider;
+use Larena\Search\Runtime\StaticReindexSourceFactory;
 
 require dirname(__DIR__, 2) . '/vendor/autoload.php';
 
@@ -25,6 +27,8 @@ foreach (['illuminate/console', 'illuminate/database', 'illuminate/support', 'la
 }
 search_package_assert(class_exists(SearchServiceProvider::class), 'Search service provider must autoload.');
 search_package_assert(class_exists(ReindexSearchCommand::class), 'Search reindex command must autoload.');
+search_package_assert(interface_exists(ReindexSourceFactory::class), 'Lazy reindex source factory contract must autoload.');
+search_package_assert(class_exists(StaticReindexSourceFactory::class), 'Legacy static source adapter must autoload.');
 
 $providerSource = (string) file_get_contents(dirname(__DIR__, 2) . '/src/Providers/SearchServiceProvider.php');
 search_package_assert(

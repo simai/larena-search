@@ -53,4 +53,11 @@ search_package_assert(str_contains($commandSource, "search:reindex"), 'Reindex C
 search_package_assert(str_contains($commandSource, '{--actor='), 'CLI must require an explicit actor option with no implicit authority.');
 search_package_assert(!str_contains($commandSource, '->find($runRef)'), 'CLI must not reveal run existence before resume authorization.');
 
+$publicControllerSource = (string) file_get_contents(dirname(__DIR__, 2) . '/src/Http/Controllers/PublicSearchController.php');
+search_package_assert(
+    str_contains($publicControllerSource, 'private Translator $translator')
+        && str_contains($publicControllerSource, '$this->translator->setLocale($locale);'),
+    'Public Search must localize the rendered interface with the validated query locale.',
+);
+
 echo "SearchLaravelPackageContractTest passed.\n";

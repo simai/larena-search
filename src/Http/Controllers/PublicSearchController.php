@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Larena\Search\Http\Controllers;
 
 use Illuminate\Contracts\Config\Repository as Config;
+use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -22,6 +23,7 @@ final readonly class PublicSearchController
         private PublicSearchAssets $assets,
         private Factory $views,
         private Config $config,
+        private Translator $translator,
     ) {
     }
 
@@ -36,6 +38,7 @@ final readonly class PublicSearchController
         ]);
         $term = trim((string) ($validated['q'] ?? ''));
         $locale = (string) ($validated['locale'] ?? $defaultLocale);
+        $this->translator->setLocale($locale);
         $page = (int) ($validated['page'] ?? 1);
         $perPage = max(1, min(50, (int) $this->config->get('larena-search.public.per_page', 20)));
         $state = $term === '' ? 'empty' : 'success';

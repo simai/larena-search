@@ -18,6 +18,7 @@ final readonly class SearchQuery
         public ?string $locale = null,
         array $accessScopes = ['public'],
         public int $limit = 20,
+        public int $offset = 0,
     ) {
         if (trim($this->term) === '' || mb_strlen($this->term) > 200) {
             throw new InvalidArgumentException('search_query_term_invalid');
@@ -28,7 +29,7 @@ final readonly class SearchQuery
         if ($this->locale !== null && preg_match('/^[A-Za-z]{2,3}(?:[-_][A-Za-z0-9]{2,8})?$/', $this->locale) !== 1) {
             throw new InvalidArgumentException('search_query_locale_invalid');
         }
-        if ($accessScopes === [] || count($accessScopes) > 20 || $this->limit < 1 || $this->limit > 100) {
+        if ($accessScopes === [] || count($accessScopes) > 20 || $this->limit < 1 || $this->limit > 100 || $this->offset < 0 || $this->offset > 10000) {
             throw new InvalidArgumentException('search_query_bounds_invalid');
         }
         $safeScopes = [];

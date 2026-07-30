@@ -1,0 +1,14 @@
+{
+  "schema": "larena.search.revision-map.v1",
+  "package": {"name": "larena/search", "base": "9f5c1cf5d2b112751328520eee34826c19dd2535", "result": "self"},
+  "dependencies": {
+    "larena/access": "28cae5ad9bb5b401dc95a4d79becaaeb8d8ea5ad",
+    "larena/admin": "ee5706816d08b1e344e8b28499ec0ebd49e37b9f",
+    "larena/audit": "cc6ba3ccf279eefdef3fa3973249629a3a100feb",
+    "larena/queue": "e32f74dac5e40e19243a8d7bf416f5a3a5f59f53",
+    "larena/scheduler": "b22bd2ac7d67a74d903c00a6551bdb9b14d6539f",
+    "larena/ui": "bd181eda92f2de22130904884e18680587ee10db",
+    "larena/dataview": "b84e964b4ed78e1ca08a46c88e7651b02744ee47"
+  },
+  "lock_policy": "composer.lock dist.reference values equal published dependency revisions"
+}

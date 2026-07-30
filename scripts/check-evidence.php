@@ -49,8 +49,8 @@ $revisionMap = is_file($evidencePath . 'revision-map.json')
     ? json_decode((string) file_get_contents($evidencePath . 'revision-map.json'), true, 512, JSON_THROW_ON_ERROR)
     : [];
 foreach ([
-    'larena/access' => 'af45111b2a620d1b46331e2fe009a571f22230ad',
-    'larena/audit' => 'b5f6d215fb020f7b8b071cc40b7dde4e2ed2cea1',
+    'larena/access' => '28cae5ad9bb5b401dc95a4d79becaaeb8d8ea5ad',
+    'larena/audit' => 'cc6ba3ccf279eefdef3fa3973249629a3a100feb',
 ] as $package => $revision) {
     if (($revisionMap['dependencies'][$package] ?? null) !== $revision) {
         $errors[] = "revision-map must pin {$package} to {$revision}";

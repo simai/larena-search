@@ -16,6 +16,10 @@ All notable package changes are recorded here. The package does not currently pu
 
 ### Added
 
+- Localized `/search` flow with deterministic pagination, empty/no-result/error states, canonical published links and XSS-safe highlighting.
+- Protected `/admin/search` provider/run/checkpoint surface with Reader diagnostics, Administrator expected-state mutations and CSRF protection.
+- Queue checkpoint delivery, retry/restart continuation and Scheduler adapter for periodic all-provider delivery without synchronous HTTP indexing.
+- SIMAI Framework runtime activation through the canonical UI runtime lock; no second frontend system.
 - `ReindexSourceFactory`, lazy `registerFactory()`, `has()` and deterministic
   `providerIds()` contracts, plus a static adapter for legacy
   `register(ReindexSource)` callers.
@@ -28,6 +32,8 @@ All notable package changes are recorded here. The package does not currently pu
 
 ### Security
 
+- Public presentation projects only title, canonical locator, escaped snippet and provider label; source references, revisions, payload and private fields never reach the view.
+- Unsafe absolute/protocol-relative locators, unbounded query/page input and stale expected-state mutations fail closed.
 - Factory/source identity mismatch is a stable Search rejection, while
   every factory-thrown exception, including a forged `SearchReindexRejected`,
   is sanitized as `search_reindex_source_failed` before persistence, Audit or

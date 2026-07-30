@@ -1,0 +1,34 @@
+{
+  "schema": "larena.package_launch_record.v1",
+  "package": "larena/search",
+  "goal": "larena-public-search-index-operations-v1",
+  "status": "coding_started",
+  "base_revision": "9f5c1cf5d2b112751328520eee34826c19dd2535",
+  "specs_revision": "1d189ce9d18d7526252bbfce07ccdb7877dfcfa7",
+  "workflow": "/Users/rim/Documents/GitHub/larena-workspace/source/workflow/2026-07-30-larena-public-search-index-operations-v1.md",
+  "owner": "larena/search",
+  "surface": "public_search_and_protected_index_operations",
+  "action_gate": {
+    "status": "passed",
+    "checked_at": "2026-07-30T03:10:34Z",
+    "evidence": "source/output/action-gates/action-gate-report-20260730031034.json"
+  },
+  "allowed": [
+    "Search-owned HTTP query, presenter, views and operations",
+    "Search-owned Queue/Scheduler integration adapters",
+    "package migrations, localization, tests and evidence"
+  ],
+  "forbidden": [
+    "private source-table reads",
+    "unbounded synchronous HTTP reindex",
+    "Root-owned search logic",
+    "live or larena.test mutation",
+    "readiness claim inflation"
+  ],
+  "evidence_path": "docs/project-management/evidence/larena-public-search-index-operations-v1/",
+  "required_nonclaims": {
+    "production_ready": false,
+    "frontend_complete": false,
+    "all_42_packages_ready": false
+  }
+}

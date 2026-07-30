@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "408543889a632474237fd41322ed4c3c",
+    "content-hash": "f83d58880c7aa9aaff8f14587d43e1e5",
     "packages": [
         {
             "name": "brick/math",
@@ -297,22 +297,22 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.14.1",
+            "version": "7.15.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "6b1d2429a2c312474c523aa9017fba0c07b5f4a0"
+                "reference": "744101956d78b7c1384d0cbf379db13e859167bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/6b1d2429a2c312474c523aa9017fba0c07b5f4a0",
-                "reference": "6b1d2429a2c312474c523aa9017fba0c07b5f4a0",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/744101956d78b7c1384d0cbf379db13e859167bf",
+                "reference": "744101956d78b7c1384d0cbf379db13e859167bf",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "guzzlehttp/promises": "^2.5.1",
-                "guzzlehttp/psr7": "^2.12.5",
+                "guzzlehttp/psr7": "^2.13",
                 "php": "^7.2.5 || ^8.0",
                 "psr/http-client": "^1.0",
                 "symfony/deprecation-contracts": "^2.5 || ^3.0",
@@ -325,7 +325,7 @@
                 "bamarni/composer-bin-plugin": "^1.8.2",
                 "ext-curl": "*",
                 "guzzle/client-integration-tests": "3.0.3",
-                "guzzlehttp/test-server": "^0.6",
+                "guzzlehttp/test-server": "^0.7",
                 "php-http/message-factory": "^1.1",
                 "phpunit/phpunit": "^8.5.52 || ^9.6.34",
                 "psr/log": "^1.1 || ^2.0 || ^3.0"
@@ -405,7 +405,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.14.1"
+                "source": "https://github.com/guzzle/guzzle/tree/7.15.2"
             },
             "funding": [
                 {
@@ -421,7 +421,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-13T01:32:54+00:00"
+            "time": "2026-07-26T23:23:20+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -509,16 +509,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.12.5",
+            "version": "2.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "9365d578a9fd1552ad6ca9c3cb530708526feb09"
+                "reference": "dad89620b7a6edb60c15858442eb2e408b45d8f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/9365d578a9fd1552ad6ca9c3cb530708526feb09",
-                "reference": "9365d578a9fd1552ad6ca9c3cb530708526feb09",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/dad89620b7a6edb60c15858442eb2e408b45d8f4",
+                "reference": "dad89620b7a6edb60c15858442eb2e408b45d8f4",
                 "shasum": ""
             },
             "require": {
@@ -608,7 +608,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.12.5"
+                "source": "https://github.com/guzzle/psr7/tree/2.13.0"
             },
             "funding": [
                 {
@@ -624,20 +624,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-13T01:27:20+00:00"
+            "time": "2026-07-16T22:23:49+00:00"
         },
         {
             "name": "guzzlehttp/uri-template",
-            "version": "v1.0.9",
+            "version": "v1.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/uri-template.git",
-                "reference": "d7580af6d3f8384325d9cd3e99b21c3ed1848176"
+                "reference": "f6c24c21f42b990e9a58912b332d0874df6ba839"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/uri-template/zipball/d7580af6d3f8384325d9cd3e99b21c3ed1848176",
-                "reference": "d7580af6d3f8384325d9cd3e99b21c3ed1848176",
+                "url": "https://api.github.com/repos/guzzle/uri-template/zipball/f6c24c21f42b990e9a58912b332d0874df6ba839",
+                "reference": "f6c24c21f42b990e9a58912b332d0874df6ba839",
                 "shasum": ""
             },
             "require": {
@@ -694,7 +694,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/uri-template/issues",
-                "source": "https://github.com/guzzle/uri-template/tree/v1.0.9"
+                "source": "https://github.com/guzzle/uri-template/tree/v1.0.10"
             },
             "funding": [
                 {
@@ -710,11 +710,11 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-08T16:19:22+00:00"
+            "time": "2026-07-17T13:53:03+00:00"
         },
         {
             "name": "illuminate/bus",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/bus.git",
@@ -767,16 +767,16 @@
         },
         {
             "name": "illuminate/collections",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/collections.git",
-                "reference": "b58840a1bbbba5cb5895760bd806808fdfdd7e51"
+                "reference": "79b5d04507a255e35ce34cec621696aca84ee242"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/collections/zipball/b58840a1bbbba5cb5895760bd806808fdfdd7e51",
-                "reference": "b58840a1bbbba5cb5895760bd806808fdfdd7e51",
+                "url": "https://api.github.com/repos/illuminate/collections/zipball/79b5d04507a255e35ce34cec621696aca84ee242",
+                "reference": "79b5d04507a255e35ce34cec621696aca84ee242",
                 "shasum": ""
             },
             "require": {
@@ -823,11 +823,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-07-06T15:30:07+00:00"
+            "time": "2026-07-26T13:07:32+00:00"
         },
         {
             "name": "illuminate/conditionable",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/conditionable.git",
@@ -873,16 +873,16 @@
         },
         {
             "name": "illuminate/console",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/console.git",
-                "reference": "c2334ea3ef8398089bd2d0f1fdf2715fd40c14b3"
+                "reference": "2edb8a634f0635280444cc72ebfa2107df9ccf64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/console/zipball/c2334ea3ef8398089bd2d0f1fdf2715fd40c14b3",
-                "reference": "c2334ea3ef8398089bd2d0f1fdf2715fd40c14b3",
+                "url": "https://api.github.com/repos/illuminate/console/zipball/2edb8a634f0635280444cc72ebfa2107df9ccf64",
+                "reference": "2edb8a634f0635280444cc72ebfa2107df9ccf64",
                 "shasum": ""
             },
             "require": {
@@ -935,20 +935,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-06-30T14:06:28+00:00"
+            "time": "2026-07-21T16:54:44+00:00"
         },
         {
             "name": "illuminate/container",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
-                "reference": "50a24585e90cfdede3b241234fb29c803005022c"
+                "reference": "1f268e02fd0c8e4c32fc896c229f9023da735a83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/50a24585e90cfdede3b241234fb29c803005022c",
-                "reference": "50a24585e90cfdede3b241234fb29c803005022c",
+                "url": "https://api.github.com/repos/illuminate/container/zipball/1f268e02fd0c8e4c32fc896c229f9023da735a83",
+                "reference": "1f268e02fd0c8e4c32fc896c229f9023da735a83",
                 "shasum": ""
             },
             "require": {
@@ -997,20 +997,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-06-10T13:09:02+00:00"
+            "time": "2026-07-23T15:58:38+00:00"
         },
         {
             "name": "illuminate/contracts",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "a108b67e086a933e92abebe69bb8e15c1218d3c8"
+                "reference": "98179ca5d07025c2fe4c5c70e0b57b5284fa0071"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/a108b67e086a933e92abebe69bb8e15c1218d3c8",
-                "reference": "a108b67e086a933e92abebe69bb8e15c1218d3c8",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/98179ca5d07025c2fe4c5c70e0b57b5284fa0071",
+                "reference": "98179ca5d07025c2fe4c5c70e0b57b5284fa0071",
                 "shasum": ""
             },
             "require": {
@@ -1045,20 +1045,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-06-25T18:32:48+00:00"
+            "time": "2026-07-15T15:50:17+00:00"
         },
         {
             "name": "illuminate/database",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "5852f0789132c409b7062f152deb1bbe1afc0bd9"
+                "reference": "2a42f0341a99c6958e67328992233409562bff81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/5852f0789132c409b7062f152deb1bbe1afc0bd9",
-                "reference": "5852f0789132c409b7062f152deb1bbe1afc0bd9",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/2a42f0341a99c6958e67328992233409562bff81",
+                "reference": "2a42f0341a99c6958e67328992233409562bff81",
                 "shasum": ""
             },
             "require": {
@@ -1118,20 +1118,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-07-06T15:30:07+00:00"
+            "time": "2026-07-24T14:36:26+00:00"
         },
         {
             "name": "illuminate/events",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/events.git",
-                "reference": "f6f9c2d3356f99d5fe63d84165abf6d46e9a83f4"
+                "reference": "f1efdc02907ab4e1d6eeb08d132625ecd343c11d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/events/zipball/f6f9c2d3356f99d5fe63d84165abf6d46e9a83f4",
-                "reference": "f6f9c2d3356f99d5fe63d84165abf6d46e9a83f4",
+                "url": "https://api.github.com/repos/illuminate/events/zipball/f1efdc02907ab4e1d6eeb08d132625ecd343c11d",
+                "reference": "f1efdc02907ab4e1d6eeb08d132625ecd343c11d",
                 "shasum": ""
             },
             "require": {
@@ -1173,20 +1173,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-06-25T18:32:48+00:00"
+            "time": "2026-07-13T15:55:55+00:00"
         },
         {
             "name": "illuminate/filesystem",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/filesystem.git",
-                "reference": "c831ba878883e2059a0375469f7912d24cc35e41"
+                "reference": "ec05f5dfb2858e1a7ca9c1e22ad46323afdb6615"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/filesystem/zipball/c831ba878883e2059a0375469f7912d24cc35e41",
-                "reference": "c831ba878883e2059a0375469f7912d24cc35e41",
+                "url": "https://api.github.com/repos/illuminate/filesystem/zipball/ec05f5dfb2858e1a7ca9c1e22ad46323afdb6615",
+                "reference": "ec05f5dfb2858e1a7ca9c1e22ad46323afdb6615",
                 "shasum": ""
             },
             "require": {
@@ -1202,6 +1202,7 @@
                 "ext-ftp": "Required to use the Flysystem FTP driver.",
                 "ext-hash": "Required to use the Filesystem class.",
                 "illuminate/http": "Required for handling uploaded files (^13.0).",
+                "illuminate/image": "Required to create images from stored files (^13.0).",
                 "league/flysystem": "Required to use the Flysystem local driver (^3.25.1).",
                 "league/flysystem-aws-s3-v3": "Required to use the Flysystem S3 driver (^3.25.1).",
                 "league/flysystem-ftp": "Required to use the Flysystem FTP driver (^3.25.1).",
@@ -1240,20 +1241,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-06-08T06:03:20+00:00"
+            "time": "2026-07-13T16:05:22+00:00"
         },
         {
             "name": "illuminate/http",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/http.git",
-                "reference": "4d36df2a7b3774e2d313e455dac8cfc356d29288"
+                "reference": "896fdcea26e8d63dd44b44b66370efa2107cf28a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/http/zipball/4d36df2a7b3774e2d313e455dac8cfc356d29288",
-                "reference": "4d36df2a7b3774e2d313e455dac8cfc356d29288",
+                "url": "https://api.github.com/repos/illuminate/http/zipball/896fdcea26e8d63dd44b44b66370efa2107cf28a",
+                "reference": "896fdcea26e8d63dd44b44b66370efa2107cf28a",
                 "shasum": ""
             },
             "require": {
@@ -1272,7 +1273,8 @@
                 "symfony/polyfill-php85": "^1.36"
             },
             "suggest": {
-                "ext-gd": "Required to use Illuminate\\Http\\Testing\\FileFactory::image()."
+                "ext-gd": "Required to use Illuminate\\Http\\Testing\\FileFactory::image().",
+                "illuminate/image": "Required to retrieve uploaded files as images (^13.0)."
             },
             "type": "library",
             "extra": {
@@ -1301,11 +1303,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-07-06T23:09:58+00:00"
+            "time": "2026-07-22T23:10:36+00:00"
         },
         {
             "name": "illuminate/macroable",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/macroable.git",
@@ -1351,16 +1353,16 @@
         },
         {
             "name": "illuminate/pipeline",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pipeline.git",
-                "reference": "74e76382a3fb39f34469681685d6dd551db0d0d2"
+                "reference": "00b08c7fb38a00b31d591cecc327864ff930e8dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/pipeline/zipball/74e76382a3fb39f34469681685d6dd551db0d0d2",
-                "reference": "74e76382a3fb39f34469681685d6dd551db0d0d2",
+                "url": "https://api.github.com/repos/illuminate/pipeline/zipball/00b08c7fb38a00b31d591cecc327864ff930e8dc",
+                "reference": "00b08c7fb38a00b31d591cecc327864ff930e8dc",
                 "shasum": ""
             },
             "require": {
@@ -1399,20 +1401,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-02-25T16:07:55+00:00"
+            "time": "2026-07-16T14:40:57+00:00"
         },
         {
             "name": "illuminate/reflection",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/reflection.git",
-                "reference": "178cdb5eb08c5369ae6b71518e557bed68e74577"
+                "reference": "83788072c0f11f504c0a3dccfe9c15f5156d8b90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/reflection/zipball/178cdb5eb08c5369ae6b71518e557bed68e74577",
-                "reference": "178cdb5eb08c5369ae6b71518e557bed68e74577",
+                "url": "https://api.github.com/repos/illuminate/reflection/zipball/83788072c0f11f504c0a3dccfe9c15f5156d8b90",
+                "reference": "83788072c0f11f504c0a3dccfe9c15f5156d8b90",
                 "shasum": ""
             },
             "require": {
@@ -1450,20 +1452,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-06-18T15:47:27+00:00"
+            "time": "2026-07-16T14:41:30+00:00"
         },
         {
             "name": "illuminate/routing",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/routing.git",
-                "reference": "7163c8d44c73dff3e5795711b9cdab12935972c4"
+                "reference": "ead1511bfebcb8540c751e73b1321ffaa582e668"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/routing/zipball/7163c8d44c73dff3e5795711b9cdab12935972c4",
-                "reference": "7163c8d44c73dff3e5795711b9cdab12935972c4",
+                "url": "https://api.github.com/repos/illuminate/routing/zipball/ead1511bfebcb8540c751e73b1321ffaa582e668",
+                "reference": "ead1511bfebcb8540c751e73b1321ffaa582e668",
                 "shasum": ""
             },
             "require": {
@@ -1516,20 +1518,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-07-06T15:30:07+00:00"
+            "time": "2026-07-09T12:59:33+00:00"
         },
         {
             "name": "illuminate/session",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/session.git",
-                "reference": "02919e81fcac91bd78fb29a9d3f81a3ac0cd9f84"
+                "reference": "51911d0f4276fc9ac770504a6fa566350b2a04af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/session/zipball/02919e81fcac91bd78fb29a9d3f81a3ac0cd9f84",
-                "reference": "02919e81fcac91bd78fb29a9d3f81a3ac0cd9f84",
+                "url": "https://api.github.com/repos/illuminate/session/zipball/51911d0f4276fc9ac770504a6fa566350b2a04af",
+                "reference": "51911d0f4276fc9ac770504a6fa566350b2a04af",
                 "shasum": ""
             },
             "require": {
@@ -1573,20 +1575,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-07-06T15:30:07+00:00"
+            "time": "2026-07-13T15:54:17+00:00"
         },
         {
             "name": "illuminate/support",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "6cff5e09069fc1961536d0f61d1c9ab935cc2a23"
+                "reference": "c44c62550a18912175966ba340345ffd800ac54f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/6cff5e09069fc1961536d0f61d1c9ab935cc2a23",
-                "reference": "6cff5e09069fc1961536d0f61d1c9ab935cc2a23",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/c44c62550a18912175966ba340345ffd800ac54f",
+                "reference": "c44c62550a18912175966ba340345ffd800ac54f",
                 "shasum": ""
             },
             "require": {
@@ -1652,20 +1654,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-07-06T23:09:58+00:00"
+            "time": "2026-07-26T13:08:33+00:00"
         },
         {
             "name": "illuminate/view",
-            "version": "v13.19.0",
+            "version": "v13.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/view.git",
-                "reference": "1005a85215a054ccd2694f2c5af4133819999c47"
+                "reference": "fc9662da022aa5dd74eeb315c5434fb2e0336b51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/view/zipball/1005a85215a054ccd2694f2c5af4133819999c47",
-                "reference": "1005a85215a054ccd2694f2c5af4133819999c47",
+                "url": "https://api.github.com/repos/illuminate/view/zipball/fc9662da022aa5dd74eeb315c5434fb2e0336b51",
+                "reference": "fc9662da022aa5dd74eeb315c5434fb2e0336b51",
                 "shasum": ""
             },
             "require": {
@@ -1706,7 +1708,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-06-25T16:46:05+00:00"
+            "time": "2026-07-21T16:54:44+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -1769,16 +1771,16 @@
         },
         {
             "name": "laravel/serializable-closure",
-            "version": "v2.0.13",
+            "version": "v2.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/serializable-closure.git",
-                "reference": "b566ee0dd251f3c4078bed003a7ce015f5ea6dce"
+                "reference": "dccd8bcb851bb03fcc005df650b708b57cc52661"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/b566ee0dd251f3c4078bed003a7ce015f5ea6dce",
-                "reference": "b566ee0dd251f3c4078bed003a7ce015f5ea6dce",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/dccd8bcb851bb03fcc005df650b708b57cc52661",
+                "reference": "dccd8bcb851bb03fcc005df650b708b57cc52661",
                 "shasum": ""
             },
             "require": {
@@ -1826,7 +1828,7 @@
                 "issues": "https://github.com/laravel/serializable-closure/issues",
                 "source": "https://github.com/laravel/serializable-closure"
             },
-            "time": "2026-04-16T14:03:50+00:00"
+            "time": "2026-07-21T16:49:22+00:00"
         },
         {
             "name": "larena/access",
@@ -1834,7 +1836,7 @@
             "dist": {
                 "type": "path",
                 "url": "../access",
-                "reference": "af45111b2a620d1b46331e2fe009a571f22230ad"
+                "reference": "28cae5ad9bb5b401dc95a4d79becaaeb8d8ea5ad"
             },
             "require": {
                 "illuminate/console": "^13.0",
@@ -1877,11 +1879,16 @@
                     "@php tests/Unit/AccessOperationAuthorizerTest.php",
                     "@php tests/Unit/ActorOperationAuthorizerTest.php",
                     "@php tests/Unit/PersistentRolePresetRuntimeTest.php",
+                    "@php tests/Unit/AccessRolePolicyApiContractTest.php",
                     "@php tests/Unit/CustomRoleManagementRuntimeTest.php",
                     "@php tests/Unit/RoleMutationAuditTransactionTest.php",
                     "@php tests/Unit/AdministratorAccessGovernanceRuntimeTest.php",
                     "@php tests/Unit/AdministratorAccessGovernanceConcurrencyTest.php",
-                    "@php tests/Unit/AccessMigrationRollbackRuntimeTest.php"
+                    "@php tests/Unit/AccessMigrationRollbackRuntimeTest.php",
+                    "@php tests/Unit/RoleMatrixPresenterContractTest.php",
+                    "@php tests/Unit/PersistentGlobalRoleQueryScopeProviderTest.php",
+                    "@php tests/Unit/PersistentGlobalRoleQueryScopeProviderPersistentTest.php",
+                    "@php tests/Unit/PersistentGlobalRoleQueryScopeProviderBindingIsolationTest.php"
                 ],
                 "test:unit": [
                     "@php tests/Unit/AccessDecisionContractTest.php",
@@ -1892,11 +1899,21 @@
                     "@php tests/Unit/AccessOperationAuthorizerTest.php",
                     "@php tests/Unit/ActorOperationAuthorizerTest.php",
                     "@php tests/Unit/PersistentRolePresetRuntimeTest.php",
+                    "@php tests/Unit/AccessRolePolicyApiContractTest.php",
                     "@php tests/Unit/CustomRoleManagementRuntimeTest.php",
                     "@php tests/Unit/RoleMutationAuditTransactionTest.php",
                     "@php tests/Unit/AdministratorAccessGovernanceRuntimeTest.php",
                     "@php tests/Unit/AdministratorAccessGovernanceConcurrencyTest.php",
-                    "@php tests/Unit/AccessMigrationRollbackRuntimeTest.php"
+                    "@php tests/Unit/AccessMigrationRollbackRuntimeTest.php",
+                    "@php tests/Unit/RoleMatrixPresenterContractTest.php",
+                    "@php tests/Unit/PersistentGlobalRoleQueryScopeProviderTest.php",
+                    "@php tests/Unit/PersistentGlobalRoleQueryScopeProviderPersistentTest.php",
+                    "@php tests/Unit/PersistentGlobalRoleQueryScopeProviderBindingIsolationTest.php"
+                ],
+                "test:global-role-query-scope": [
+                    "@php tests/Unit/PersistentGlobalRoleQueryScopeProviderTest.php",
+                    "@php tests/Unit/PersistentGlobalRoleQueryScopeProviderPersistentTest.php",
+                    "@php tests/Unit/PersistentGlobalRoleQueryScopeProviderBindingIsolationTest.php"
                 ],
                 "lint": [
                     "@php scripts/lint.php"
@@ -1942,12 +1959,325 @@
             }
         },
         {
+            "name": "larena/admin",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../admin",
+                "reference": "ee5706816d08b1e344e8b28499ec0ebd49e37b9f"
+            },
+            "require": {
+                "illuminate/console": "^13.0",
+                "illuminate/http": "^13.0",
+                "illuminate/routing": "^13.0",
+                "illuminate/support": "^13.0",
+                "illuminate/view": "^13.0",
+                "larena/access": "dev-main",
+                "larena/audit": "dev-main",
+                "larena/cockpit": "dev-main",
+                "larena/core": "dev-main",
+                "larena/dataview": "dev-main",
+                "larena/layout": "dev-main",
+                "larena/licensing": "dev-main",
+                "larena/link": "dev-main",
+                "larena/storage": "dev-main",
+                "larena/ui": "dev-main",
+                "larena/update": "dev-main",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Larena\\Admin\\Providers\\AdminServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Larena\\Admin\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Larena\\Admin\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminContractTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminFailsClosedTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemoryAdminRuntimeTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemoryAdminRuntimeFailsClosedTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminNavigationRegistryContractTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminPackageIntegrationNavigationContributorTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminNavigationRegistryFailsClosedTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminContributionAggregatorContractTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminContributionAggregatorFailsClosedTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminContributionRegistryContractTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminDiagnosticsDashboardSurfaceContributorTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminOperatorReadOnlyDashboardShellFoundationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminOperatorReadOnlyDashboardShellProjectionTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminTransitionReadinessMatrixFoundationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminOperatorWorkflowStatusTimelineFoundationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminTransitionReadinessMatrixProjectionTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminOperatorWorkflowStatusTimelineProjectionTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminDiagnosticsNavigationShellFoundationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminDiagnosticsNavigationShellProjectionTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminReadinessChecklistProjectionTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminReadinessChecklistFoundationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminShellRuntimeCompositionFirstBatchTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminShellNavigationGroupingHardeningTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminShellNavigationVisualPolishTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminShellTrackClosureReviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminShellPackageOwnedRuntimePlanningTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/DeveloperBetaAdminShellLayoutTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PostBetaAdminProductShellTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminUiLabContractTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SmartCatalogPresenterTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/SmartComponentReferenceTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SmartRecipePresenterTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/SmartRecipeReferenceTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminProductAssetManifestTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminFormStateAssetTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminProductSfBootTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/OperatorPreviewRouteProviderParityPlanTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/OperatorGetRenderParitySurfaceTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/OperatorPreviewRouteProviderParityImplementationReadinessTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/OperatorPreviewProviderPromotionExecutionGateTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminStatusCardDetailDrilldownFoundationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminStatusPreviewProjectionTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminSurfaceCompositionContractTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminSurfaceCompositionFailsClosedTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/CmsPublicContentLinkReadSurfaceTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminFrontendReadOnlyRouteTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/FrontendConveyorDemoTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/LayoutPageBuilderDemoTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SmartComponentBlockWidgetDemoTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SourceBackedSfPortableProvenanceTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminFrontendAssetActivationBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminFrontendAssetTagsHtmlBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminFrontendRenderArtifactConsumptionBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PreviewRenderArtifactPresenterTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/RenderArtifactHtmlBuilderTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminFrontendArtifactAdapterBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminInstallReadinessTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminIdentityBootstrapReviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminIdentityBootstrapAcceptanceTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminIdentityBootstrapExecutionPacketPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminIdentityRuntimePreflightTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminIdentityApprovalPacketTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminModuleRegistryReadOnlyListTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminModuleDetailDrilldownTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminPackageListVerticalSliceTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminPackageStatusReadinessTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminPackageStatusDetailDrilldownTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminUpdateReadinessTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminCrudEntityFoundationReadinessTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminEntityTableDescriptorPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminEntityFormDescriptorPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/ExactPublicProjectionInspectorTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminEntityCreateStorageInMemoryExecutionBridgeTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminEntityCreateAuditAwareStorageTransactionBridgeTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminEntityCreateAuditAwareStorageCrudContinuationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminEntityCreateOperatorCrudReviewDecisionPacketTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminEntityCreatePersistedLocalDevCrudTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSingleEntityDurableLocalDevCreateTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSingleEntityPersistedLocalDevEditCrudTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminPersistedCrudOperatorJourneyTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminMvpScenarioDashboardTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSingleEntityReadListWorkbenchTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSingleEntityEditDraftValidationWorkbenchTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSingleEntityEditReviewNoSaveWorkbenchTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSingleEntityEditGuardedExecutionPacketPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSingleEntityEditRequestLocalExecutionSimulationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminEntityDescriptorConsistencyTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminEntityStatePreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminEntityActionPermissionMatrixTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminEntityDetailReadModelDrilldownTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/DeveloperPreviewProductFacingAdminRecoveryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminReadOnlyFoundationEntryFlowTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminNavigationLayoutMapTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminOperatorWorkspaceNavigationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSettingsActionReadinessTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSettingsApplyAuditTrailPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSettingsApplyApprovalPacketPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSettingsApplyDiffPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSettingsApplyExecutionGateTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSettingsApplyRollbackProofPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSettingsFormStateReadinessTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSettingsFormDryRunValidationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSettingsFieldValidationPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSettingsPropertyGroupingTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSettingsValueDetailDrilldownTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminInterfaceBootstrapTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminWorkbenchCheckpointTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminHealthOverviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminAccessIdentityBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminWriteTransitionReadinessMatrixTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminExecutionApprovalCenterTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminInterfaceCompositionTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminScreenStateDetailTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminRuntimeDiagnosticsDetailTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminRouteCatalogDetailTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminOperatorInterfaceOverviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminOperatorShellHomeTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminOperatorRouteDrilldownTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminSettingsReadOnlyTableTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PackageOwnedAdminRestRuntimeDiagnosticsTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminServiceProviderRegistrationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminFoundationCommandProviderMigrationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminPackagePureCommandProviderMigrationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminPackageRuntimePreviewStylesheetExtractionTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminShellCommandProviderMigrationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminRouteRegistrationBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/ProtectedAdminFrontendRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/OperatorPreviewRouteProviderParityImplementationReadinessTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/OperatorPreviewProviderPromotionExecutionGateTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminOperatorReadOnlyDashboardShellPackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminTransitionReadinessMatrixPackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminOperatorWorkflowStatusTimelinePackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminDiagnosticsNavigationShellPackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminShellRuntimeCompositionPackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminShellNavigationGroupingPackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminShellNavigationVisualPolishPackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminShellTrackClosurePackageOwnedReportTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminShellTrackClosurePackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminShellPackageOwnedRuntimePlanningPackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminReadinessChecklistPackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminStatusCardDetailDrilldownPackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/AdminStatusPreviewPackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/GuardedSettingsPropertyAdminPackageInstallPlanningPackageOwnedReportTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/GuardedSettingsPropertyAdminPackageInstallDryRunPackageOwnedReportTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/GuardedSettingsPropertyAdminComposerMutationPlanningPackageOwnedReportTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/GuardedSettingsPropertyAdminComposerMutationPackageOwnedReportTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/InstalledSettingsPropertyAdminPackageRegistryVisibilityPackageOwnedReportTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageProviderPromotionPreflightPackageOwnedReportTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/CmsPublicContentLinkReadSurfacePackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminFrontendReadOnlyRoutePackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/FrontendConveyorDemoPackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/LayoutPageBuilderDemoPackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/SmartComponentBlockWidgetDemoPackageOwnedPresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminInstallReadinessRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminIdentityBootstrapReviewRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminIdentityBootstrapAcceptanceRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminIdentityBootstrapExecutionPacketPreviewRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminIdentityRuntimePreflightRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminIdentityApprovalPacketRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSettingsReadOnlyTableRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminModuleRegistryReadOnlyListRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminModuleDetailDrilldownRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminPackageListVerticalSlicePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminPackageStatusReadinessRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminPackageStatusDetailDrilldownRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminUpdateReadinessRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminCrudEntityFoundationReadinessRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminEntityTableDescriptorPreviewRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminEntityFormDescriptorPreviewRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminEntityCreateStorageInMemoryExecutionBridgeRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminEntityCreateAuditAwareStorageTransactionBridgeRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminEntityCreateAuditAwareStorageCrudContinuationRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminEntityCreateOperatorCrudReviewDecisionPacketRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminEntityCreatePersistedLocalDevCrudRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSingleEntityDurableLocalDevCreateRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSingleEntityPersistedLocalDevEditCrudRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminPersistedCrudOperatorJourneyRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminMvpScenarioDashboardRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSingleEntityReadListWorkbenchRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSingleEntityEditDraftValidationWorkbenchRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSingleEntityEditReviewNoSaveWorkbenchRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSingleEntityEditGuardedExecutionPacketPreviewRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSingleEntityEditRequestLocalExecutionSimulationRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminEntityDescriptorConsistencyRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminEntityStatePreviewRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminEntityActionPermissionMatrixRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminEntityDetailReadModelDrilldownRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/DeveloperPreviewProductFacingAdminRecoveryRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminReadOnlyFoundationEntryFlowRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminNavigationLayoutMapRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSettingsActionReadinessRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSettingsApplyAuditTrailPreviewRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSettingsApplyApprovalPacketPreviewRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSettingsApplyDiffPreviewRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSettingsApplyExecutionGateRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSettingsApplyRollbackProofPreviewRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSettingsFormStateReadinessRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSettingsFormDryRunValidationRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSettingsFieldValidationPreviewRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSettingsPropertyGroupingRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminSettingsValueDetailDrilldownRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminFrontendArtifactAdapterBoundaryRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminInterfaceBootstrapRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminWorkbenchCheckpointRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminHealthOverviewRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminAccessIdentityBoundaryRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminWriteTransitionReadinessMatrixRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminExecutionApprovalCenterRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminInterfaceCompositionRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminScreenStateDetailRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminRuntimeDiagnosticsDetailRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminRouteCatalogDetailRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminOperatorInterfaceOverviewRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminOperatorShellHomeRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminOperatorRouteDrilldownRoutePresentationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PackageOwnedAdminRestRuntimeDiagnosticsRoutePresentationTest.php"
+                ],
+                "test:unit": [
+                    "@test"
+                ],
+                "lint": [
+                    "@php scripts/lint.php"
+                ],
+                "analyse": [
+                    "@php scripts/analyse.php"
+                ],
+                "validate:larena": [
+                    "@php scripts/validate-larena-package.php"
+                ],
+                "evidence:check": [
+                    "@php scripts/check-evidence.php"
+                ],
+                "scope:check": [
+                    "@php tools/larena-scope-check.php"
+                ],
+                "quality:gate": [
+                    "@validate:larena",
+                    "@lint",
+                    "@analyse",
+                    "@test",
+                    "@larena:metadata:check",
+                    "@evidence:check",
+                    "@scope:check"
+                ],
+                "larena:metadata:check": [
+                    "@php scripts/check-metadata-sync.php"
+                ]
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Rim Zabarov",
+                    "homepage": "https://github.com/zabarov"
+                }
+            ],
+            "description": "Larena Admin: Object-based, permission-aware administration platform for package contributions, screens, actions and diagnostics.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
             "name": "larena/audit",
             "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "../audit",
-                "reference": "b5f6d215fb020f7b8b071cc40b7dde4e2ed2cea1"
+                "reference": "cc6ba3ccf279eefdef3fa3973249629a3a100feb"
             },
             "require": {
                 "illuminate/database": "^13.0",
@@ -1982,10 +2312,16 @@
             },
             "scripts": {
                 "test": [
-                    "php tests/Unit/AuditEventContractTest.php && php tests/Unit/AuditFailsClosedTest.php && php tests/Unit/AuditRedactorRuntimeTest.php && php tests/Unit/AuditEventPipelineTest.php && php tests/Unit/AuditEventPipelineFailsClosedTest.php && php tests/Unit/InstallAuditTrailTest.php && php tests/Unit/DatabaseAuditSinkTest.php && php vendor/bin/phpunit tests/Feature/AuditHistoryAdminTest.php"
+                    "php tests/Unit/AuditEventContractTest.php && php tests/Unit/AuditFailsClosedTest.php && php tests/Unit/AuditRedactorRuntimeTest.php && php tests/Unit/AuditEventPipelineTest.php && php tests/Unit/AuditEventPipelineFailsClosedTest.php && php tests/Unit/InstallAuditTrailTest.php && php tests/Unit/DatabaseAuditSinkTest.php && php tests/Unit/DatabaseAuditEventPipelineTest.php && php vendor/bin/phpunit tests/Feature/AuditHistoryAdminTest.php tests/Feature/DatabaseAuditEventPipelineBindingTest.php && php tests/Integration/DatabaseAuditEventPipelineMySqlTest.php"
                 ],
                 "test:unit": [
-                    "php tests/Unit/AuditEventContractTest.php && php tests/Unit/AuditFailsClosedTest.php && php tests/Unit/AuditRedactorRuntimeTest.php && php tests/Unit/AuditEventPipelineTest.php && php tests/Unit/AuditEventPipelineFailsClosedTest.php && php tests/Unit/InstallAuditTrailTest.php && php tests/Unit/DatabaseAuditSinkTest.php"
+                    "php tests/Unit/AuditEventContractTest.php && php tests/Unit/AuditFailsClosedTest.php && php tests/Unit/AuditRedactorRuntimeTest.php && php tests/Unit/AuditEventPipelineTest.php && php tests/Unit/AuditEventPipelineFailsClosedTest.php && php tests/Unit/InstallAuditTrailTest.php && php tests/Unit/DatabaseAuditSinkTest.php && php tests/Unit/DatabaseAuditEventPipelineTest.php"
+                ],
+                "test:connection-bound": [
+                    "php tests/Unit/DatabaseAuditEventPipelineTest.php && php vendor/bin/phpunit tests/Feature/DatabaseAuditEventPipelineBindingTest.php --colors=never"
+                ],
+                "test:mysql-connection-bound": [
+                    "LARENA_AUDIT_CONNECTION_BOUND_MYSQL_TEST=1 php tests/Integration/DatabaseAuditEventPipelineMySqlTest.php"
                 ],
                 "lint": [
                     "php scripts/lint.php"
@@ -2025,6 +2361,219 @@
                 }
             ],
             "description": "Larena Audit: Unified structured audit layer that receives package AuditEvent objects, validates taxonomy, redacts sensitive payloads, correlates runtime activity, routes events to sinks and provides operator search/export/diagnostics.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "larena/cockpit",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../cockpit",
+                "reference": "d8074d30727d5c124928b8e47466f063eb746dbf"
+            },
+            "require": {
+                "illuminate/http": "^13.0",
+                "illuminate/support": "^13.0",
+                "larena/access": "dev-main",
+                "larena/audit": "dev-main",
+                "larena/core": "dev-main",
+                "larena/licensing": "dev-main",
+                "larena/link": "dev-main",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Larena\\Cockpit\\Providers\\CockpitServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Larena\\Cockpit\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Larena\\Cockpit\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/CockpitAggregationShellTest.php"
+                ],
+                "test:unit": [
+                    "@test"
+                ],
+                "lint": [
+                    "@php scripts/lint.php"
+                ],
+                "analyse": [
+                    "@php scripts/analyse.php"
+                ],
+                "validate:larena": [
+                    "@php scripts/validate-larena-package.php"
+                ],
+                "evidence:check": [
+                    "@php scripts/check-evidence.php"
+                ],
+                "scope:check": [
+                    "@php tools/larena-scope-check.php"
+                ],
+                "quality:gate": [
+                    "@validate:larena",
+                    "@lint",
+                    "@analyse",
+                    "@test",
+                    "@evidence:check",
+                    "@scope:check"
+                ]
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Rim Zabarov",
+                    "homepage": "https://github.com/zabarov"
+                }
+            ],
+            "description": "Larena Cockpit: developer-preview cockpit aggregation boundary for cross-package diagnostics, operator review surfaces and package-owned presentation control.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "larena/core",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../core",
+                "reference": "68ee3f79ed6313ca9c819340e6be3ff471957f91"
+            },
+            "require": {
+                "illuminate/console": "^13.0",
+                "illuminate/database": "^13.0",
+                "illuminate/support": "^13.0",
+                "larena/access": "dev-main",
+                "larena/audit": "dev-main",
+                "larena/licensing": "dev-main",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Larena\\Core\\Providers\\CoreServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Larena\\Core\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Larena\\Core\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "@php tests/Unit/OperationRuntimeContractTest.php",
+                    "@php tests/Unit/OperationRuntimeFailsClosedTest.php",
+                    "@php tests/Unit/SyncOperationRuntimeTest.php",
+                    "@php tests/Unit/SyncOperationRuntimeFailsClosedTest.php",
+                    "@php tests/Unit/SyncOperationRuntimeTransactionBoundaryTest.php",
+                    "@php tests/Unit/RuntimeSecurityCompositionTest.php",
+                    "@php tests/Unit/RuntimeSecurityCompositionFailsClosedTest.php",
+                    "@php tests/Unit/FoundationPackageSetTest.php",
+                    "@php tests/Unit/InstallReadinessContractTest.php",
+                    "@php tests/Unit/InstallApplyLaunchRecordTest.php",
+                    "@php tests/Unit/PackageRegistrySeedTest.php",
+                    "@php tests/Unit/InstallerPersistenceFoundationTest.php",
+                    "@php tests/Unit/InstallerDbSchemaApplyTest.php",
+                    "@php tests/Unit/InstallAuditTrailApplyTest.php",
+                    "@php tests/Unit/PackageRegistryDiagnosticsTest.php",
+                    "@php tests/Unit/RuntimeSecurityClusterSmokeTest.php",
+                    "@php tests/Unit/DataContentClusterSmokeTest.php",
+                    "@php tests/Unit/CommandReportPresenterTest.php",
+                    "@php tests/Unit/StarterEvidencePathTest.php",
+                    "@php tests/Unit/CoreAssetActivationContractTest.php",
+                    "@php tests/Unit/VerifiedAssetBundlePublisherTest.php"
+                ],
+                "test:unit": [
+                    "@php tests/Unit/OperationRuntimeContractTest.php",
+                    "@php tests/Unit/OperationRuntimeFailsClosedTest.php",
+                    "@php tests/Unit/SyncOperationRuntimeTest.php",
+                    "@php tests/Unit/SyncOperationRuntimeFailsClosedTest.php",
+                    "@php tests/Unit/SyncOperationRuntimeTransactionBoundaryTest.php",
+                    "@php tests/Unit/RuntimeSecurityCompositionTest.php",
+                    "@php tests/Unit/RuntimeSecurityCompositionFailsClosedTest.php",
+                    "@php tests/Unit/FoundationPackageSetTest.php",
+                    "@php tests/Unit/InstallReadinessContractTest.php",
+                    "@php tests/Unit/InstallApplyLaunchRecordTest.php",
+                    "@php tests/Unit/PackageRegistrySeedTest.php",
+                    "@php tests/Unit/InstallerPersistenceFoundationTest.php",
+                    "@php tests/Unit/InstallerDbSchemaApplyTest.php",
+                    "@php tests/Unit/InstallAuditTrailApplyTest.php",
+                    "@php tests/Unit/PackageRegistryDiagnosticsTest.php",
+                    "@php tests/Unit/RuntimeSecurityClusterSmokeTest.php",
+                    "@php tests/Unit/DataContentClusterSmokeTest.php",
+                    "@php tests/Unit/CommandReportPresenterTest.php",
+                    "@php tests/Unit/StarterEvidencePathTest.php",
+                    "@php tests/Unit/CoreAssetActivationContractTest.php",
+                    "@php tests/Unit/VerifiedAssetBundlePublisherTest.php"
+                ],
+                "lint": [
+                    "@php scripts/lint.php"
+                ],
+                "analyse": [
+                    "@php scripts/analyse.php"
+                ],
+                "validate:larena": [
+                    "@php scripts/validate-larena-package.php"
+                ],
+                "evidence:check": [
+                    "@php scripts/check-evidence.php"
+                ],
+                "scope:check": [
+                    "@php tools/larena-scope-check.php"
+                ],
+                "quality:gate": [
+                    "@validate:larena",
+                    "@lint",
+                    "@analyse",
+                    "@test",
+                    "@larena:metadata:check",
+                    "@evidence:check",
+                    "@scope:check"
+                ],
+                "larena:metadata:check": [
+                    "@php scripts/check-metadata-sync.php"
+                ]
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Rim Zabarov",
+                    "homepage": "https://github.com/zabarov"
+                }
+            ],
+            "description": "Larena Core: Platform foundation for package registry, operation runtime, compatibility, SitePack portable data standard and shared contracts.",
             "transport-options": {
                 "symlink": true,
                 "relative": true
@@ -2105,15 +2654,684 @@
             }
         },
         {
+            "name": "larena/layout",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../layout",
+                "reference": "d282c278f61af5e27decaf5c229a8bc0cae59756"
+            },
+            "require": {
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Larena\\Layout\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Larena\\Layout\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "@php -d zend.assertions=1 -d assert.exception=1 scripts/run-unit-tests.php"
+                ],
+                "test:unit": [
+                    "@php -d zend.assertions=1 -d assert.exception=1 scripts/run-unit-tests.php"
+                ],
+                "lint": [
+                    "@php scripts/lint.php"
+                ],
+                "analyse": [
+                    "@php scripts/analyse.php"
+                ],
+                "validate:larena": [
+                    "@php scripts/validate-larena-package.php"
+                ],
+                "evidence:check": [
+                    "@php scripts/check-evidence.php"
+                ],
+                "scope:check": [
+                    "@php tools/larena-scope-check.php"
+                ],
+                "quality:gate": [
+                    "@validate:larena",
+                    "@lint",
+                    "@analyse",
+                    "@test",
+                    "@evidence:check",
+                    "@scope:check"
+                ]
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Rim Zabarov",
+                    "homepage": "https://github.com/zabarov"
+                }
+            ],
+            "description": "Larena Layout: Universal layout and page composition engine for public pages, admin pages, dashboards, forms, lists, detail pages, documentation pages and widgets in Larena.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "larena/licensing",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../licensing",
+                "reference": "52d1215a25369cca17d5170bbfcae82d1f6c86d2"
+            },
+            "require": {
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Larena\\Licensing\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Larena\\Licensing\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "php tests/Unit/CapabilityContractTest.php && php tests/Unit/LicensingFailsClosedTest.php && php tests/Unit/LicensingCapabilityDecisionRuntimeTest.php && php tests/Unit/LicensingCapabilityDecisionFailsClosedTest.php"
+                ],
+                "test:unit": [
+                    "php tests/Unit/CapabilityContractTest.php && php tests/Unit/LicensingFailsClosedTest.php && php tests/Unit/LicensingCapabilityDecisionRuntimeTest.php && php tests/Unit/LicensingCapabilityDecisionFailsClosedTest.php"
+                ],
+                "lint": [
+                    "php scripts/lint.php"
+                ],
+                "analyse": [
+                    "php scripts/analyse.php"
+                ],
+                "validate:larena": [
+                    "php scripts/validate-larena-package.php"
+                ],
+                "evidence:check": [
+                    "php scripts/check-evidence.php"
+                ],
+                "scope:check": [
+                    "php tools/larena-scope-check.php"
+                ],
+                "quality:gate": [
+                    "@validate:larena",
+                    "@lint",
+                    "@analyse",
+                    "@test",
+                    "@larena:metadata:check",
+                    "@evidence:check",
+                    "@scope:check"
+                ],
+                "larena:metadata:check": [
+                    "php scripts/check-metadata-sync.php"
+                ]
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Rim Zabarov",
+                    "homepage": "https://github.com/zabarov"
+                }
+            ],
+            "description": "Larena Licensing: Runtime licensing layer that decides which package, bundle and capability features are available to a site, with signed entitlement snapshots, trial restrictions, subscription/expiration policies, environment-aware licenses, limits and explainable locks.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "larena/link",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../link",
+                "reference": "affc02abad5f3be568ae02c3678abe51d14575a9"
+            },
+            "require": {
+                "illuminate/database": "^13.0",
+                "illuminate/http": "^13.0",
+                "illuminate/support": "^13.0",
+                "illuminate/view": "^13.0",
+                "larena/access": "dev-main",
+                "larena/audit": "dev-main",
+                "larena/core": "dev-main",
+                "larena/licensing": "dev-main",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Larena\\Link\\Providers\\LinkServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Larena\\Link\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Larena\\Link\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemoryLinkRuntimeFailsClosedTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemoryLinkRuntimeTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/LinkFailsClosedTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/LinkTargetContractTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkPolicyPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkRuntimePlanningPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkRouteProviderPromotionReadinessTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkRuntimePackagePublicScopePlanTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/CmsPublicContentLinkDatabaseReadSourceTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkDryRunRuntimePreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicContentLinkFlowPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/LinkSharingSafetyPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/FileManagerLinkSharingRuntimePreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkTokenStorageContractPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkOperatorLifecycleManagementPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkGuardedAdminMutationPlanningPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkRevokeActionPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkRegenerateActionPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkCleanupActionPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkGuardedDeliveryReadinessPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkControlledDeliverySimulationPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkOneTimeConsumptionLifecyclePreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkGuardedRealDeliveryAdapterPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkMutationLadderReviewPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkDeliveryContractHardeningPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkPersistentLookupPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkRuntimeHardeningPreviewTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicLinkAdminSurfaceContributorTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicContentLinkFlowRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkDryRunRuntimeRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkRuntimeHardeningRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkGuardedDeliveryReadinessRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkGuardedRealDeliveryAdapterRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkOperatorLifecycleManagementRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkGuardedAdminMutationPlanningRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkRevokeActionRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkRegenerateActionRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkCleanupActionRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkMutationLadderReviewRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkDeliveryContractHardeningRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkControlledDeliverySimulationRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkOneTimeConsumptionLifecycleRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkTokenStorageContractRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkPersistentLookupRouteBoundaryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/LinkServiceProviderRegistrationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkMigrationRegistrationTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PublicLinkRuntimePlanningRouteBoundaryTest.php"
+                ],
+                "test:unit": [
+                    "@test"
+                ],
+                "lint": [
+                    "@php scripts/lint.php"
+                ],
+                "analyse": [
+                    "@php scripts/analyse.php"
+                ],
+                "validate:larena": [
+                    "@php scripts/validate-larena-package.php"
+                ],
+                "evidence:check": [
+                    "@php scripts/check-evidence.php"
+                ],
+                "scope:check": [
+                    "@php tools/larena-scope-check.php"
+                ],
+                "quality:gate": [
+                    "@validate:larena",
+                    "@lint",
+                    "@analyse",
+                    "@test",
+                    "@larena:metadata:check",
+                    "@evidence:check",
+                    "@scope:check"
+                ],
+                "larena:metadata:check": [
+                    "@php scripts/check-metadata-sync.php"
+                ]
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Rim Zabarov",
+                    "homepage": "https://github.com/zabarov"
+                }
+            ],
+            "description": "Larena Link: Shared system package for stable, short, temporary, signed, one-time and action links across Larena without exposing physical resources or bypassing auth/access/audit boundaries.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "larena/property",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../property",
+                "reference": "7773692a9e1cf60f641a050e4ebf99e1fe37c159"
+            },
+            "require": {
+                "illuminate/console": "^13.0",
+                "illuminate/http": "^13.0",
+                "illuminate/support": "^13.0",
+                "illuminate/view": "^13.0",
+                "larena/access": "dev-main",
+                "larena/audit": "dev-main",
+                "larena/core": "dev-main",
+                "larena/licensing": "dev-main",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Larena\\Property\\Providers\\PropertyServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Larena\\Property\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Larena\\Property\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PropertyContractTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PropertyFailsClosedTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PropertyTypeRegistryTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PropertyNormalizationValidationTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemoryPropertyRuntimeTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemoryPropertyRuntimeFailsClosedTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PropertyCommandProviderMigrationTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PropertyServiceProviderRegistrationTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PropertyTypeRegistryProviderTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Feature/PropertyRouteRegistrationBoundaryTest.php"
+                ],
+                "test:unit": [
+                    "@test"
+                ],
+                "lint": [
+                    "php scripts/lint.php"
+                ],
+                "analyse": [
+                    "php scripts/analyse.php"
+                ],
+                "validate:larena": [
+                    "php scripts/validate-larena-package.php"
+                ],
+                "evidence:check": [
+                    "php scripts/check-evidence.php"
+                ],
+                "scope:check": [
+                    "php tools/larena-scope-check.php"
+                ],
+                "quality:gate": [
+                    "@validate:larena",
+                    "@lint",
+                    "@analyse",
+                    "@test",
+                    "@larena:metadata:check",
+                    "@evidence:check",
+                    "@scope:check"
+                ],
+                "larena:metadata:check": [
+                    "php scripts/check-metadata-sync.php"
+                ]
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Rim Zabarov",
+                    "homepage": "https://github.com/zabarov"
+                }
+            ],
+            "description": "Larena Property: Universal property layer for field type registry, field definitions, structured render models, validation, templates and typed value interaction across settings, admin, storage and future content models.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "larena/queue",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../queue",
+                "reference": "e32f74dac5e40e19243a8d7bf416f5a3a5f59f53"
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/database": "^13.0",
+                "illuminate/support": "^13.0",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "ext-pdo": "*",
+                "ext-pdo_sqlite": "*",
+                "laravel/framework": "^13.0",
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Larena\\Queue\\Providers\\QueueServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Larena\\Queue\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Larena\\Queue\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "php scripts/test-placeholder.php"
+                ],
+                "test:unit": [
+                    "php scripts/test-placeholder.php"
+                ],
+                "lint": [
+                    "php scripts/lint.php"
+                ],
+                "analyse": [
+                    "php scripts/analyse.php"
+                ],
+                "validate:larena": [
+                    "php scripts/validate-larena-package.php"
+                ],
+                "evidence:check": [
+                    "php scripts/check-evidence.php"
+                ],
+                "scope:check": [
+                    "php tools/larena-scope-check.php"
+                ],
+                "quality:gate": [
+                    "@validate:larena",
+                    "@lint",
+                    "@analyse",
+                    "@test",
+                    "@evidence:check",
+                    "@scope:check"
+                ]
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Rim Zabarov",
+                    "homepage": "https://github.com/zabarov"
+                }
+            ],
+            "description": "Larena Queue: Mandatory system package for governed background execution, load smoothing, retry, timeout, worker supervision and hosting-safe operation scheduling across Larena packages.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "larena/scheduler",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../scheduler",
+                "reference": "b22bd2ac7d67a74d903c00a6551bdb9b14d6539f"
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/console": "^13.0",
+                "illuminate/database": "^13.0",
+                "illuminate/http": "^13.0",
+                "illuminate/routing": "^13.0",
+                "illuminate/support": "^13.0",
+                "larena/access": "dev-main",
+                "larena/audit": "dev-main",
+                "larena/queue": "dev-main",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "laravel/framework": "^13.0",
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Larena\\Scheduler\\Providers\\SchedulerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Larena\\Scheduler\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Larena\\Scheduler\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SchedulerContractTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SchedulerFailsClosedTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/ScheduleRecurrenceCalculatorTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SchedulerRuntimeTest.php"
+                ],
+                "test:unit": [
+                    "@test"
+                ],
+                "lint": [
+                    "php scripts/lint.php"
+                ],
+                "analyse": [
+                    "php scripts/analyse.php"
+                ],
+                "validate:larena": [
+                    "php scripts/validate-larena-package.php"
+                ],
+                "evidence:check": [
+                    "php scripts/check-evidence.php"
+                ],
+                "scope:check": [
+                    "php tools/larena-scope-check.php"
+                ],
+                "quality:gate": [
+                    "@validate:larena",
+                    "@lint",
+                    "@analyse",
+                    "@test",
+                    "@evidence:check",
+                    "@scope:check"
+                ]
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Rim Zabarov",
+                    "homepage": "https://github.com/zabarov"
+                }
+            ],
+            "description": "Larena Scheduler: Shared system package for declarative schedules, triggers, missed-run policy, locks, queue dispatch and schedule observability across Larena.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "larena/storage",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../storage",
+                "reference": "7c606e092591dbcb40fbe7c45ef30bb917f1df68"
+            },
+            "require": {
+                "illuminate/database": "^13.0",
+                "illuminate/support": "^13.0",
+                "larena/access": "dev-main",
+                "larena/audit": "dev-main",
+                "larena/property": "dev-main",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Larena\\Storage\\Providers\\StorageServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Larena\\Storage\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Larena\\Storage\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AccessScopedStorageRuntimeTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemoryStorageRuntimeTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/LaravelDatabaseStorageAdapterContractTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PdoLocalDevStorageAdapterTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/StorageAuditEmissionTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/StorageFailsClosedTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/StoragePersistenceFailClosedTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/StorageSchemaContractTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/StorageTransactionBoundaryTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Integration/StorageOwnedTableShapeTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Integration/StorageSchemaMigrationTableShapeTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Integration/StorageSchemaEvolutionTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Integration/StorageSchemaEvolutionAdversarialTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Integration/StorageSchemaEvolutionOwnerProtectionTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Integration/StorageSchemaEvolutionOwnerPolicyProviderOrderTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Integration/StorageSchemaEvolutionConcurrencyTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Integration/StorageCurrentReadLockingTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Integration/StorageSchemaEvolutionMySqlTest.php",
+                    "php -d zend.assertions=1 -d assert.exception=1 tests/Integration/VersionedStorageDatabaseTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Integration/StorageContentVisibilityCompatibilityTest.php"
+                ],
+                "test:content-compatibility": [
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Integration/StorageContentVisibilityCompatibilityTest.php"
+                ],
+                "test:mysql-schema-evolution": [
+                    "LARENA_STORAGE_SCHEMA_EVOLUTION_MYSQL_TEST=1 php -d zend.assertions=1 -d assert.exception=1 tests/Integration/StorageSchemaEvolutionMySqlTest.php"
+                ],
+                "test:unit": [
+                    "@test"
+                ],
+                "lint": [
+                    "php scripts/lint.php"
+                ],
+                "analyse": [
+                    "php scripts/analyse.php"
+                ],
+                "validate:larena": [
+                    "php scripts/validate-larena-package.php"
+                ],
+                "evidence:check": [
+                    "php scripts/check-evidence.php"
+                ],
+                "scope:check": [
+                    "php tools/larena-scope-check.php"
+                ],
+                "quality:gate": [
+                    "@validate:larena",
+                    "@lint",
+                    "@analyse",
+                    "@test",
+                    "@larena:metadata:check",
+                    "@evidence:check",
+                    "@scope:check"
+                ],
+                "larena:metadata:check": [
+                    "php scripts/check-metadata-sync.php"
+                ]
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Rim Zabarov",
+                    "homepage": "https://github.com/zabarov"
+                }
+            ],
+            "description": "Larena Storage: Universal dynamic data storage layer for typed schemas, records, lists, query boundaries, persistence profiles, validation pipelines and portable SitePack-compatible data models.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
             "name": "larena/ui",
             "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "../ui",
-                "reference": "86c43b86db972b8f8d1964ab4f494f562cb53acc"
+                "reference": "bd181eda92f2de22130904884e18680587ee10db"
             },
             "require": {
                 "larena/dataview": "dev-main",
+                "larena/layout": "dev-main",
                 "php": "^8.3"
             },
             "require-dev": {
@@ -2134,9 +3352,18 @@
                 "test": [
                     "@php -d zend.assertions=1 -d assert.exception=1 scripts/run-unit-tests.php",
                     "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminDataviewRendererTest.php",
-                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminUiLabRendererTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/AdminUiLabReferenceBehaviorTest.php",
                     "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SourceBackedComponentRegistryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/FrameworkContractRegistryTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/FrontendRuntimeLockTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SourceBackedAssetProvenanceLockTest.php",
                     "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SmartTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SmartManagerTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SmartFacadeTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SmartComponentReferenceTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SmartCatalogProjectionTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SmartAiCatalogProjectionTest.php",
+                    "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SmartComponentLibraryTest.php",
                     "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SfActionLinkTest.php",
                     "@php -d zend.assertions=1 -d assert.exception=1 tests/Unit/FrontendRuntimeAssetResolverTest.php"
                 ],
@@ -2177,6 +3404,98 @@
                 }
             ],
             "description": "Larena UI: Universal UI/frontend package for Larena smart components, backend-first rendering, hydration, design packs, UI asset graph, component registry, playground and frontend behavior contracts.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "larena/update",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../update",
+                "reference": "4c56bb8d26b6259ae71e58512ccadc2529accfec"
+            },
+            "require": {
+                "illuminate/http": "^13.0",
+                "illuminate/support": "^13.0",
+                "illuminate/view": "^13.0",
+                "larena/access": "dev-main",
+                "larena/audit": "dev-main",
+                "larena/core": "dev-main",
+                "larena/licensing": "dev-main",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Larena\\Update\\Providers\\UpdateServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Larena\\Update\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Larena\\Update\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "@php scripts/run-tests.php"
+                ],
+                "test:unit": [
+                    "@php scripts/run-tests.php"
+                ],
+                "lint": [
+                    "@php scripts/lint.php"
+                ],
+                "analyse": [
+                    "@php scripts/analyse.php"
+                ],
+                "quality:preflight": [
+                    "@php scripts/quality-preflight.php"
+                ],
+                "validate:larena": [
+                    "@php scripts/validate-larena-package.php"
+                ],
+                "evidence:check": [
+                    "@php scripts/check-evidence.php"
+                ],
+                "scope:check": [
+                    "@php tools/larena-scope-check.php"
+                ],
+                "quality:checkpoint": [
+                    "@quality:gate"
+                ],
+                "quality:gate": [
+                    "@quality:preflight",
+                    "@validate:larena",
+                    "@lint",
+                    "@analyse",
+                    "@test",
+                    "@evidence:check",
+                    "@scope:check"
+                ]
+            },
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Rim Zabarov",
+                    "homepage": "https://github.com/zabarov"
+                }
+            ],
+            "description": "Larena Update: Update server package that publishes signed update manifests, package archives, update APIs and entitlement-backed delivery decisions for Larena packages, bundles and products.",
             "transport-options": {
                 "symlink": true,
                 "relative": true
@@ -2910,16 +4229,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v7.4.14",
+            "version": "v7.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "92f58bc4bf97a92ed1b9f367f0cd44f20bde0e87"
+                "reference": "088ec6fe0ef6819cbc301174093b6bfa4ad26930"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/92f58bc4bf97a92ed1b9f367f0cd44f20bde0e87",
-                "reference": "92f58bc4bf97a92ed1b9f367f0cd44f20bde0e87",
+                "url": "https://api.github.com/repos/symfony/console/zipball/088ec6fe0ef6819cbc301174093b6bfa4ad26930",
+                "reference": "088ec6fe0ef6819cbc301174093b6bfa4ad26930",
                 "shasum": ""
             },
             "require": {
@@ -2984,7 +4303,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v7.4.14"
+                "source": "https://github.com/symfony/console/tree/v7.4.15"
             },
             "funding": [
                 {
@@ -3004,7 +4323,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-16T11:50:14+00:00"
+            "time": "2026-07-27T13:51:00+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -3079,16 +4398,16 @@
         },
         {
             "name": "symfony/error-handler",
-            "version": "v7.4.14",
+            "version": "v7.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/error-handler.git",
-                "reference": "4e1a093b481f323e6e326451f9760c3868430673"
+                "reference": "d49f6a19f326db41ae7103bdc38e3eb35a791261"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/error-handler/zipball/4e1a093b481f323e6e326451f9760c3868430673",
-                "reference": "4e1a093b481f323e6e326451f9760c3868430673",
+                "url": "https://api.github.com/repos/symfony/error-handler/zipball/d49f6a19f326db41ae7103bdc38e3eb35a791261",
+                "reference": "d49f6a19f326db41ae7103bdc38e3eb35a791261",
                 "shasum": ""
             },
             "require": {
@@ -3137,7 +4456,7 @@
             "description": "Provides tools to manage errors and ease debugging PHP code",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/error-handler/tree/v7.4.14"
+                "source": "https://github.com/symfony/error-handler/tree/v7.4.15"
             },
             "funding": [
                 {
@@ -3157,20 +4476,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-05T06:22:21+00:00"
+            "time": "2026-07-21T15:13:06+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v7.4.14",
+            "version": "v7.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "51fe3d170227be8d1772214b82ae506e15ed78ff"
+                "reference": "336e7f3b9e95aba04f93ea9143920c2186abfbb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/51fe3d170227be8d1772214b82ae506e15ed78ff",
-                "reference": "51fe3d170227be8d1772214b82ae506e15ed78ff",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/336e7f3b9e95aba04f93ea9143920c2186abfbb9",
+                "reference": "336e7f3b9e95aba04f93ea9143920c2186abfbb9",
                 "shasum": ""
             },
             "require": {
@@ -3222,7 +4541,7 @@
             "description": "Provides tools that allow your application components to communicate with each other by dispatching events and listening to them",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/event-dispatcher/tree/v7.4.14"
+                "source": "https://github.com/symfony/event-dispatcher/tree/v7.4.15"
             },
             "funding": [
                 {
@@ -3242,7 +4561,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-06T11:10:32+00:00"
+            "time": "2026-07-21T15:13:06+00:00"
         },
         {
             "name": "symfony/event-dispatcher-contracts",
@@ -3394,16 +4713,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v7.4.14",
+            "version": "v7.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "06db5ae1552177bf8572f8908839f12e3c06aed3"
+                "reference": "1f898ee8188adda9417fb52cf8425a8342c254e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/06db5ae1552177bf8572f8908839f12e3c06aed3",
-                "reference": "06db5ae1552177bf8572f8908839f12e3c06aed3",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/1f898ee8188adda9417fb52cf8425a8342c254e7",
+                "reference": "1f898ee8188adda9417fb52cf8425a8342c254e7",
                 "shasum": ""
             },
             "require": {
@@ -3452,7 +4771,7 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v7.4.14"
+                "source": "https://github.com/symfony/http-foundation/tree/v7.4.15"
             },
             "funding": [
                 {
@@ -3472,20 +4791,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-11T07:31:44+00:00"
+            "time": "2026-07-29T07:12:33+00:00"
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v7.4.14",
+            "version": "v7.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "e99af79b1e776646eda0e1c23b7b45c184ff99be"
+                "reference": "403275d94f94d5626c3288c599b3b48093ba24f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/e99af79b1e776646eda0e1c23b7b45c184ff99be",
-                "reference": "e99af79b1e776646eda0e1c23b7b45c184ff99be",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/403275d94f94d5626c3288c599b3b48093ba24f7",
+                "reference": "403275d94f94d5626c3288c599b3b48093ba24f7",
                 "shasum": ""
             },
             "require": {
@@ -3543,7 +4862,7 @@
                 "symfony/validator": "^6.4|^7.0|^8.0",
                 "symfony/var-dumper": "^6.4|^7.0|^8.0",
                 "symfony/var-exporter": "^6.4|^7.0|^8.0",
-                "twig/twig": "^3.12"
+                "twig/twig": "^3.12|^4.0"
             },
             "type": "library",
             "autoload": {
@@ -3571,7 +4890,7 @@
             "description": "Provides a structured process for converting a Request into a Response",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-kernel/tree/v7.4.14"
+                "source": "https://github.com/symfony/http-kernel/tree/v7.4.15"
             },
             "funding": [
                 {
@@ -3591,20 +4910,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-27T09:14:35+00:00"
+            "time": "2026-07-29T11:40:42+00:00"
         },
         {
             "name": "symfony/mime",
-            "version": "v7.4.13",
+            "version": "v7.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mime.git",
-                "reference": "a845722765c4f6b2ce88beaf4f4479975b186770"
+                "reference": "0c1daf58bc931628df0bea26840d1fc8b9a3d34b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mime/zipball/a845722765c4f6b2ce88beaf4f4479975b186770",
-                "reference": "a845722765c4f6b2ce88beaf4f4479975b186770",
+                "url": "https://api.github.com/repos/symfony/mime/zipball/0c1daf58bc931628df0bea26840d1fc8b9a3d34b",
+                "reference": "0c1daf58bc931628df0bea26840d1fc8b9a3d34b",
                 "shasum": ""
             },
             "require": {
@@ -3660,7 +4979,7 @@
                 "mime-type"
             ],
             "support": {
-                "source": "https://github.com/symfony/mime/tree/v7.4.13"
+                "source": "https://github.com/symfony/mime/tree/v7.4.15"
             },
             "funding": [
                 {
@@ -3680,7 +4999,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-23T16:22:37+00:00"
+            "time": "2026-07-29T07:59:49+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -3767,16 +5086,16 @@
         },
         {
             "name": "symfony/polyfill-intl-grapheme",
-            "version": "v1.38.1",
+            "version": "v1.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-grapheme.git",
-                "reference": "e9247d281d694a5120554d9afaf54e070e88a603"
+                "reference": "bb899c1db0aa8127dc3afe8cda4a67eb24915f8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-grapheme/zipball/e9247d281d694a5120554d9afaf54e070e88a603",
-                "reference": "e9247d281d694a5120554d9afaf54e070e88a603",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-grapheme/zipball/bb899c1db0aa8127dc3afe8cda4a67eb24915f8d",
+                "reference": "bb899c1db0aa8127dc3afe8cda4a67eb24915f8d",
                 "shasum": ""
             },
             "require": {
@@ -3825,7 +5144,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-grapheme/tree/v1.38.1"
+                "source": "https://github.com/symfony/polyfill-intl-grapheme/tree/v1.41.0"
             },
             "funding": [
                 {
@@ -3845,7 +5164,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-26T05:58:03+00:00"
+            "time": "2026-07-28T08:25:59+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
@@ -4190,16 +5509,16 @@
         },
         {
             "name": "symfony/polyfill-php83",
-            "version": "v1.38.2",
+            "version": "v1.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php83.git",
-                "reference": "796a26abb75ce49f3a84433cd81bf1009d73d5f8"
+                "reference": "5ea99087fb99c273a9b9236ed4c31e78b16103c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php83/zipball/796a26abb75ce49f3a84433cd81bf1009d73d5f8",
-                "reference": "796a26abb75ce49f3a84433cd81bf1009d73d5f8",
+                "url": "https://api.github.com/repos/symfony/polyfill-php83/zipball/5ea99087fb99c273a9b9236ed4c31e78b16103c6",
+                "reference": "5ea99087fb99c273a9b9236ed4c31e78b16103c6",
                 "shasum": ""
             },
             "require": {
@@ -4246,7 +5565,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php83/tree/v1.38.2"
+                "source": "https://github.com/symfony/polyfill-php83/tree/v1.41.0"
             },
             "funding": [
                 {
@@ -4266,7 +5585,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-27T06:51:48+00:00"
+            "time": "2026-07-01T12:47:55+00:00"
         },
         {
             "name": "symfony/polyfill-php84",
@@ -4350,16 +5669,16 @@
         },
         {
             "name": "symfony/polyfill-php85",
-            "version": "v1.38.1",
+            "version": "v1.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php85.git",
-                "reference": "ba2ba04f3352cfa2dcbbcb90aee13ed967f505b1"
+                "reference": "255fab485aaa1006ed411040c42aecd7b5302d7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php85/zipball/ba2ba04f3352cfa2dcbbcb90aee13ed967f505b1",
-                "reference": "ba2ba04f3352cfa2dcbbcb90aee13ed967f505b1",
+                "url": "https://api.github.com/repos/symfony/polyfill-php85/zipball/255fab485aaa1006ed411040c42aecd7b5302d7a",
+                "reference": "255fab485aaa1006ed411040c42aecd7b5302d7a",
                 "shasum": ""
             },
             "require": {
@@ -4406,7 +5725,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php85/tree/v1.38.1"
+                "source": "https://github.com/symfony/polyfill-php85/tree/v1.41.0"
             },
             "funding": [
                 {
@@ -4426,20 +5745,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-26T02:25:22+00:00"
+            "time": "2026-07-01T12:47:55+00:00"
         },
         {
             "name": "symfony/polyfill-php86",
-            "version": "v1.38.0",
+            "version": "v1.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php86.git",
-                "reference": "fcec68d64f46dc84e1f6ffcf2c6dda40ff3143ad"
+                "reference": "6bc356ed3d8dbfeea8f0de235e34d670704e880e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php86/zipball/fcec68d64f46dc84e1f6ffcf2c6dda40ff3143ad",
-                "reference": "fcec68d64f46dc84e1f6ffcf2c6dda40ff3143ad",
+                "url": "https://api.github.com/repos/symfony/polyfill-php86/zipball/6bc356ed3d8dbfeea8f0de235e34d670704e880e",
+                "reference": "6bc356ed3d8dbfeea8f0de235e34d670704e880e",
                 "shasum": ""
             },
             "require": {
@@ -4486,7 +5805,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php86/tree/v1.38.0"
+                "source": "https://github.com/symfony/polyfill-php86/tree/v1.41.0"
             },
             "funding": [
                 {
@@ -4506,7 +5825,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-25T11:52:35+00:00"
+            "time": "2026-07-02T13:42:24+00:00"
         },
         {
             "name": "symfony/process",
@@ -4575,16 +5894,16 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v7.4.13",
+            "version": "v7.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "3a162171bb008e5e0f15dce6581373a4c0e8390d"
+                "reference": "80c0a93d3f8e7499f716204a1fb38ead942a7a2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/3a162171bb008e5e0f15dce6581373a4c0e8390d",
-                "reference": "3a162171bb008e5e0f15dce6581373a4c0e8390d",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/80c0a93d3f8e7499f716204a1fb38ead942a7a2b",
+                "reference": "80c0a93d3f8e7499f716204a1fb38ead942a7a2b",
                 "shasum": ""
             },
             "require": {
@@ -4636,7 +5955,7 @@
                 "url"
             ],
             "support": {
-                "source": "https://github.com/symfony/routing/tree/v7.4.13"
+                "source": "https://github.com/symfony/routing/tree/v7.4.15"
             },
             "funding": [
                 {
@@ -4656,7 +5975,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-24T11:20:33+00:00"
+            "time": "2026-07-21T15:13:06+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -4747,16 +6066,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v7.4.13",
+            "version": "v7.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "961683010db3b27ec6ebcd7308e6e1ee8fa7ffde"
+                "reference": "e394af32256bf9e7bf80849d95e589167c10097b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/961683010db3b27ec6ebcd7308e6e1ee8fa7ffde",
-                "reference": "961683010db3b27ec6ebcd7308e6e1ee8fa7ffde",
+                "url": "https://api.github.com/repos/symfony/string/zipball/e394af32256bf9e7bf80849d95e589167c10097b",
+                "reference": "e394af32256bf9e7bf80849d95e589167c10097b",
                 "shasum": ""
             },
             "require": {
@@ -4814,7 +6133,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v7.4.13"
+                "source": "https://github.com/symfony/string/tree/v7.4.15"
             },
             "funding": [
                 {
@@ -4834,7 +6153,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-23T15:23:29+00:00"
+            "time": "2026-07-28T07:33:02+00:00"
         },
         {
             "name": "symfony/translation",
@@ -5020,16 +6339,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v7.4.14",
+            "version": "v7.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "9a3a56a4a1e65a5cb4f8d13801fe8ab0a170e358"
+                "reference": "04ba4add636a95ff437af3a5a9499bb1d6c6d4bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/9a3a56a4a1e65a5cb4f8d13801fe8ab0a170e358",
-                "reference": "9a3a56a4a1e65a5cb4f8d13801fe8ab0a170e358",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/04ba4add636a95ff437af3a5a9499bb1d6c6d4bd",
+                "reference": "04ba4add636a95ff437af3a5a9499bb1d6c6d4bd",
                 "shasum": ""
             },
             "require": {
@@ -5045,7 +6364,7 @@
                 "symfony/http-kernel": "^6.4|^7.0|^8.0",
                 "symfony/process": "^6.4|^7.0|^8.0",
                 "symfony/uid": "^6.4|^7.0|^8.0",
-                "twig/twig": "^3.12"
+                "twig/twig": "^3.12|^4.0"
             },
             "bin": [
                 "Resources/bin/var-dump-server"
@@ -5083,7 +6402,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v7.4.14"
+                "source": "https://github.com/symfony/var-dumper/tree/v7.4.15"
             },
             "funding": [
                 {
@@ -5103,7 +6422,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-08T20:24:16+00:00"
+            "time": "2026-07-21T15:13:06+00:00"
         },
         {
             "name": "voku/portable-ascii",
@@ -5183,11 +6502,11 @@
     "packages-dev": [
         {
             "name": "phpstan/phpstan",
-            "version": "2.2.5",
+            "version": "2.2.7",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/909c1e5fef7989ac0d0c1c5c42e32a5c4f6198a0",
-                "reference": "909c1e5fef7989ac0d0c1c5c42e32a5c4f6198a0",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/692db47b9dddb0487934e5236e77d48594aef921",
+                "reference": "692db47b9dddb0487934e5236e77d48594aef921",
                 "shasum": ""
             },
             "require": {
@@ -5243,14 +6562,18 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-05T06:31:06+00:00"
+            "time": "2026-07-29T17:39:32+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "larena/access": 20,
-        "larena/audit": 20
+        "larena/admin": 20,
+        "larena/audit": 20,
+        "larena/queue": 20,
+        "larena/scheduler": 20,
+        "larena/ui": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

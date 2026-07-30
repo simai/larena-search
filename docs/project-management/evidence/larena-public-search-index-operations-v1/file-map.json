@@ -1,0 +1,9 @@
+{
+  "schema": "larena.search.file-map.v1",
+  "owners": {
+    "public_http": ["routes/public.php", "src/Http/Controllers/PublicSearchController.php", "src/Http/PublicSearchPresenter.php", "resources/views/public/search.blade.php"],
+    "admin_operations": ["routes/admin.php", "src/Http/Controllers/SearchAdminController.php", "src/Operations/SearchIndexOperationsQuery.php"],
+    "durable_delivery": ["src/Queue", "src/Scheduler"],
+    "index_semantics": ["src/Persistence/DatabaseSearchIndex.php", "src/Reindex/SearchReindexService.php"]
+  }
+}

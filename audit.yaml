@@ -23,4 +23,5 @@ forbidden_payload_fields:
   - payload
 nonclaims:
   production_ready: false
+  frontend_complete: false
   all_packages_ready: false

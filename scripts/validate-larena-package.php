@@ -105,6 +105,7 @@ $knownCodingLaunchRecords = [
     'published-page-search.json',
     'canonical-mysql-reproducibility.json',
     'content-model-administration-api-v1-search-lifetime.json',
+    'larena-public-search-index-operations-v1.json',
 ];
 if ($codingStarted) {
     $knownLaunchRecord = false;
@@ -160,9 +161,12 @@ if (($composer['extra']['laravel']['providers'] ?? []) !== ['Larena\\Search\\Pro
 }
 $lock = json_decode((string) file_get_contents('composer.lock'), true, 512, JSON_THROW_ON_ERROR);
 $expectedRevisions = [
-    'larena/access' => 'af45111b2a620d1b46331e2fe009a571f22230ad',
-    'larena/audit' => 'b5f6d215fb020f7b8b071cc40b7dde4e2ed2cea1',
-    'larena/ui' => '86c43b86db972b8f8d1964ab4f494f562cb53acc',
+    'larena/access' => '28cae5ad9bb5b401dc95a4d79becaaeb8d8ea5ad',
+    'larena/admin' => 'ee5706816d08b1e344e8b28499ec0ebd49e37b9f',
+    'larena/audit' => 'cc6ba3ccf279eefdef3fa3973249629a3a100feb',
+    'larena/queue' => 'e32f74dac5e40e19243a8d7bf416f5a3a5f59f53',
+    'larena/scheduler' => 'b22bd2ac7d67a74d903c00a6551bdb9b14d6539f',
+    'larena/ui' => 'bd181eda92f2de22130904884e18680587ee10db',
     'larena/dataview' => 'b84e964b4ed78e1ca08a46c88e7651b02744ee47',
 ];
 $lockedRevisions = [];
@@ -177,8 +181,22 @@ foreach ($expectedRevisions as $package => $revision) {
         $errors[] = "composer.lock must pin {$package} to {$revision}.";
     }
 }
-if (is_dir('routes') || is_dir('resources/views') || is_dir('src/Http')) {
-    $errors[] = 'Published-page Search runtime must not add routes, views or HTTP controllers.';
+if (str_contains($launchRecordRef, 'larena-public-search-index-operations-v1.json')) {
+    foreach (['routes/public.php', 'routes/admin.php', 'resources/views/public/search.blade.php', 'resources/views/admin/index.blade.php', 'src/Http/Controllers/PublicSearchController.php', 'src/Http/Controllers/SearchAdminController.php', 'src/Queue/SearchReindexJobHandler.php', 'src/Scheduler/SearchScheduledReindexHandler.php'] as $file) {
+        if (!is_file($file)) {
+            $errors[] = "Missing public Search/index operations runtime file: {$file}";
+        }
+    }
+    $publicController = is_file('src/Http/Controllers/PublicSearchController.php') ? (string) file_get_contents('src/Http/Controllers/PublicSearchController.php') : '';
+    if (!str_contains($publicController, "accessScopes: ['public']")) {
+        $errors[] = 'Public Search controller must query only the public access scope.';
+    }
+    foreach (['resources/views/public/search.blade.php', 'resources/views/admin/index.blade.php'] as $view) {
+        $source = is_file($view) ? (string) file_get_contents($view) : '';
+        if (preg_match('/<style\\b|<script\\b(?![^>]*\\bsrc=)|@php\\b/i', $source) === 1) {
+            $errors[] = "Search view must not contain inline style, script or PHP: {$view}";
+        }
+    }
 }
 if ($errors !== []) {
     foreach ($errors as $error) {

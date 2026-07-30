@@ -1,6 +1,9 @@
 schema: larena.access.descriptor.v1
 package: larena/search
 operations:
+  - code: search.reindex.read
+    risk: normal
+    audit: denial
   - code: search.reindex.schedule
     risk: critical
     audit: always

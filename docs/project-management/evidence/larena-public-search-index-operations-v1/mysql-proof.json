@@ -1,0 +1,10 @@
+{
+  "schema": "larena.search.mysql-proof.v1",
+  "status": "pending_root_integration",
+  "required": [
+    "schedule_first_vs_first_realtime_upsert_barrier",
+    "publish_first_vs_schedule_barrier",
+    "concurrent_generation_safety_and_no_equal_revision_tombstone"
+  ],
+  "owner": "root_artifact_acceptance"
+}

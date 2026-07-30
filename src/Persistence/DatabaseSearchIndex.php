@@ -6,6 +6,7 @@ namespace Larena\Search\Persistence;
 
 use Illuminate\Database\ConnectionInterface;
 use Larena\Search\Contracts\SearchHit;
+use Larena\Search\Contracts\SearchPage;
 use Larena\Search\Contracts\SearchProjection;
 use Larena\Search\Contracts\SearchQuery;
 use Larena\Search\Contracts\SearchWriteResult;
@@ -118,6 +119,11 @@ final readonly class DatabaseSearchIndex
     /** @return list<SearchHit> */
     public function query(SearchQuery $query): array
     {
+        return $this->queryPage($query)->hits;
+    }
+
+    public function queryPage(SearchQuery $query): SearchPage
+    {
         try {
             $needle = mb_strtolower(trim($query->term));
             $escaped = str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $needle);
@@ -136,8 +142,14 @@ final readonly class DatabaseSearchIndex
                 ->orderBy('title')
                 ->orderBy('provider_id')
                 ->orderBy('source_ref')
-                ->limit($query->limit)
+                ->offset($query->offset)
+                ->limit($query->limit + 1)
                 ->get();
+
+            $hasNext = $rows->count() > $query->limit;
+            if ($hasNext) {
+                $rows = $rows->take($query->limit);
+            }
 
             $hits = [];
             foreach ($rows as $row) {
@@ -155,7 +167,12 @@ final readonly class DatabaseSearchIndex
                 );
             }
 
-            return $hits;
+            return new SearchPage(
+                $hits,
+                intdiv($query->offset, $query->limit) + 1,
+                $query->limit,
+                $hasNext,
+            );
         } catch (SearchPersistenceFailed|InvalidArgumentException $exception) {
             throw $exception;
         } catch (Throwable $exception) {

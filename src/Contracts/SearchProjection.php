@@ -33,6 +33,12 @@ final readonly class SearchProjection
         if (trim($this->title) === '' || trim($this->locator) === '' || trim($this->accessScope) === '') {
             throw new InvalidArgumentException('search_projection_required_field_missing');
         }
+        if (strlen($this->locator) > 2048
+            || preg_match('/[\\x00-\\x1F\\x7F\\\\]/', $this->locator) === 1
+            || !str_starts_with($this->locator, '/')
+            || str_starts_with($this->locator, '//')) {
+            throw new InvalidArgumentException('search_projection_locator_unsafe');
+        }
         if ($this->locale !== null && preg_match('/^[A-Za-z]{2,3}(?:[-_][A-Za-z0-9]{2,8})?$/', $this->locale) !== 1) {
             throw new InvalidArgumentException('search_projection_locale_invalid');
         }

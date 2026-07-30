@@ -1,0 +1,2 @@
+<?php
+return ['title' => 'Search — Larena', 'heading' => 'Search', 'skip' => 'Skip to search results', 'query' => 'Search query', 'locale' => 'Language', 'submit' => 'Search', 'empty' => 'Enter a query to search published pages.', 'no_results' => 'Nothing was found.', 'error' => 'Search is temporarily unavailable. Please try again.', 'results' => 'Search results', 'pagination' => 'Search result pages', 'previous' => 'Previous page', 'next' => 'Next page'];

@@ -12,14 +12,31 @@
     "require": {
         "illuminate/console": "^13.0",
         "illuminate/database": "^13.0",
+        "illuminate/http": "^13.0",
+        "illuminate/routing": "^13.0",
         "illuminate/support": "^13.0",
         "larena/access": "dev-main",
+        "larena/admin": "dev-main",
         "larena/audit": "dev-main",
+        "larena/queue": "dev-main",
+        "larena/scheduler": "dev-main",
+        "larena/ui": "dev-main",
         "php": "^8.3"
     },
     "repositories": [
         {"type": "path", "url": "../access", "options": {"symlink": true, "reference": "auto"}},
         {"type": "path", "url": "../audit", "options": {"symlink": true, "reference": "auto"}},
+        {"type": "path", "url": "../admin", "options": {"symlink": true, "reference": "auto"}},
+        {"type": "path", "url": "../queue", "options": {"symlink": true, "reference": "auto"}},
+        {"type": "path", "url": "../scheduler", "options": {"symlink": true, "reference": "auto"}},
+        {"type": "path", "url": "../core", "options": {"symlink": true, "reference": "auto"}},
+        {"type": "path", "url": "../cockpit", "options": {"symlink": true, "reference": "auto"}},
+        {"type": "path", "url": "../licensing", "options": {"symlink": true, "reference": "auto"}},
+        {"type": "path", "url": "../layout", "options": {"symlink": true, "reference": "auto"}},
+        {"type": "path", "url": "../link", "options": {"symlink": true, "reference": "auto"}},
+        {"type": "path", "url": "../storage", "options": {"symlink": true, "reference": "auto"}},
+        {"type": "path", "url": "../property", "options": {"symlink": true, "reference": "auto"}},
+        {"type": "path", "url": "../update", "options": {"symlink": true, "reference": "auto"}},
         {"type": "path", "url": "../ui", "options": {"symlink": true, "reference": "auto"}},
         {"type": "path", "url": "../dataview", "options": {"symlink": true, "reference": "auto"}}
     ],
@@ -53,6 +70,8 @@
             "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchSourceRegistryTest.php",
             "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchReindexServiceTest.php",
             "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchLaravelPackageContractTest.php"
+            ,"php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicSearchPresentationTest.php"
+            ,"php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchQueueResumeIntegrationTest.php"
         ],
         "test:unit": [
             "@test"

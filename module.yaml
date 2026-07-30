@@ -2,7 +2,7 @@ package: larena/search
 title: Larena Search
 status: coding_started
 cluster: data-content
-batch: content-model-administration-api-v1-search-lifetime
+batch: larena-public-search-index-operations-v1
 features:
   - search.admin_diagnostics
   - search.engine_profiles
@@ -11,6 +11,10 @@ features:
   - search.reindex_jobs
   - search.result_exposure_policy
   - search.source_provider_registry
+  - search.public_http
+  - search.localized_pagination
+  - search.queue_checkpoint_delivery
+  - search.scheduler_delivery
 runtime:
   php: "^8.3"
   laravel: "^13.0"
@@ -18,7 +22,12 @@ runtime:
 dependencies:
   - larena/access
   - larena/audit
+  - larena/admin
+  - larena/queue
+  - larena/scheduler
+  - larena/ui
 access_operations:
+  - search.reindex.read
   - search.reindex.schedule
   - search.reindex.run
   - search.reindex.resume
@@ -29,7 +38,8 @@ audit_events:
   - search.reindex.completed
   - search.reindex.failed
 evidence:
-  path: docs/project-management/evidence/content-model-administration-api-v1-search-lifetime/
+  path: docs/project-management/evidence/larena-public-search-index-operations-v1/
 nonclaims:
   production_ready: false
+  frontend_complete: false
   all_packages_ready: false

@@ -1,0 +1,8 @@
+{
+  "schema": "larena.search.restart-proof.v1",
+  "status": "passed",
+  "database": "disposable_file_backed_sqlite",
+  "tests": ["DatabaseSearchIndexTest.php", "SearchQueueResumeIntegrationTest.php"],
+  "proof": ["index_reconnect", "checkpoint_100_of_101", "failed_retry_sanitized", "fresh_worker_resume", "completed_101_without_duplicates"],
+  "cleanup": ["search_tables", "queue_tables", "database", "wal", "shm", "journal"]
+}

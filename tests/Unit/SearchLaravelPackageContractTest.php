@@ -22,7 +22,7 @@ search_package_assert(
     ($composer['extra']['laravel']['providers'] ?? []) === [SearchServiceProvider::class],
     'Composer must auto-discover the Search service provider.',
 );
-foreach (['illuminate/console', 'illuminate/database', 'illuminate/support', 'larena/access', 'larena/audit'] as $dependency) {
+foreach (['illuminate/console', 'illuminate/database', 'illuminate/http', 'illuminate/routing', 'illuminate/support', 'larena/access', 'larena/admin', 'larena/audit', 'larena/queue', 'larena/scheduler', 'larena/ui'] as $dependency) {
     search_package_assert(isset($composer['require'][$dependency]), "Missing runtime dependency {$dependency}.");
 }
 search_package_assert(class_exists(SearchServiceProvider::class), 'Search service provider must autoload.');
@@ -42,10 +42,11 @@ $registry = new AccessOperationRegistry();
 $registration = new ReflectionMethod(SearchServiceProvider::class, 'registerAccessOperations');
 $registration->invoke(null, $registry);
 $registration->invoke(null, $registry);
-search_package_assert(count($registry->all()) === 3, 'Canonical Search Access operations must register idempotently.');
-foreach (['search.reindex.schedule', 'search.reindex.run', 'search.reindex.resume'] as $operation) {
+search_package_assert(count($registry->all()) === 4, 'Canonical Search Access operations must register idempotently.');
+foreach (['search.reindex.read', 'search.reindex.schedule', 'search.reindex.run', 'search.reindex.resume'] as $operation) {
     search_package_assert($registry->get($operation) !== null, "Missing Access operation {$operation}.");
 }
+search_package_assert($registry->get('search.reindex.read')?->requiredGrant === 'read', 'Reader must receive only the Search diagnostics read grant.');
 
 $commandSource = (string) file_get_contents(dirname(__DIR__, 2) . '/src/Commands/ReindexSearchCommand.php');
 search_package_assert(str_contains($commandSource, "search:reindex"), 'Reindex CLI signature must remain stable.');

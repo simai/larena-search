@@ -1,0 +1,7 @@
+{
+  "schema": "larena.graph_sync_proposal.v1",
+  "package": "larena/search",
+  "proposal": "Add public HTTP search and durable index operations capabilities after independent acceptance.",
+  "canonical_update_allowed": false,
+  "status": "proposal_only"
+}

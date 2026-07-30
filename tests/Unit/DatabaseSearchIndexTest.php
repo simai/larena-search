@@ -42,6 +42,24 @@ try {
     search_index_assert(count($index->query(new SearchQuery('welcome', providerId: 'other.pages'))) === 0, 'Provider filter must fail closed.');
     search_index_assert(count($index->query(new SearchQuery('welcome', locale: 'ru'))) === 0, 'Locale filter must fail closed.');
     search_index_assert(count($index->query(new SearchQuery('welcome', accessScopes: ['staff']))) === 0, 'Access scope filter must fail closed.');
+    for ($number = 1; $number <= 3; $number++) {
+        $index->upsert(new SearchProjection(
+            providerId: 'docara.pages', sourceRef: 'page:pagination-' . $number, sourceRevision: 1,
+            title: sprintf('Pagination %02d', $number), locator: '/docs/pagination-' . $number,
+            locale: 'en', accessScope: 'public', searchableText: 'bounded pagination',
+        ));
+    }
+    $firstPage = $index->queryPage(new SearchQuery('bounded pagination', locale: 'en', limit: 2));
+    $secondPage = $index->queryPage(new SearchQuery('bounded pagination', locale: 'en', limit: 2, offset: 2));
+    search_index_assert(count($firstPage->hits) === 2 && $firstPage->hasNext, 'First bounded page must expose a deterministic next-page signal.');
+    search_index_assert(count($secondPage->hits) === 1 && !$secondPage->hasNext && $secondPage->page === 2, 'Second bounded page must be deterministic and terminal.');
+    $unsafeLocatorRejected = false;
+    try {
+        new SearchProjection('docara.pages', 'unsafe:1', 1, 'Unsafe', '//attacker.example/path');
+    } catch (InvalidArgumentException $exception) {
+        $unsafeLocatorRejected = $exception->getMessage() === 'search_projection_locator_unsafe';
+    }
+    search_index_assert($unsafeLocatorRejected, 'Protocol-relative result locators must fail closed.');
 
     $second = new SearchProjection(
         providerId: 'docara.pages', sourceRef: 'page:welcome', sourceRevision: 2,

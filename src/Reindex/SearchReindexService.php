@@ -122,6 +122,26 @@ final readonly class SearchReindexService
         return $this->execute($runRef, $actor, $batchSize, $maxBatches, true, $expectedProviderId);
     }
 
+    public function retry(
+        string $runRef,
+        string $actor,
+        int $batchSize = 100,
+        int $maxBatches = 0,
+        ?string $expectedProviderId = null,
+    ): ReindexRun {
+        $this->assertActor($actor);
+        $this->authorizer->assertAllowed($actor, 'search.reindex.retry');
+        if ($expectedProviderId !== null) {
+            $this->assertProviderId($expectedProviderId);
+        }
+        $run = $this->find($runRef);
+        if ($run === null || $run->state !== 'failed') {
+            throw new SearchReindexRejected('search_reindex_not_retryable');
+        }
+
+        return $this->execute($runRef, $actor, $batchSize, $maxBatches, true, $expectedProviderId);
+    }
+
     public function find(string $runRef): ?ReindexRun
     {
         try {

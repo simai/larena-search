@@ -7,4 +7,5 @@ return [
     'reindex_schedule' => 'Schedule a search reindex',
     'reindex_run' => 'Run a scheduled search reindex',
     'reindex_resume' => 'Resume an interrupted search reindex',
+    'reindex_retry' => 'Retry a failed search reindex',
 ];

@@ -11,6 +11,7 @@ return [
         'default_locale' => 'ru',
         'per_page' => 20,
         'maximum_page' => 500,
+        'minimum_term_length' => 2,
     ],
     'admin' => [
         'enabled' => filter_var(getenv('LARENA_SEARCH_ADMIN_ROUTES') ?: false, FILTER_VALIDATE_BOOL),
@@ -21,6 +22,7 @@ return [
         'schedule_middleware' => ['access:search.reindex.schedule'],
         'run_middleware' => ['access:search.reindex.run'],
         'resume_middleware' => ['access:search.reindex.resume'],
+        'retry_middleware' => ['access:search.reindex.retry'],
     ],
     'reindex' => [
         'batch_size' => 100,

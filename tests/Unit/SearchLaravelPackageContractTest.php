@@ -42,8 +42,8 @@ $registry = new AccessOperationRegistry();
 $registration = new ReflectionMethod(SearchServiceProvider::class, 'registerAccessOperations');
 $registration->invoke(null, $registry);
 $registration->invoke(null, $registry);
-search_package_assert(count($registry->all()) === 4, 'Canonical Search Access operations must register idempotently.');
-foreach (['search.reindex.read', 'search.reindex.schedule', 'search.reindex.run', 'search.reindex.resume'] as $operation) {
+search_package_assert(count($registry->all()) === 5, 'Canonical Search Access operations must register idempotently.');
+foreach (['search.reindex.read', 'search.reindex.schedule', 'search.reindex.run', 'search.reindex.resume', 'search.reindex.retry'] as $operation) {
     search_package_assert($registry->get($operation) !== null, "Missing Access operation {$operation}.");
 }
 search_package_assert($registry->get('search.reindex.read')?->requiredGrant === 'read', 'Reader must receive only the Search diagnostics read grant.');

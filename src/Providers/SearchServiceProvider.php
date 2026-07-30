@@ -115,6 +115,7 @@ final class SearchServiceProvider extends ServiceProvider
             ['search.reindex.schedule', 'reindex_schedule', 'schedule', 'critical'],
             ['search.reindex.run', 'reindex_run', 'run', 'critical'],
             ['search.reindex.resume', 'reindex_resume', 'resume', 'critical'],
+            ['search.reindex.retry', 'reindex_retry', 'retry', 'critical'],
         ] as [$code, $label, $grant, $risk]) {
             $registered = $registry->register(new AccessOperationDescriptor(
                 code: $code,

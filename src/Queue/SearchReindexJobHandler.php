@@ -24,7 +24,8 @@ final readonly class SearchReindexJobHandler implements QueueJobHandler
         $providerId = is_string($payload['provider_id'] ?? null) ? $payload['provider_id'] : '';
         $actor = is_string($payload['actor_ref'] ?? null) ? $payload['actor_ref'] : '';
         $batchSize = is_int($payload['batch_size'] ?? null) ? $payload['batch_size'] : 100;
-        if ($runRef === '' || $providerId === '' || $actor === '' || $batchSize < 1 || $batchSize > 1000) {
+        $operation = is_string($payload['operation'] ?? null) ? $payload['operation'] : 'continue';
+        if ($runRef === '' || $providerId === '' || $actor === '' || $batchSize < 1 || $batchSize > 1000 || !in_array($operation, ['run', 'resume', 'retry', 'continue'], true)) {
             return QueueJobResult::failure('search_reindex_payload_invalid', false);
         }
 
@@ -37,12 +38,14 @@ final readonly class SearchReindexJobHandler implements QueueJobHandler
                 return QueueJobResult::success(['run_ref' => $runRef, 'state' => 'completed', 'processed_count' => $current->processedCount]);
             }
 
-            $next = $current->state === 'scheduled'
-                ? $this->reindex->run($runRef, $actor, $batchSize, 1)
-                : $this->reindex->resume($runRef, $actor, $batchSize, 1, $providerId);
+            $next = match ($operation) {
+                'run' => $this->reindex->run($runRef, $actor, $batchSize, 1),
+                'retry' => $this->reindex->retry($runRef, $actor, $batchSize, 1, $providerId),
+                default => $this->reindex->resume($runRef, $actor, $batchSize, 1, $providerId),
+            };
             $context->checkpoint();
             if (!$next->isComplete()) {
-                $this->dispatcher->dispatchRun($next);
+                $this->dispatcher->dispatchRun($next, 'continue', $actor);
             }
 
             return QueueJobResult::success([

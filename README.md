@@ -11,12 +11,14 @@ The current database/native baseline provides:
   resolves request/connection-bound sources only while processing a batch;
 - one active rebuild per provider, a durable provider-level generation fence, checkpoints and generation-safe cleanup;
 - protected SIMAI Framework administration surface with Reader diagnostics and Administrator-only expected-state mutations;
-- separate `search.reindex.read`, `search.reindex.schedule`, `search.reindex.run` and `search.reindex.resume` permissions;
+- separate `search.reindex.read`, `search.reindex.schedule`, `search.reindex.run`, `search.reindex.resume` and `search.reindex.retry` permissions;
 - one bounded Search batch per durable Queue job, restart-safe continuation and a Scheduler-owned delivery adapter;
 - sanitized Security Audit events for start, resume, checkpoint, completion and failure;
 - Laravel auto-discovery, migrations and the `search:reindex` command.
 
 `InMemorySearchRuntime` remains available as a compatibility/developer contract baseline. It is not the persistent runtime.
+
+The database-native public route rejects non-empty terms shorter than two characters, caps input at 200 characters, returns at most 20 results per page, and caps pagination at page 500. These are the explicit v1 cost bounds.
 
 The package owns `/search` and the optional local/testing `/admin/search` operations surface. Content and Docara remain the only owners of the published projections; Search never reads their private tables or draft payload. External engines, vector/semantic search and crawler/analytics are not included. The package does not claim production readiness, frontend completeness or readiness of all Larena packages.
 

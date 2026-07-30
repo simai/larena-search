@@ -21,32 +21,51 @@ final readonly class SearchReindexDispatcher
     ) {
     }
 
-    /** @return array{run:ReindexRun,dispatch:DispatchResult} */
-    public function schedule(string $providerId, string $actor, string $expectedState, ?string $correlationId = null): array
+    public function schedule(string $providerId, string $actor, string $expectedState, ?string $correlationId = null): ReindexRun
     {
         $current = $this->operations->provider($providerId);
         if ($current === null || $expectedState !== (string) $current['state']) {
             throw new SearchReindexRejected('search_reindex_expected_state_mismatch');
         }
-        $run = $this->reindex->schedule($providerId, $actor, null, $correlationId);
-
-        return ['run' => $run, 'dispatch' => $this->dispatchRun($run)];
+        return $this->reindex->schedule($providerId, $actor, null, $correlationId);
     }
 
-    public function dispatchRun(ReindexRun $run): DispatchResult
+    public function run(string $providerId, string $runRef, string $actor, string $expectedState): DispatchResult
+    {
+        $run = $this->assertCurrentRun($providerId, $runRef, $expectedState, ['scheduled']);
+
+        return $this->dispatchRun($run, 'run', $actor);
+    }
+
+    public function dispatchRun(ReindexRun $run, string $operation = 'continue', ?string $actor = null): DispatchResult
     {
         return $this->queue->dispatch(new DispatchRequest(
             jobType: SearchReindexJobHandler::JOB_TYPE,
-            payload: ['run_ref' => $run->runRef, 'provider_id' => $run->providerId, 'actor_ref' => $run->requestedBy, 'batch_size' => 100],
-            idempotencyKey: 'search-reindex:' . $run->runRef . ':batch:' . $run->batchCount,
+            payload: ['run_ref' => $run->runRef, 'provider_id' => $run->providerId, 'actor_ref' => $actor ?? $run->requestedBy, 'batch_size' => 100, 'operation' => $operation],
+            idempotencyKey: 'search-reindex:' . $run->runRef . ':' . $operation . ':' . $run->batchCount,
             correlationId: $this->safeCorrelation($run->correlationId),
         ));
     }
 
     public function resume(string $providerId, string $runRef, string $actor, string $expectedState): DispatchResult
     {
+        $run = $this->assertCurrentRun($providerId, $runRef, $expectedState, ['running']);
+
+        return $this->dispatchRun($run, 'resume', $actor);
+    }
+
+    public function retry(string $providerId, string $runRef, string $actor, string $expectedState): DispatchResult
+    {
+        $run = $this->assertCurrentRun($providerId, $runRef, $expectedState, ['failed']);
+
+        return $this->dispatchRun($run, 'retry', $actor);
+    }
+
+    /** @param list<string> $allowedStates */
+    private function assertCurrentRun(string $providerId, string $runRef, string $expectedState, array $allowedStates): ReindexRun
+    {
         $current = $this->operations->provider($providerId);
-        if ($current === null || $current['run_ref'] !== $runRef || $current['state'] !== $expectedState || !in_array($expectedState, ['failed', 'running', 'scheduled'], true)) {
+        if ($current === null || $current['run_ref'] !== $runRef || $current['state'] !== $expectedState || !in_array($expectedState, $allowedStates, true)) {
             throw new SearchReindexRejected('search_reindex_expected_state_mismatch');
         }
         $run = $this->reindex->find($runRef);
@@ -54,12 +73,7 @@ final readonly class SearchReindexDispatcher
             throw new SearchReindexRejected('search_reindex_run_unknown');
         }
 
-        return $this->queue->dispatch(new DispatchRequest(
-            jobType: SearchReindexJobHandler::JOB_TYPE,
-            payload: ['run_ref' => $run->runRef, 'provider_id' => $run->providerId, 'actor_ref' => $actor, 'batch_size' => 100],
-            idempotencyKey: 'search-reindex:' . $run->runRef . ':resume:' . $run->batchCount,
-            correlationId: $this->safeCorrelation($run->correlationId),
-        ));
+        return $run;
     }
 
     private function safeCorrelation(string $value): string

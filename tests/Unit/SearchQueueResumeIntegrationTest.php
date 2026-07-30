@@ -43,7 +43,7 @@ final class SearchQueueAuthorizer implements ActorOperationAuthorizer
 {
     public function assertAllowed(string $actor, string $operation): void
     {
-        if ($actor !== 'user:admin_identity:1' || !in_array($operation, ['search.reindex.schedule', 'search.reindex.run', 'search.reindex.resume'], true)) {
+        if ($actor !== 'user:admin_identity:1' || !in_array($operation, ['search.reindex.schedule', 'search.reindex.run', 'search.reindex.resume', 'search.reindex.retry'], true)) {
             throw new RuntimeException('denied');
         }
     }
@@ -101,26 +101,31 @@ try {
     $clock = new SearchQueueClock(new DateTimeImmutable('2026-07-30T00:00:00Z'));
     $runtime = search_queue_runtime($database->connection(), $sources, $clock);
     $scheduled = $runtime['dispatcher']->schedule('docara.published_pages', 'user:admin_identity:1', 'idle', 'queue-proof');
-    search_queue_assert(!$scheduled['dispatch']->duplicate, 'Initial reindex job must be newly dispatched.');
+    search_queue_assert($database->connection()->table('larena_queue_jobs')->count() === 0, 'Schedule must create state without starting synchronous or queued work.');
+    $started = $runtime['dispatcher']->run('docara.published_pages', $scheduled->runRef, 'user:admin_identity:1', 'scheduled');
+    search_queue_assert(!$started->duplicate, 'Run must enqueue the scheduled run exactly once.');
+    search_queue_assert($runtime['dispatcher']->run('docara.published_pages', $scheduled->runRef, 'user:admin_identity:1', 'scheduled')->duplicate, 'Duplicate run request must be idempotent.');
 
     $first = $runtime['worker']->runNext('worker-before-restart');
     search_queue_assert($first?->status === JobStatus::Completed, 'First bounded batch job must complete.');
-    $run = $database->connection()->table('larena_search_reindex_runs')->where('run_ref', $scheduled['run']->runRef)->first();
+    $run = $database->connection()->table('larena_search_reindex_runs')->where('run_ref', $scheduled->runRef)->first();
     search_queue_assert((int) $run->processed_count === 100 && (string) $run->state === 'running', 'One job must process only one bounded batch and persist its checkpoint.');
 
     $source->fail = true;
     $restarted = search_queue_runtime($database->reconnect(), $sources, $clock);
     $failed = $restarted['worker']->runNext('worker-after-restart-failure');
     search_queue_assert($failed?->status === JobStatus::Retrying && $failed->failureReason === 'search_reindex_batch_failed', 'Failed continuation must retain a sanitized durable retry.');
-    $run = $database->connection()->table('larena_search_reindex_runs')->where('run_ref', $scheduled['run']->runRef)->first();
+    $run = $database->connection()->table('larena_search_reindex_runs')->where('run_ref', $scheduled->runRef)->first();
     search_queue_assert((string) $run->state === 'failed' && (int) $run->processed_count === 100, 'Failed batch must preserve the prior checkpoint.');
 
     $source->fail = false;
-    $clock->advance(16);
     $resumedRuntime = search_queue_runtime($database->reconnect(), $sources, $clock);
+    $retry = $resumedRuntime['dispatcher']->retry('docara.published_pages', $scheduled->runRef, 'user:admin_identity:1', 'failed');
+    search_queue_assert(!$retry->duplicate, 'Retry must enqueue a distinct failed-attempt continuation.');
+    search_queue_assert($resumedRuntime['dispatcher']->retry('docara.published_pages', $scheduled->runRef, 'user:admin_identity:1', 'failed')->duplicate, 'Duplicate retry request must be idempotent.');
     $completed = $resumedRuntime['worker']->runNext('worker-after-restart-resume');
     search_queue_assert($completed?->status === JobStatus::Completed, 'Retry after restart must complete successfully.');
-    $run = $database->connection()->table('larena_search_reindex_runs')->where('run_ref', $scheduled['run']->runRef)->first();
+    $run = $database->connection()->table('larena_search_reindex_runs')->where('run_ref', $scheduled->runRef)->first();
     search_queue_assert((string) $run->state === 'completed' && (int) $run->processed_count === 101 && (int) $run->batch_count === 2, 'Resume must continue from the exact checkpoint without duplicate indexing.');
     search_queue_assert($database->connection()->table('larena_search_documents')->count() === 101, 'Completed generation must contain every published projection exactly once.');
 } finally {

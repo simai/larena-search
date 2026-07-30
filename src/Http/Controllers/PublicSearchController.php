@@ -31,8 +31,10 @@ final readonly class PublicSearchController
     {
         $locales = array_values(array_filter((array) $this->config->get('larena-search.public.locales', ['ru', 'en']), 'is_string'));
         $defaultLocale = (string) $this->config->get('larena-search.public.default_locale', 'ru');
+        $minimumTermLength = max(1, min(20, (int) $this->config->get('larena-search.public.minimum_term_length', 2)));
+        $request->merge(['q' => trim((string) $request->input('q', ''))]);
         $validated = $request->validate([
-            'q' => ['nullable', 'string', 'max:200'],
+            'q' => ['nullable', 'string', 'min:' . $minimumTermLength, 'max:200'],
             'locale' => ['nullable', 'string', 'in:' . implode(',', $locales)],
             'page' => ['nullable', 'integer', 'min:1', 'max:' . (int) $this->config->get('larena-search.public.maximum_page', 500)],
         ]);

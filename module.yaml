@@ -31,6 +31,7 @@ access_operations:
   - search.reindex.schedule
   - search.reindex.run
   - search.reindex.resume
+  - search.reindex.retry
 audit_events:
   - search.reindex.started
   - search.reindex.resumed

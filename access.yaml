@@ -13,3 +13,6 @@ operations:
   - code: search.reindex.resume
     risk: critical
     audit: always
+  - code: search.reindex.retry
+    risk: critical
+    audit: always

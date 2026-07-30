@@ -20,6 +20,7 @@ use Larena\Search\Contracts\SearchQuery;
 use Larena\Search\Exceptions\SearchPersistenceFailed;
 use Larena\Search\Exceptions\SearchReindexRejected;
 use Larena\Search\Persistence\DatabaseSearchIndex;
+use Larena\Search\Reindex\SearchReindexExecutionEngine;
 use Larena\Search\Reindex\SearchReindexService;
 use Larena\Search\Runtime\SearchSourceRegistry;
 use Larena\Search\Tests\Support\SearchTestDatabase;
@@ -32,6 +33,16 @@ function search_reindex_assert(bool $condition, string $message): void
     if (!$condition) {
         throw new RuntimeException($message);
     }
+}
+
+function search_reindex_service(
+    Illuminate\Database\ConnectionInterface $connection,
+    DatabaseSearchIndex $index,
+    SearchSourceRegistry $registry,
+    ActorOperationAuthorizer $authorizer,
+    AuditEventPipeline $audit,
+): SearchReindexService {
+    return new SearchReindexService(new SearchReindexExecutionEngine($connection, $index, $registry, $authorizer, $audit));
 }
 
 final class SearchReindexTestAuthorizer implements ActorOperationAuthorizer
@@ -168,7 +179,9 @@ try {
     $registry->registerFactory($sourceFactory);
     $authorizer = new SearchReindexTestAuthorizer();
     $goodPipeline = new AuditEventPipeline(new DefaultAuditRedactor(), [new DatabaseAuditSink($connection)]);
-    $service = new SearchReindexService($connection, $index, $registry, $authorizer, $goodPipeline);
+    $service = search_reindex_service($connection, $index, $registry, $authorizer, $goodPipeline);
+    $publicServiceMethods = array_map(static fn (ReflectionMethod $method): string => $method->getName(), (new ReflectionClass(SearchReindexService::class))->getMethods(ReflectionMethod::IS_PUBLIC));
+    search_reindex_assert(!in_array('continueRunning', $publicServiceMethods, true), 'Public Search service must expose no continuation escape hatch.');
 
     $index->upsert(new SearchProjection('docara.pages', 'page:orphan', 1, 'Orphan', '/docs/orphan', searchableText: 'remove me'));
     $scheduled = $service->schedule('docara.pages', 'user:admin_identity:1', 'run-main', 'correlation-main');
@@ -209,7 +222,6 @@ try {
     foreach ([
         'resume' => 'search_reindex_not_running',
         'retry' => 'search_reindex_not_retryable',
-        'continueRunning' => 'search_reindex_not_running',
     ] as $method => $reason) {
         try {
             $service->{$method}($scheduled->runRef, 'user:admin_identity:1', 1, 1, 'docara.pages');
@@ -264,7 +276,6 @@ try {
     foreach ([
         'run' => 'search_reindex_not_scheduled',
         'resume' => 'search_reindex_not_running',
-        'continueRunning' => 'search_reindex_not_running',
     ] as $method => $reason) {
         try {
             $service->{$method}($scheduled->runRef, 'user:admin_identity:1', 1, 1);
@@ -479,7 +490,7 @@ try {
     );
 
     $deniedAuthorizer = new SearchReindexTestAuthorizer(false);
-    $denied = new SearchReindexService($connection, $index, $registry, $deniedAuthorizer, $goodPipeline);
+    $denied = search_reindex_service($connection, $index, $registry, $deniedAuthorizer, $goodPipeline);
     $runCountBeforeDenial = $connection->table('larena_search_reindex_runs')->count();
     try {
         $denied->schedule('docara.pages', 'user:forbidden');
@@ -497,7 +508,7 @@ try {
         new DatabaseAuditSink($connection),
         new SearchReindexThrowingSink(),
     ]);
-    $failingService = new SearchReindexService($connection, $index, $registry, new SearchReindexTestAuthorizer(), $failingPipeline);
+    $failingService = search_reindex_service($connection, $index, $registry, new SearchReindexTestAuthorizer(), $failingPipeline);
     $auditCountBefore = $connection->table('larena_audit_events')->count();
     $scheduleRolledBack = false;
     try {
@@ -513,7 +524,7 @@ try {
     );
     search_reindex_assert($connection->table('larena_audit_events')->count() === $auditCountBefore, 'Audit failure must roll back its earlier database sink write.');
 
-    $goodAuditFailService = new SearchReindexService($connection, $index, $registry, new SearchReindexTestAuthorizer(), $goodPipeline);
+    $goodAuditFailService = search_reindex_service($connection, $index, $registry, new SearchReindexTestAuthorizer(), $goodPipeline);
     $auditRun = $goodAuditFailService->schedule('audit.fail', 'user:admin_identity:1', 'run-checkpoint-rollback');
     $checkpointRolledBack = false;
     try {

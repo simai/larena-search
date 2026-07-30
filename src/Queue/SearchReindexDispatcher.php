@@ -18,6 +18,7 @@ final readonly class SearchReindexDispatcher
         private SearchReindexService $reindex,
         private DurableQueueDispatcher $queue,
         private SearchIndexOperationsQuery $operations,
+        private SearchReindexWorkerAttemptCodec $attempts,
         private int $batchSize = 100,
     ) {
     }
@@ -35,21 +36,20 @@ final readonly class SearchReindexDispatcher
     {
         $run = $this->assertCurrentRun($providerId, $runRef, $expectedState, ['scheduled']);
 
-        return $this->dispatchRun($run, 'run', $actor);
+        return $this->dispatchOperator($run, 'run', $actor);
     }
 
-    public function dispatchRun(ReindexRun $run, string $operation = 'continue', ?string $actor = null): DispatchResult
+    private function dispatchOperator(ReindexRun $run, string $operation, string $actor): DispatchResult
     {
+        $attemptToken = $this->attempts->issue($run, $operation, $actor, max(1, min(1000, $this->batchSize)));
+        $attempt = $this->attempts->decode($attemptToken);
+
         return $this->queue->dispatch(new DispatchRequest(
             jobType: SearchReindexJobHandler::JOB_TYPE,
             payload: [
-                'run_ref' => $run->runRef,
-                'provider_id' => $run->providerId,
-                'actor_ref' => $actor ?? $run->requestedBy,
-                'batch_size' => max(1, min(1000, $this->batchSize)),
-                'operation' => $operation,
+                'worker_attempt' => $attemptToken,
             ],
-            idempotencyKey: 'search-reindex:' . $run->runRef . ':' . $operation . ':' . $run->batchCount,
+            idempotencyKey: 'search-reindex:' . $run->runRef . ':' . $operation . ':' . $attempt->attemptRef,
             correlationId: $this->safeCorrelation($run->correlationId),
         ));
     }
@@ -58,14 +58,14 @@ final readonly class SearchReindexDispatcher
     {
         $run = $this->assertCurrentRun($providerId, $runRef, $expectedState, ['running']);
 
-        return $this->dispatchRun($run, 'resume', $actor);
+        return $this->dispatchOperator($run, 'resume', $actor);
     }
 
     public function retry(string $providerId, string $runRef, string $actor, string $expectedState): DispatchResult
     {
         $run = $this->assertCurrentRun($providerId, $runRef, $expectedState, ['failed']);
 
-        return $this->dispatchRun($run, 'retry', $actor);
+        return $this->dispatchOperator($run, 'retry', $actor);
     }
 
     /** @param list<string> $allowedStates */

@@ -21,6 +21,9 @@ use Larena\Search\Operations\SearchIndexOperationsQuery;
 use Larena\Search\Persistence\DatabaseSearchIndex;
 use Larena\Search\Queue\SearchReindexDispatcher;
 use Larena\Search\Queue\SearchReindexJobHandler;
+use Larena\Search\Queue\SearchReindexWorkerAttemptCodec;
+use Larena\Search\Queue\SearchReindexWorkerDispatcher;
+use Larena\Search\Reindex\SearchReindexExecutionEngine;
 use Larena\Search\Reindex\SearchReindexService;
 use Larena\Search\Runtime\SearchSourceRegistry;
 use Larena\Search\Tests\Support\SearchTestDatabase;
@@ -66,27 +69,32 @@ final class SearchQueueSource implements ReindexSource
     }
 }
 
-/** @return array{worker:DurableQueueWorker,dispatcher:SearchReindexDispatcher,service:SearchReindexService} */
+/** @return array{worker:DurableQueueWorker,dispatcher:SearchReindexDispatcher,service:SearchReindexService,queue:DurableQueueDispatcher,attempts:SearchReindexWorkerAttemptCodec} */
 function search_queue_runtime(ConnectionInterface $connection, SearchSourceRegistry $sources, SearchQueueClock $clock): array
 {
     $index = new DatabaseSearchIndex($connection);
-    $service = new SearchReindexService(
+    $engine = new SearchReindexExecutionEngine(
         $connection, $index, $sources, new SearchQueueAuthorizer(),
         new AuditEventPipeline(new DefaultAuditRedactor(), [new DatabaseAuditSink($connection)]),
     );
+    $service = new SearchReindexService($engine);
     $registry = new JobTypeRegistry();
     $store = new \Larena\Queue\Storage\DatabaseQueueStore($connection);
     $queue = new DurableQueueDispatcher($registry, $store, $clock);
-    $dispatcher = new SearchReindexDispatcher($service, $queue, new SearchIndexOperationsQuery($connection, $sources));
+    $attempts = new SearchReindexWorkerAttemptCodec(str_repeat('q', 32));
+    $dispatcher = new SearchReindexDispatcher($service, $queue, new SearchIndexOperationsQuery($connection, $sources), $attempts);
+    $workerDispatcher = new SearchReindexWorkerDispatcher($queue, $attempts);
     $registry->register(new ImmutableJobDescriptor(
         SearchReindexJobHandler::JOB_TYPE, 'search.reindex.run', 'search.reindex.process.handler',
         300, 3, 15, 60, QueuePriority::Maintenance, 'sanitized', 'larena.search.reindex.process.payload',
-    ), new SearchReindexJobHandler($service, $dispatcher));
+    ), new SearchReindexJobHandler($engine, $attempts, $workerDispatcher));
 
     return [
         'worker' => new DurableQueueWorker($registry, $store, $clock),
         'dispatcher' => $dispatcher,
         'service' => $service,
+        'queue' => $queue,
+        'attempts' => $attempts,
     ];
 }
 
@@ -104,6 +112,8 @@ try {
     $sources->register($source);
     $clock = new SearchQueueClock(new DateTimeImmutable('2026-07-30T00:00:00Z'));
     $runtime = search_queue_runtime($database->connection(), $sources, $clock);
+    $publicDispatcherMethods = array_map(static fn (ReflectionMethod $method): string => $method->getName(), (new ReflectionClass(SearchReindexDispatcher::class))->getMethods(ReflectionMethod::IS_PUBLIC));
+    search_queue_assert(!in_array('dispatchRun', $publicDispatcherMethods, true), 'Public dispatcher must expose only canonical operator actions.');
     $scheduled = $runtime['dispatcher']->schedule('docara.published_pages', 'user:admin_identity:1', 'idle', 'queue-proof');
     search_queue_assert($database->connection()->table('larena_queue_jobs')->count() === 0, 'Schedule must create state without starting synchronous or queued work.');
     $started = $runtime['dispatcher']->run('docara.published_pages', $scheduled->runRef, 'user:admin_identity:1', 'scheduled');
@@ -133,11 +143,25 @@ try {
     search_queue_assert((string) $run->state === 'completed' && (int) $run->processed_count === 101 && (int) $run->batch_count === 2, 'Resume must continue from the exact checkpoint without duplicate indexing.');
     search_queue_assert($database->connection()->table('larena_search_documents')->count() === 101, 'Completed generation must contain every published projection exactly once.');
 
+    $workerAudit = $database->connection()->table('larena_audit_events')
+        ->where('source_package', 'larena/search')
+        ->whereIn('event_type', ['search.reindex.operation_started', 'search.reindex.failed', 'search.reindex.checkpointed', 'search.reindex.completed'])
+        ->orderBy('id')
+        ->pluck('payload')
+        ->map(static fn (string $payload): array => json_decode($payload, true, 32, JSON_THROW_ON_ERROR))
+        ->all();
+    search_queue_assert((bool) array_filter($workerAudit, static fn (array $payload): bool => ($payload['operation'] ?? null) === 'continue' && isset($payload['attempt_ref'])), 'Worker continuation Audit must have its own signed attempt identity.');
+    search_queue_assert((bool) array_filter($workerAudit, static fn (array $payload): bool => ($payload['operation'] ?? null) === 'retry' && isset($payload['attempt_ref'])), 'Operator retry Audit must retain its distinct signed attempt identity.');
+    foreach ($workerAudit as $payload) {
+        $encoded = json_encode($payload, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES);
+        search_queue_assert(preg_match('/password|cookie|token|secret|query|title|snippet|body|worker_attempt/i', $encoded) !== 1, 'Worker Audit must remain sanitized.');
+    }
+
     $clock->advance(20);
     $staleContinuation = $resumedRuntime['worker']->runNext('worker-stale-continuation');
     search_queue_assert(
         $staleContinuation?->status === JobStatus::Failed
-        && $staleContinuation->failureReason === 'search_reindex_not_running',
+        && $staleContinuation->failureReason === 'search_reindex_worker_attempt_stale',
         'A delayed internal continuation must fail closed after another attempt completed the run.',
     );
     $completedAfterStaleDispatch = $resumedRuntime['service']->find($scheduled->runRef);
@@ -147,6 +171,28 @@ try {
         && $completedAfterStaleDispatch->batchCount === 2,
         'A stale dispatch must not mutate or duplicate the completed generation.',
     );
+
+    $missing = $runtime['queue']->dispatch(new \Larena\Queue\Data\DispatchRequest(
+        SearchReindexJobHandler::JOB_TYPE, [], 'search-reindex-negative-missing', 'queue-proof-missing',
+    ));
+    search_queue_assert(!$missing->duplicate, 'Missing-attempt negative job must be enqueued for executable rejection proof.');
+    $missingResult = $resumedRuntime['worker']->runNext('worker-missing-attempt');
+    search_queue_assert($missingResult?->status === JobStatus::Failed && $missingResult->failureReason === 'search_reindex_payload_invalid', 'Missing worker attempt must fail closed.');
+
+    $validToken = $runtime['attempts']->issue($completedAfterStaleDispatch, 'continue', 'user:admin_identity:1', 100);
+    $forgedToken = substr($validToken, 0, -1) . (str_ends_with($validToken, 'A') ? 'B' : 'A');
+    $forged = $runtime['queue']->dispatch(new \Larena\Queue\Data\DispatchRequest(
+        SearchReindexJobHandler::JOB_TYPE,
+        ['worker_attempt' => $forgedToken],
+        'search-reindex-negative-forged',
+        'queue-proof-forged',
+    ));
+    search_queue_assert(!$forged->duplicate, 'Forged-attempt negative job must be enqueued for executable rejection proof.');
+    $forgedResult = $resumedRuntime['worker']->runNext('worker-forged-attempt');
+    search_queue_assert($forgedResult?->status === JobStatus::Failed && $forgedResult->failureReason === 'search_reindex_worker_attempt_invalid', 'Forged worker attempt must fail closed before Search mutation.');
+
+    $finalRun = $resumedRuntime['service']->find($scheduled->runRef);
+    search_queue_assert($finalRun?->state === 'completed' && $finalRun->processedCount === 101 && $database->connection()->table('larena_search_documents')->count() === 101, 'Negative Queue payloads must leave the completed generation unchanged.');
 } finally {
     $queueMigration->down();
     $database->rollback();

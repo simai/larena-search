@@ -24,6 +24,9 @@ use Larena\Search\Persistence\DatabaseSearchIndex;
 use Larena\Search\Queue\ScheduleAllSearchProvidersJobHandler;
 use Larena\Search\Queue\SearchReindexJobHandler;
 use Larena\Search\Queue\SearchReindexDispatcher;
+use Larena\Search\Queue\SearchReindexWorkerAttemptCodec;
+use Larena\Search\Queue\SearchReindexWorkerDispatcher;
+use Larena\Search\Reindex\SearchReindexExecutionEngine;
 use Larena\Search\Reindex\SearchReindexService;
 use Larena\Search\Runtime\SearchSourceRegistry;
 use Larena\Search\Scheduler\SearchScheduledReindexHandler;
@@ -38,19 +41,9 @@ final class SearchServiceProvider extends ServiceProvider
         $this->app->bind(DatabaseSearchIndex::class, static function (Application $app): DatabaseSearchIndex {
             return new DatabaseSearchIndex($app->make(DatabaseManager::class)->connection());
         });
-        $this->app->bind(SearchReindexService::class, static function (Application $app): SearchReindexService {
-            /** @var DatabaseManager $database */
-            $database = $app->make(DatabaseManager::class);
-            $connection = $database->connection();
-
-            return new SearchReindexService(
-                $connection,
-                new DatabaseSearchIndex($connection),
-                $app->make(SearchSourceRegistry::class),
-                $app->make(ActorOperationAuthorizer::class),
-                $app->make(AuditEventPipeline::class),
-            );
-        });
+        $this->app->bind(SearchReindexService::class, static fn (Application $app): SearchReindexService => new SearchReindexService(
+            self::engine($app),
+        ));
         $this->app->scoped(SearchIndexOperationsQuery::class, static function (Application $app): SearchIndexOperationsQuery {
             return new SearchIndexOperationsQuery(
                 $app->make(DatabaseManager::class)->connection(),
@@ -65,8 +58,21 @@ final class SearchServiceProvider extends ServiceProvider
                 $app->make(SearchReindexService::class),
                 $app->make(\Larena\Queue\Runtime\DurableQueueDispatcher::class),
                 $app->make(SearchIndexOperationsQuery::class),
+                self::attemptCodec($app),
                 max(1, min(1000, (int) $config->get('larena-search.reindex.batch_size', 100))),
             );
+        });
+        $this->app->bind(SearchReindexJobHandler::class, static function (Application $app): SearchReindexJobHandler {
+            /** @var Config $config */
+            $config = $app->make(Config::class);
+            $codec = self::attemptCodec($app);
+            $workerDispatcher = new SearchReindexWorkerDispatcher(
+                $app->make(\Larena\Queue\Runtime\DurableQueueDispatcher::class),
+                $codec,
+                max(1, min(1000, (int) $config->get('larena-search.reindex.batch_size', 100))),
+            );
+
+            return new SearchReindexJobHandler(self::engine($app), $codec, $workerDispatcher);
         });
 
         $this->app->afterResolving(JobTypeRegistry::class, static function (JobTypeRegistry $registry, Application $app): void {
@@ -141,6 +147,33 @@ final class SearchServiceProvider extends ServiceProvider
         }
 
         return $registered;
+    }
+
+    private static function engine(Application $app): SearchReindexExecutionEngine
+    {
+        /** @var DatabaseManager $database */
+        $database = $app->make(DatabaseManager::class);
+        $connection = $database->connection();
+
+        return new SearchReindexExecutionEngine(
+            $connection,
+            new DatabaseSearchIndex($connection),
+            $app->make(SearchSourceRegistry::class),
+            $app->make(ActorOperationAuthorizer::class),
+            $app->make(AuditEventPipeline::class),
+        );
+    }
+
+    private static function attemptCodec(Application $app): SearchReindexWorkerAttemptCodec
+    {
+        /** @var Config $config */
+        $config = $app->make(Config::class);
+        $applicationKey = (string) $config->get('app.key', '');
+        if ($applicationKey === '') {
+            throw new \InvalidArgumentException('search_reindex_worker_key_missing');
+        }
+
+        return new SearchReindexWorkerAttemptCodec(hash('sha256', 'larena/search-worker|' . $applicationKey, true));
     }
 
     private static function registerQueueJobs(JobTypeRegistry $registry, Application $app): void

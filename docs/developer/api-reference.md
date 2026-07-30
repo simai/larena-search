@@ -67,9 +67,13 @@ resolution for factory registrations.
 - `run(runRef, actor, batchSize = 100, maxBatches = 0): ReindexRun`;
 - `resume(runRef, actor, batchSize = 100, maxBatches = 0, ?expectedProviderId = null): ReindexRun`;
 - `retry(runRef, actor, batchSize = 100, maxBatches = 0, ?expectedProviderId = null): ReindexRun`;
-- `continueRunning(runRef, actor, batchSize = 100, maxBatches = 0, ?expectedProviderId = null): ReindexRun`
-  for the package-owned Queue continuation path only;
 - `find(runRef): ?ReindexRun` for trusted internal diagnostics/tests.
+
+The public mutation API is limited to `schedule`, `run`, `resume`, and `retry`.
+A next-batch continuation is an internal Queue-worker operation. It requires an
+authenticated attempt bound to the exact run, provider, generation, state,
+cursor, counts, actor, and batch size; missing, forged, stale, or replayed
+attempts fail closed.
 
 The CLI never calls `find()` before the selected operation permission is
 checked. It requires an explicit run/resume/retry operation for an existing

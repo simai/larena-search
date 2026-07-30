@@ -18,6 +18,7 @@ final readonly class SearchReindexDispatcher
         private SearchReindexService $reindex,
         private DurableQueueDispatcher $queue,
         private SearchIndexOperationsQuery $operations,
+        private int $batchSize = 100,
     ) {
     }
 
@@ -41,7 +42,13 @@ final readonly class SearchReindexDispatcher
     {
         return $this->queue->dispatch(new DispatchRequest(
             jobType: SearchReindexJobHandler::JOB_TYPE,
-            payload: ['run_ref' => $run->runRef, 'provider_id' => $run->providerId, 'actor_ref' => $actor ?? $run->requestedBy, 'batch_size' => 100, 'operation' => $operation],
+            payload: [
+                'run_ref' => $run->runRef,
+                'provider_id' => $run->providerId,
+                'actor_ref' => $actor ?? $run->requestedBy,
+                'batch_size' => max(1, min(1000, $this->batchSize)),
+                'operation' => $operation,
+            ],
             idempotencyKey: 'search-reindex:' . $run->runRef . ':' . $operation . ':' . $run->batchCount,
             correlationId: $this->safeCorrelation($run->correlationId),
         ));
@@ -82,4 +89,5 @@ final readonly class SearchReindexDispatcher
 
         return substr($value !== '' ? $value : 'search-reindex', 0, 64);
     }
+
 }

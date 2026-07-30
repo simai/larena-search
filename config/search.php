@@ -25,6 +25,6 @@ return [
         'retry_middleware' => ['access:search.reindex.retry'],
     ],
     'reindex' => [
-        'batch_size' => 100,
+        'batch_size' => max(1, min(1000, (int) (getenv('LARENA_SEARCH_REINDEX_BATCH_SIZE') ?: 100))),
     ],
 ];

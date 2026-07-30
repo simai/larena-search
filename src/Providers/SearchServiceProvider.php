@@ -23,6 +23,7 @@ use Larena\Search\Operations\SearchIndexOperationsQuery;
 use Larena\Search\Persistence\DatabaseSearchIndex;
 use Larena\Search\Queue\ScheduleAllSearchProvidersJobHandler;
 use Larena\Search\Queue\SearchReindexJobHandler;
+use Larena\Search\Queue\SearchReindexDispatcher;
 use Larena\Search\Reindex\SearchReindexService;
 use Larena\Search\Runtime\SearchSourceRegistry;
 use Larena\Search\Scheduler\SearchScheduledReindexHandler;
@@ -54,6 +55,17 @@ final class SearchServiceProvider extends ServiceProvider
             return new SearchIndexOperationsQuery(
                 $app->make(DatabaseManager::class)->connection(),
                 $app->make(SearchSourceRegistry::class),
+            );
+        });
+        $this->app->bind(SearchReindexDispatcher::class, static function (Application $app): SearchReindexDispatcher {
+            /** @var Config $config */
+            $config = $app->make(Config::class);
+
+            return new SearchReindexDispatcher(
+                $app->make(SearchReindexService::class),
+                $app->make(\Larena\Queue\Runtime\DurableQueueDispatcher::class),
+                $app->make(SearchIndexOperationsQuery::class),
+                max(1, min(1000, (int) $config->get('larena-search.reindex.batch_size', 100))),
             );
         });
 

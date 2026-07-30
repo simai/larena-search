@@ -38,6 +38,12 @@ search_package_assert(
 );
 search_package_assert(str_contains($providerSource, 'afterResolving('), 'Access operation registration must be provider-order safe.');
 
+search_package_assert(
+    substr_count($providerSource, 'workerKeyAvailable(') >= 3
+        && str_contains($providerSource, "get('app.key', '') !== ''"),
+    'Queue worker registration must defer during keyless package discovery and activate after APP_KEY exists.',
+);
+
 $registry = new AccessOperationRegistry();
 $registration = new ReflectionMethod(SearchServiceProvider::class, 'registerAccessOperations');
 $registration->invoke(null, $registry);

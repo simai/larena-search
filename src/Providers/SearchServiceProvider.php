@@ -76,7 +76,9 @@ final class SearchServiceProvider extends ServiceProvider
         });
 
         $this->app->afterResolving(JobTypeRegistry::class, static function (JobTypeRegistry $registry, Application $app): void {
-            self::registerQueueJobs($registry, $app);
+            if (self::workerKeyAvailable($app)) {
+                self::registerQueueJobs($registry, $app);
+            }
         });
         $this->app->afterResolving(ScheduledOperationRegistry::class, static function (ScheduledOperationRegistry $registry, Application $app): void {
             if (!$registry->has(SearchScheduledReindexHandler::OPERATION_REF)) {
@@ -106,7 +108,7 @@ final class SearchServiceProvider extends ServiceProvider
         if ($this->app->bound(AdminNavigationRegistry::class)) {
             $this->app->make(AdminNavigationRegistry::class)->registerContributor(new SearchAdminNavigationContributor());
         }
-        if ($this->app->bound(JobTypeRegistry::class)) {
+        if ($this->app->bound(JobTypeRegistry::class) && self::workerKeyAvailable($this->app)) {
             self::registerQueueJobs($this->app->make(JobTypeRegistry::class), $this->app);
         }
         if ($this->app->bound(ScheduledOperationRegistry::class)) {
@@ -174,6 +176,14 @@ final class SearchServiceProvider extends ServiceProvider
         }
 
         return new SearchReindexWorkerAttemptCodec(hash('sha256', 'larena/search-worker|' . $applicationKey, true));
+    }
+
+    private static function workerKeyAvailable(Application $app): bool
+    {
+        /** @var Config $config */
+        $config = $app->make(Config::class);
+
+        return (string) $config->get('app.key', '') !== '';
     }
 
     private static function registerQueueJobs(JobTypeRegistry $registry, Application $app): void

@@ -27,7 +27,13 @@ The public error is intentionally sanitized. Check application database logs, mi
 
 ## Run Stays Failed
 
-Failed runs retain `active_provider_id` and the matching active references in `larena_search_provider_states`, so realtime writes remain safe. Correct the source/database issue and resume the same run with `--run` and the `search.reindex.resume` permission. A provider-fence mismatch is treated as sanitized persistence corruption; do not clear it manually or schedule a replacement run over it.
+Failed runs retain `active_provider_id` and the matching active references in
+`larena_search_provider_states`, so realtime writes remain safe. Correct the
+source/database issue and retry the same run with
+`--run=<ref> --operation=retry` and the `search.reindex.retry` permission.
+`resume` is valid only for an already-running checkpoint and cannot retry a
+failed run. A provider-fence mismatch is treated as sanitized persistence
+corruption; do not clear it manually or schedule a replacement run over it.
 
 ## Scope Check Fails
 

@@ -51,6 +51,7 @@ search_package_assert($registry->get('search.reindex.read')?->requiredGrant === 
 $commandSource = (string) file_get_contents(dirname(__DIR__, 2) . '/src/Commands/ReindexSearchCommand.php');
 search_package_assert(str_contains($commandSource, "search:reindex"), 'Reindex CLI signature must remain stable.');
 search_package_assert(str_contains($commandSource, '{--actor='), 'CLI must require an explicit actor option with no implicit authority.');
+search_package_assert(str_contains($commandSource, '{--operation='), 'CLI must require an explicit operation for an existing run.');
 search_package_assert(!str_contains($commandSource, '->find($runRef)'), 'CLI must not reveal run existence before resume authorization.');
 
 $publicControllerSource = (string) file_get_contents(dirname(__DIR__, 2) . '/src/Http/Controllers/PublicSearchController.php');

@@ -37,7 +37,20 @@ registry's own post-resolution provider-ID comparison can emit
 
 Every `upsert()` and `remove()` transaction performs `insertOrIgnore` for the permanent provider row and then locks it before reading `active_generation_ref` or touching source/document state. On MySQL the unique provider key plus `SELECT ... FOR UPDATE` serializes first use; on SQLite the first write serializes writers and the same protocol remains fail-closed.
 
-`schedule()` locks the provider row, rejects an active claim, inserts the run, stores both active references and routes the started Audit event in one transaction. Batch execution locks the existing run and then the provider row before any Search source-state/document lock. Final sweep, fence clear, run completion and completed Audit stay inside that outer transaction. Failed/resumable runs do not clear the claim.
+`schedule()` locks the provider row, rejects an active claim, inserts the run,
+stores both active references and routes the scheduled Audit event in one
+transaction. Batch execution locks the existing run and then the provider row
+before validating the requested operation and touching any Search
+source-state/document lock. The exact transition table is:
+
+- `run`: `scheduled -> running`;
+- `resume`: `running -> running`;
+- `retry`: `failed -> running`;
+- internal continuation: `running -> running`.
+
+Every other transition fails closed under the same lock. Final sweep, fence
+clear, run completion and completed Audit stay inside that outer transaction.
+Failed/retryable runs do not clear the claim.
 
 The additive `2026_07_13_000004` migration leaves the first three tables unchanged and backfills provider claims from any run whose `active_provider_id` is still set. Deploy the migration before code using the fence. Rolling back only this migration is a code-downgrade operation; do not run the new runtime while the provider table is absent.
 
@@ -49,8 +62,9 @@ The persistent runtime enforces:
 - literal bounded queries and explicit access scopes;
 - monotonic revision/tombstone compare-and-set;
 - sanitized Search-domain persistence errors;
-- separate Access checks for schedule, run and resume;
-- Security Audit payloads containing only stable identifiers/counters;
+- separate Access checks for schedule, run, resume and retry;
+- Security Audit payloads containing only stable identifiers/counters and the
+  canonical operation identity;
 - transactional checkpoint and Audit mutation.
 - provider-fenced schedule/realtime/final-sweep linearization.
 
@@ -60,18 +74,19 @@ Search consumes safe projections but does not own source schemas, physical files
 
 ```bash
 php artisan search:reindex docara.published_pages --actor=user:admin_identity:1
-php artisan search:reindex docara.published_pages --actor=user:admin_identity:1 --run=search-example
+php artisan search:reindex docara.published_pages --actor=user:admin_identity:1 --run=search-example --operation=resume
+php artisan search:reindex docara.published_pages --actor=user:admin_identity:1 --run=search-example --operation=retry
 ```
 
-`--actor` is mandatory. `--schedule-only` creates an audited resumable run. `--max-batches=N` is useful for controlled checkpoints; zero runs until completion.
+`--actor` is mandatory. Existing runs require an explicit
+`--operation=run|resume|retry`; the command never infers retry from a failed
+run. `--schedule-only` creates an audited scheduled run. `--max-batches=N` is
+useful for controlled checkpoints; zero runs until completion.
 
 The command is an operator/developer baseline, not a production scheduler claim.
 
 ## Not Implemented
 
-- queued/background worker integration;
-- public/admin query endpoints;
-- UI or admin diagnostics;
 - REST/MCP tools;
 - external, semantic or vector engines;
 - production readiness.

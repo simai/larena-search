@@ -66,9 +66,15 @@ resolution for factory registrations.
 - `schedule(providerId, actor, ?runRef, ?correlationId): ReindexRun`;
 - `run(runRef, actor, batchSize = 100, maxBatches = 0): ReindexRun`;
 - `resume(runRef, actor, batchSize = 100, maxBatches = 0, ?expectedProviderId = null): ReindexRun`;
+- `retry(runRef, actor, batchSize = 100, maxBatches = 0, ?expectedProviderId = null): ReindexRun`;
+- `continueRunning(runRef, actor, batchSize = 100, maxBatches = 0, ?expectedProviderId = null): ReindexRun`
+  for the package-owned Queue continuation path only;
 - `find(runRef): ?ReindexRun` for trusted internal diagnostics/tests.
 
-The CLI never calls `find()` before the resume permission is checked. The optional expected provider is validated inside the locked processing transaction.
+The CLI never calls `find()` before the selected operation permission is
+checked. It requires an explicit run/resume/retry operation for an existing
+run. The optional expected provider and the exact operation state are validated
+inside the locked processing transaction.
 Scheduling checks only registered provider metadata and does not construct or
 read the source. Batch processing resolves the source immediately before each
 `readBatch()` call.

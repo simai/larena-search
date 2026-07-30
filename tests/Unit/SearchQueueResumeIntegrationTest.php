@@ -66,7 +66,7 @@ final class SearchQueueSource implements ReindexSource
     }
 }
 
-/** @return array{worker:DurableQueueWorker,dispatcher:SearchReindexDispatcher} */
+/** @return array{worker:DurableQueueWorker,dispatcher:SearchReindexDispatcher,service:SearchReindexService} */
 function search_queue_runtime(ConnectionInterface $connection, SearchSourceRegistry $sources, SearchQueueClock $clock): array
 {
     $index = new DatabaseSearchIndex($connection);
@@ -83,7 +83,11 @@ function search_queue_runtime(ConnectionInterface $connection, SearchSourceRegis
         300, 3, 15, 60, QueuePriority::Maintenance, 'sanitized', 'larena.search.reindex.process.payload',
     ), new SearchReindexJobHandler($service, $dispatcher));
 
-    return ['worker' => new DurableQueueWorker($registry, $store, $clock), 'dispatcher' => $dispatcher];
+    return [
+        'worker' => new DurableQueueWorker($registry, $store, $clock),
+        'dispatcher' => $dispatcher,
+        'service' => $service,
+    ];
 }
 
 $database = SearchTestDatabase::create();
@@ -128,6 +132,21 @@ try {
     $run = $database->connection()->table('larena_search_reindex_runs')->where('run_ref', $scheduled->runRef)->first();
     search_queue_assert((string) $run->state === 'completed' && (int) $run->processed_count === 101 && (int) $run->batch_count === 2, 'Resume must continue from the exact checkpoint without duplicate indexing.');
     search_queue_assert($database->connection()->table('larena_search_documents')->count() === 101, 'Completed generation must contain every published projection exactly once.');
+
+    $clock->advance(20);
+    $staleContinuation = $resumedRuntime['worker']->runNext('worker-stale-continuation');
+    search_queue_assert(
+        $staleContinuation?->status === JobStatus::Failed
+        && $staleContinuation->failureReason === 'search_reindex_not_running',
+        'A delayed internal continuation must fail closed after another attempt completed the run.',
+    );
+    $completedAfterStaleDispatch = $resumedRuntime['service']->find($scheduled->runRef);
+    search_queue_assert(
+        $completedAfterStaleDispatch?->state === 'completed'
+        && $completedAfterStaleDispatch->processedCount === 101
+        && $completedAfterStaleDispatch->batchCount === 2,
+        'A stale dispatch must not mutate or duplicate the completed generation.',
+    );
 } finally {
     $queueMigration->down();
     $database->rollback();

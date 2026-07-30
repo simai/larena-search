@@ -7,6 +7,7 @@ namespace Larena\Search\Queue;
 use Larena\Queue\Contracts\QueueJobHandler;
 use Larena\Queue\Data\QueueExecutionContext;
 use Larena\Queue\Data\QueueJobResult;
+use Larena\Search\Exceptions\SearchReindexRejected;
 use Larena\Search\Reindex\SearchReindexService;
 use Throwable;
 
@@ -34,14 +35,11 @@ final readonly class SearchReindexJobHandler implements QueueJobHandler
             if ($current === null || $current->providerId !== $providerId) {
                 return QueueJobResult::failure('search_reindex_run_unknown', false);
             }
-            if ($current->isComplete()) {
-                return QueueJobResult::success(['run_ref' => $runRef, 'state' => 'completed', 'processed_count' => $current->processedCount]);
-            }
-
             $next = match ($operation) {
                 'run' => $this->reindex->run($runRef, $actor, $batchSize, 1),
                 'retry' => $this->reindex->retry($runRef, $actor, $batchSize, 1, $providerId),
-                default => $this->reindex->resume($runRef, $actor, $batchSize, 1, $providerId),
+                'resume' => $this->reindex->resume($runRef, $actor, $batchSize, 1, $providerId),
+                default => $this->reindex->continueRunning($runRef, $actor, $batchSize, 1, $providerId),
             };
             $context->checkpoint();
             if (!$next->isComplete()) {
@@ -54,6 +52,18 @@ final readonly class SearchReindexJobHandler implements QueueJobHandler
                 'processed_count' => $next->processedCount,
                 'batch_count' => $next->batchCount,
             ]);
+        } catch (SearchReindexRejected $exception) {
+            if (in_array($exception->reasonCode, [
+                'search_reindex_run_unknown',
+                'search_reindex_run_provider_mismatch',
+                'search_reindex_not_scheduled',
+                'search_reindex_not_running',
+                'search_reindex_not_retryable',
+            ], true)) {
+                return QueueJobResult::failure($exception->reasonCode, false, ['run_ref' => $runRef]);
+            }
+
+            return QueueJobResult::failure('search_reindex_batch_failed', true, ['run_ref' => $runRef]);
         } catch (Throwable) {
             return QueueJobResult::failure('search_reindex_batch_failed', true, ['run_ref' => $runRef]);
         }

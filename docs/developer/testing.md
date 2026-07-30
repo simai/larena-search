@@ -28,7 +28,7 @@ The persistent tests cover:
 - rollback/reapply of all Search migrations;
 - additive provider-fence migration backfill for an active failed/resumable run;
 - deterministic publish-first and schedule-first ordering with generation refresh/join and no tombstone lockout;
-- interrupted/failing/resumed rebuild with realtime generation join and persistent fence ownership;
+- interrupted/failing/retried rebuild with realtime generation join and persistent fence ownership;
 - factory registration/discovery without source construction, same-scope reuse,
   fresh source/connection graph after scope clearing and fail-closed provider
   mismatch;
@@ -38,7 +38,10 @@ The persistent tests cover:
   exception, persisted run error, Audit payload and CLI output;
 - one active run per provider and stale-generation cleanup;
 - separate Access operations and denial non-mutation;
-- Audit rollback, event taxonomy and payload redaction;
+- exact forbidden run/resume/retry/continuation transitions and stale queued
+  continuation failure;
+- operation-specific Audit ordering, rollback, event taxonomy and payload
+  redaction;
 - Laravel provider/CLI auto-discovery contract.
 
 Current lifetime-correction evidence is stored at

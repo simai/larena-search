@@ -30,11 +30,19 @@ The Search-owned lock graph is acyclic: an existing reindex operation takes `run
 
 ## Access Scope
 
-Search does not infer authorization. A trusted caller supplies explicit already-authorized access scopes to `SearchQuery`; an empty scope list is invalid. No HTTP/API surface exists in this package.
+Search does not infer authorization. A trusted caller supplies explicit
+already-authorized access scopes to `SearchQuery`; an empty scope list is
+invalid. The package-owned public HTTP presenter exposes only published safe
+projections, while protected index operations use canonical Access operations.
 
 ## Resumable Reindex
 
-Only one active run can exist per provider. A keyset cursor and counters persist in `larena_search_reindex_runs`; the provider row is the serialization source of truth for the active generation. Each projection batch, checkpoint state and checkpoint Audit event share one database transaction. Failed runs retain their active provider fence and can resume.
+Only one active run can exist per provider. A keyset cursor and counters
+persist in `larena_search_reindex_runs`; the provider row is the serialization
+source of truth for the active generation. Each projection batch, checkpoint
+state and checkpoint Audit event share one database transaction. Running
+checkpoints can resume; failed attempts retain their active provider fence and
+must use retry.
 
 ## Source Lifetime
 

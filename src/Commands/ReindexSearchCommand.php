@@ -16,12 +16,13 @@ final class ReindexSearchCommand extends Command
     protected $signature = 'search:reindex
         {provider : Registered search source provider ID}
         {--actor= : Explicit Access subject reference}
-        {--run= : Resume an existing run reference}
+        {--run= : Existing run reference}
+        {--operation= : Explicit existing-run operation: run, resume or retry}
         {--batch-size=100 : Projections per transaction}
         {--max-batches=0 : Stop after N checkpoints; zero runs to completion}
         {--schedule-only : Schedule without processing}';
 
-    protected $description = 'Run or resume a persistent, access-controlled Larena Search reindex.';
+    protected $description = 'Schedule, run, resume or retry a persistent, access-controlled Larena Search reindex.';
 
     public function __construct(private readonly SearchReindexService $reindex)
     {
@@ -34,6 +35,8 @@ final class ReindexSearchCommand extends Command
         $actor = (string) $this->option('actor');
         $runRef = $this->option('run');
         $runRef = is_string($runRef) && $runRef !== '' ? $runRef : null;
+        $operation = $this->option('operation');
+        $operation = is_string($operation) && $operation !== '' ? $operation : null;
         $batchSize = filter_var($this->option('batch-size'), FILTER_VALIDATE_INT);
         $maxBatches = filter_var($this->option('max-batches'), FILTER_VALIDATE_INT);
 
@@ -52,10 +55,19 @@ final class ReindexSearchCommand extends Command
 
             return self::FAILURE;
         }
+        if (($runRef === null) !== ($operation === null) || ($operation !== null && !in_array($operation, ['run', 'resume', 'retry'], true))) {
+            $this->components->error('--run requires an explicit --operation=run|resume|retry, and --operation requires --run.');
+
+            return self::FAILURE;
+        }
 
         try {
             if ($runRef !== null) {
-                $run = $this->reindex->resume($runRef, $actor, $batchSize, $maxBatches, $providerId);
+                $run = match ($operation) {
+                    'run' => $this->reindex->run($runRef, $actor, $batchSize, $maxBatches),
+                    'resume' => $this->reindex->resume($runRef, $actor, $batchSize, $maxBatches, $providerId),
+                    'retry' => $this->reindex->retry($runRef, $actor, $batchSize, $maxBatches, $providerId),
+                };
             } else {
                 $run = $this->reindex->schedule($providerId, $actor);
                 if (!(bool) $this->option('schedule-only')) {

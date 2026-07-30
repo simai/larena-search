@@ -182,7 +182,7 @@ try {
         'Schedule must atomically claim the durable provider fence.',
     );
     search_reindex_assert(
-        $connection->table('larena_audit_events')->where('event_type', 'search.reindex.started')->count() === 1,
+        $connection->table('larena_audit_events')->where('event_type', 'search.reindex.scheduled')->count() === 1,
         'Schedule-only state must be covered by Security Audit.',
     );
 
@@ -206,10 +206,33 @@ try {
         $unchangedScheduled?->state === 'scheduled' && $unchangedScheduled->processedCount === 0,
         'Protocol rejection must not mark or mutate a scheduled run.',
     );
+    foreach ([
+        'resume' => 'search_reindex_not_running',
+        'retry' => 'search_reindex_not_retryable',
+        'continueRunning' => 'search_reindex_not_running',
+    ] as $method => $reason) {
+        try {
+            $service->{$method}($scheduled->runRef, 'user:admin_identity:1', 1, 1, 'docara.pages');
+            throw new RuntimeException("{$method} must reject a scheduled run.");
+        } catch (SearchReindexRejected $exception) {
+            search_reindex_assert($exception->reasonCode === $reason, "{$method} returned the wrong scheduled-state reason.");
+        }
+    }
 
     $interrupted = $service->run($scheduled->runRef, 'user:admin_identity:1', 1, 1);
     search_reindex_assert($interrupted->state === 'running' && $interrupted->cursor === 'page:a', 'maxBatches must leave a resumable checkpoint.');
     search_reindex_assert($sourceFactory->createCount === 1, 'Each processed batch must resolve its source exactly once.');
+    foreach ([
+        'run' => 'search_reindex_not_scheduled',
+        'retry' => 'search_reindex_not_retryable',
+    ] as $method => $reason) {
+        try {
+            $service->{$method}($scheduled->runRef, 'user:admin_identity:1', 1, 1);
+            throw new RuntimeException("{$method} must reject a running run.");
+        } catch (SearchReindexRejected $exception) {
+            search_reindex_assert($exception->reasonCode === $reason, "{$method} returned the wrong running-state reason.");
+        }
+    }
 
     $source->fail = true;
     $sourceFailureSanitized = false;
@@ -238,9 +261,21 @@ try {
     search_reindex_assert($generation === $scheduled->generationRef, 'Realtime writes during failed/resumable state must join the active generation.');
 
     $source->fail = false;
-    $completed = $service->resume($scheduled->runRef, 'user:admin_identity:1', 1);
-    search_reindex_assert($completed->isComplete(), 'Resume must complete from the durable cursor.');
-    search_reindex_assert($sourceFactory->createCount === 4, 'Every resumed batch must resolve the source again without registry caching.');
+    foreach ([
+        'run' => 'search_reindex_not_scheduled',
+        'resume' => 'search_reindex_not_running',
+        'continueRunning' => 'search_reindex_not_running',
+    ] as $method => $reason) {
+        try {
+            $service->{$method}($scheduled->runRef, 'user:admin_identity:1', 1, 1);
+            throw new RuntimeException("{$method} must reject a failed run.");
+        } catch (SearchReindexRejected $exception) {
+            search_reindex_assert($exception->reasonCode === $reason, "{$method} returned the wrong failed-state reason.");
+        }
+    }
+    $completed = $service->retry($scheduled->runRef, 'user:admin_identity:1', 1);
+    search_reindex_assert($completed->isComplete(), 'Retry must complete from the durable failed checkpoint.');
+    search_reindex_assert($sourceFactory->createCount === 4, 'Every retry/continuation batch must resolve the source again without registry caching.');
     search_reindex_assert(count($index->query(new SearchQuery('realtime newest'))) === 1, 'Final sweep must retain concurrent active-generation writes.');
     search_reindex_assert(count($index->query(new SearchQuery('remove me'))) === 0, 'Final sweep must tombstone documents absent from the source.');
     search_reindex_assert(
@@ -306,25 +341,60 @@ try {
     );
 
     $newerRun = $service->schedule('race.schedule_first', 'user:admin_identity:1', 'run-after-completed');
-    search_reindex_assert(
-        $service->run($scheduleFirstRun->runRef, 'user:admin_identity:1')->isComplete(),
-        'Re-reading a completed stale run remains idempotent.',
-    );
+    try {
+        $service->run($scheduleFirstRun->runRef, 'user:admin_identity:1');
+        throw new RuntimeException('Run must reject a completed stale run.');
+    } catch (SearchReindexRejected $exception) {
+        search_reindex_assert($exception->reasonCode === 'search_reindex_not_scheduled', 'Completed stale run must fail with the stable run-state reason.');
+    }
     $newerFence = $connection->table('larena_search_provider_states')->where('provider_id', 'race.schedule_first')->first();
     search_reindex_assert(
         $newerFence !== null
         && (string) $newerFence->active_run_ref === $newerRun->runRef
         && (string) $newerFence->active_generation_ref === $newerRun->generationRef,
-        'A completed stale run must not clear a newer provider fence.',
+        'A rejected completed stale run must not clear a newer provider fence.',
     );
     $service->run($newerRun->runRef, 'user:admin_identity:1');
 
-    foreach (['search.reindex.started', 'search.reindex.resumed', 'search.reindex.checkpointed', 'search.reindex.completed', 'search.reindex.failed'] as $eventType) {
+    foreach (['search.reindex.scheduled', 'search.reindex.operation_started', 'search.reindex.checkpointed', 'search.reindex.completed', 'search.reindex.rejected', 'search.reindex.failed'] as $eventType) {
         search_reindex_assert(
             $connection->table('larena_audit_events')->where('event_type', $eventType)->exists(),
             "Missing Security Audit event {$eventType}.",
         );
     }
+    $operationPayloads = $connection->table('larena_audit_events')
+        ->where('source_package', 'larena/search')
+        ->pluck('payload')
+        ->map(static fn (mixed $payload): string => (string) (json_decode((string) $payload, true, 512, JSON_THROW_ON_ERROR)['operation'] ?? ''))
+        ->all();
+    foreach (['schedule', 'run', 'resume', 'retry', 'continue'] as $operation) {
+        search_reindex_assert(in_array($operation, $operationPayloads, true), "Missing truthful Audit operation {$operation}.");
+    }
+    $mainAuditRows = $connection->table('larena_audit_events')
+        ->where('correlation_id', 'correlation-main')
+        ->orderBy('id')
+        ->get(['event_type', 'payload']);
+    $mainAudit = array_map(static function (object $row): array {
+        $payload = json_decode((string) $row->payload, true, 512, JSON_THROW_ON_ERROR);
+
+        return ['type' => (string) $row->event_type, 'operation' => (string) ($payload['operation'] ?? '')];
+    }, $mainAuditRows->all());
+    search_reindex_assert(
+        in_array(['type' => 'search.reindex.failed', 'operation' => 'resume'], $mainAudit, true),
+        'A failed resume must retain resume identity in Audit.',
+    );
+    search_reindex_assert(
+        in_array(['type' => 'search.reindex.operation_started', 'operation' => 'retry'], $mainAudit, true),
+        'Retry must have its own operation-start identity in Audit.',
+    );
+    search_reindex_assert(
+        !in_array(['type' => 'search.reindex.operation_started', 'operation' => 'resume'], $mainAudit, true),
+        'A resume that rolls back before processing must not be recorded as a successful start.',
+    );
+    search_reindex_assert(
+        !$connection->table('larena_audit_events')->where('event_type', 'search.reindex.resumed')->exists(),
+        'Legacy ambiguous resume Audit identity must not remain active.',
+    );
     foreach ($connection->table('larena_audit_events')->where('source_package', 'larena/search')->pluck('payload') as $payload) {
         search_reindex_assert(
             preg_match('/password|session_id|cookie|token|secret|query|title|snippet|body/i', (string) $payload) !== 1,
@@ -334,8 +404,8 @@ try {
     $authorizedOperations = array_values(array_unique($authorizer->operations));
     sort($authorizedOperations);
     search_reindex_assert(
-        $authorizedOperations === ['search.reindex.resume', 'search.reindex.run', 'search.reindex.schedule'],
-        'Schedule, run and resume must have separate canonical Access checks.',
+        $authorizedOperations === ['search.reindex.resume', 'search.reindex.retry', 'search.reindex.run', 'search.reindex.schedule'],
+        'Schedule, run, resume and retry must have separate canonical Access checks.',
     );
 
     $registry->registerFactory(new SearchReindexThrowingFactory());
@@ -361,17 +431,30 @@ try {
         ->value('payload');
     search_reindex_assert(
         str_contains($factoryFailureAuditPayload, 'search_reindex_source_failed')
+        && str_contains($factoryFailureAuditPayload, '"operation":"run"')
         && !str_contains($factoryFailureAuditPayload, 'raw_sensitive_factory_detail'),
-        'Factory failure Audit must contain only the sanitized reason.',
+        'Factory failure Audit must contain the sanitized reason and exact operation.',
     );
 
     $factoryFailureCommand = new ReindexSearchCommand($service);
     $factoryFailureCommand->setLaravel(new SearchReindexTestConsoleApplication());
+    $missingOperationTester = new CommandTester($factoryFailureCommand);
+    $missingOperationExitCode = $missingOperationTester->execute([
+        'provider' => 'factory.fail',
+        '--actor' => 'user:admin_identity:1',
+        '--run' => $factoryFailureRun->runRef,
+    ]);
+    search_reindex_assert(
+        $missingOperationExitCode === ReindexSearchCommand::FAILURE
+        && str_contains($missingOperationTester->getDisplay(), '--run requires an explicit --operation'),
+        'CLI must reject an existing run without an explicit operation before service execution.',
+    );
     $factoryFailureCommandTester = new CommandTester($factoryFailureCommand);
     $factoryFailureExitCode = $factoryFailureCommandTester->execute([
         'provider' => 'factory.fail',
         '--actor' => 'user:admin_identity:1',
         '--run' => $factoryFailureRun->runRef,
+        '--operation' => 'retry',
     ]);
     $factoryFailureDisplay = $factoryFailureCommandTester->getDisplay();
     search_reindex_assert($factoryFailureExitCode === ReindexSearchCommand::FAILURE, 'CLI must fail for a factory resolution error.');

@@ -12,10 +12,11 @@ use Larena\Audit\Enums\AuditSeverity;
 final readonly class SearchReindexAuditEventDescriptor implements AuditEventDescriptor
 {
     private const TYPES = [
-        'search.reindex.started',
-        'search.reindex.resumed',
+        'search.reindex.scheduled',
+        'search.reindex.operation_started',
         'search.reindex.checkpointed',
         'search.reindex.completed',
+        'search.reindex.rejected',
         'search.reindex.failed',
     ];
 

@@ -24,6 +24,12 @@ use Throwable;
 
 final readonly class SearchReindexService
 {
+    private const OPERATION_SCHEDULE = 'schedule';
+    private const OPERATION_RUN = 'run';
+    private const OPERATION_RESUME = 'resume';
+    private const OPERATION_RETRY = 'retry';
+    private const OPERATION_CONTINUE = 'continue';
+
     private ProviderGenerationFence $providerFence;
 
     public function __construct(
@@ -87,7 +93,7 @@ final readonly class SearchReindexService
                 $this->providerFence->activate($providerState, $runRef, $generationRef);
 
                 $run = new ReindexRun($runRef, $providerId, $generationRef, 'scheduled', null, 0, 0, $actor, $correlationId);
-                $this->audit('search.reindex.started', $run, $actor, []);
+                $this->audit('search.reindex.scheduled', $run, $actor, self::OPERATION_SCHEDULE, []);
 
                 return $run;
             });
@@ -103,7 +109,7 @@ final readonly class SearchReindexService
         $this->assertActor($actor);
         $this->authorizer->assertAllowed($actor, 'search.reindex.run');
 
-        return $this->execute($runRef, $actor, $batchSize, $maxBatches, false, null);
+        return $this->execute($runRef, $actor, $batchSize, $maxBatches, self::OPERATION_RUN, null);
     }
 
     public function resume(
@@ -119,7 +125,7 @@ final readonly class SearchReindexService
             $this->assertProviderId($expectedProviderId);
         }
 
-        return $this->execute($runRef, $actor, $batchSize, $maxBatches, true, $expectedProviderId);
+        return $this->execute($runRef, $actor, $batchSize, $maxBatches, self::OPERATION_RESUME, $expectedProviderId);
     }
 
     public function retry(
@@ -134,12 +140,23 @@ final readonly class SearchReindexService
         if ($expectedProviderId !== null) {
             $this->assertProviderId($expectedProviderId);
         }
-        $run = $this->find($runRef);
-        if ($run === null || $run->state !== 'failed') {
-            throw new SearchReindexRejected('search_reindex_not_retryable');
+        return $this->execute($runRef, $actor, $batchSize, $maxBatches, self::OPERATION_RETRY, $expectedProviderId);
+    }
+
+    public function continueRunning(
+        string $runRef,
+        string $actor,
+        int $batchSize = 100,
+        int $maxBatches = 0,
+        ?string $expectedProviderId = null,
+    ): ReindexRun {
+        $this->assertActor($actor);
+        $this->authorizer->assertAllowed($actor, 'search.reindex.resume');
+        if ($expectedProviderId !== null) {
+            $this->assertProviderId($expectedProviderId);
         }
 
-        return $this->execute($runRef, $actor, $batchSize, $maxBatches, true, $expectedProviderId);
+        return $this->execute($runRef, $actor, $batchSize, $maxBatches, self::OPERATION_CONTINUE, $expectedProviderId);
     }
 
     public function find(string $runRef): ?ReindexRun
@@ -158,7 +175,7 @@ final readonly class SearchReindexService
         string $actor,
         int $batchSize,
         int $maxBatches,
-        bool $resuming,
+        string $operation,
         ?string $expectedProviderId,
     ): ReindexRun
     {
@@ -170,10 +187,12 @@ final readonly class SearchReindexService
 
         $processedBatches = 0;
         $firstBatch = true;
+        $activeOperation = $operation;
 
         try {
             do {
-                $run = $this->processBatch($runRef, $actor, $batchSize, $resuming, $firstBatch, $expectedProviderId);
+                $activeOperation = $firstBatch ? $operation : self::OPERATION_CONTINUE;
+                $run = $this->processBatch($runRef, $actor, $batchSize, $activeOperation, $expectedProviderId);
                 $firstBatch = false;
                 $processedBatches++;
                 if ($run->isComplete() || ($maxBatches > 0 && $processedBatches >= $maxBatches)) {
@@ -181,8 +200,10 @@ final readonly class SearchReindexService
                 }
             } while (true);
         } catch (Throwable $exception) {
-            if (!$this->isProtocolRejection($exception)) {
-                $this->recordFailure($runRef, $actor, $this->failureCode($exception));
+            if ($this->isProtocolRejection($exception)) {
+                $this->recordRejection($runRef, $actor, $activeOperation, $this->failureCode($exception));
+            } else {
+                $this->recordFailure($runRef, $actor, $activeOperation, $this->failureCode($exception));
             }
 
             if ($exception instanceof SearchReindexRejected || $exception instanceof SearchPersistenceFailed || $exception instanceof InvalidArgumentException) {
@@ -197,12 +218,11 @@ final readonly class SearchReindexService
         string $runRef,
         string $actor,
         int $batchSize,
-        bool $resuming,
-        bool $firstBatch,
+        string $operation,
         ?string $expectedProviderId,
     ): ReindexRun {
         try {
-            return $this->database->transaction(function () use ($runRef, $actor, $batchSize, $resuming, $firstBatch, $expectedProviderId): ReindexRun {
+            return $this->database->transaction(function () use ($runRef, $actor, $batchSize, $operation, $expectedProviderId): ReindexRun {
                 $row = $this->database->table('larena_search_reindex_runs')
                     ->where('run_ref', $runRef)
                     ->lockForUpdate()
@@ -215,28 +235,18 @@ final readonly class SearchReindexService
                 if ($expectedProviderId !== null && $run->providerId !== $expectedProviderId) {
                     throw new SearchReindexRejected('search_reindex_run_provider_mismatch');
                 }
-                if ($run->isComplete()) {
-                    return $run;
-                }
-                if ($resuming && !in_array($run->state, ['scheduled', 'running', 'failed'], true)) {
-                    throw new SearchReindexRejected('search_reindex_not_resumable');
-                }
-                if (!$resuming && $run->state !== 'scheduled' && !($run->state === 'running' && !$firstBatch)) {
-                    throw new SearchReindexRejected('search_reindex_not_scheduled');
-                }
+                $this->assertOperationState($operation, $run->state);
 
                 $providerState = $this->providerFence->lock($run->providerId);
                 $this->providerFence->assertActive($providerState, $run->runRef, $run->generationRef);
 
-                if ($firstBatch) {
+                if ($operation !== self::OPERATION_CONTINUE) {
                     $this->database->table('larena_search_reindex_runs')->where('run_ref', $runRef)->update([
                         'state' => 'running',
                         'error_code' => null,
                         'updated_at' => $this->timestamp(),
                     ]);
-                    if ($resuming) {
-                        $this->audit('search.reindex.resumed', $run, $actor, []);
-                    }
+                    $this->audit('search.reindex.operation_started', $run, $actor, $operation, []);
                 }
 
                 try {
@@ -298,7 +308,7 @@ final readonly class SearchReindexService
                     $run->requestedBy,
                     $run->correlationId,
                 );
-                $this->audit('search.reindex.checkpointed', $checkpoint, $actor, [
+                $this->audit('search.reindex.checkpointed', $checkpoint, $actor, $operation, [
                     'batch_size' => count($batch->projections),
                     'cursor_hash' => $cursor === null ? null : hash('sha256', $cursor),
                 ]);
@@ -326,7 +336,7 @@ final readonly class SearchReindexService
                     $run->requestedBy,
                     $run->correlationId,
                 );
-                $this->audit('search.reindex.completed', $completed, $actor, ['removed_count' => $removed]);
+                $this->audit('search.reindex.completed', $completed, $actor, $operation, ['removed_count' => $removed]);
 
                 return $completed;
             });
@@ -337,10 +347,10 @@ final readonly class SearchReindexService
         }
     }
 
-    private function recordFailure(string $runRef, string $actor, string $errorCode): void
+    private function recordFailure(string $runRef, string $actor, string $operation, string $errorCode): void
     {
         try {
-            $this->database->transaction(function () use ($runRef, $actor, $errorCode): void {
+            $this->database->transaction(function () use ($runRef, $actor, $operation, $errorCode): void {
                 $row = $this->database->table('larena_search_reindex_runs')
                     ->where('run_ref', $runRef)
                     ->lockForUpdate()
@@ -355,15 +365,40 @@ final readonly class SearchReindexService
                     'error_code' => $errorCode,
                     'updated_at' => $this->timestamp(),
                 ]);
-                $this->audit('search.reindex.failed', $run, $actor, ['error_code' => $errorCode]);
+                $this->audit('search.reindex.failed', $run, $actor, $operation, ['error_code' => $errorCode]);
             });
         } catch (Throwable) {
             // The original error remains authoritative; failed Audit cannot commit partial failure state.
         }
     }
 
+    private function recordRejection(string $runRef, string $actor, string $operation, string $reasonCode): void
+    {
+        try {
+            $this->database->transaction(function () use ($runRef, $actor, $operation, $reasonCode): void {
+                $row = $this->database->table('larena_search_reindex_runs')
+                    ->where('run_ref', $runRef)
+                    ->lockForUpdate()
+                    ->first();
+                if (!$row instanceof stdClass) {
+                    return;
+                }
+
+                $this->audit(
+                    'search.reindex.rejected',
+                    $this->hydrate($row),
+                    $actor,
+                    $operation,
+                    ['reason_code' => $reasonCode],
+                );
+            });
+        } catch (Throwable) {
+            // The protocol rejection remains authoritative; Audit failure cannot make it succeed.
+        }
+    }
+
     /** @param array<string, scalar|null> $extra */
-    private function audit(string $type, ReindexRun $run, string $actor, array $extra): void
+    private function audit(string $type, ReindexRun $run, string $actor, string $operation, array $extra): void
     {
         $descriptor = new SearchReindexAuditEventDescriptor($type);
         $this->audit->route($descriptor, AuditEvent::create(
@@ -379,6 +414,7 @@ final readonly class SearchReindexService
                 'provider_id' => $run->providerId,
                 'run_ref' => $run->runRef,
                 'generation_ref' => $run->generationRef,
+                'operation' => $operation,
                 'processed_count' => $run->processedCount,
                 'batch_count' => $run->batchCount,
             ] + $extra,
@@ -415,9 +451,25 @@ final readonly class SearchReindexService
         return $exception instanceof SearchReindexRejected && in_array($exception->reasonCode, [
             'search_reindex_run_unknown',
             'search_reindex_run_provider_mismatch',
-            'search_reindex_not_resumable',
             'search_reindex_not_scheduled',
+            'search_reindex_not_running',
+            'search_reindex_not_retryable',
         ], true);
+    }
+
+    private function assertOperationState(string $operation, string $state): void
+    {
+        [$expectedState, $rejectionReason] = match ($operation) {
+            self::OPERATION_RUN => ['scheduled', 'search_reindex_not_scheduled'],
+            self::OPERATION_RESUME, self::OPERATION_CONTINUE => ['running', 'search_reindex_not_running'],
+            self::OPERATION_RETRY => ['failed', 'search_reindex_not_retryable'],
+            default => throw new InvalidArgumentException('search_reindex_operation_invalid'),
+        };
+        if ($state === $expectedState) {
+            return;
+        }
+
+        throw new SearchReindexRejected($rejectionReason);
     }
 
     private function assertProviderId(string $providerId): void

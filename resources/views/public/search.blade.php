@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="index,follow">
+    <meta name="robots" content="noindex,follow">
     <title>{{ __('larena-search::public.title') }}</title>
     @foreach($assets as $asset)@if($asset['kind'] === 'css')<link rel="stylesheet" href="{{ $asset['path'] }}" data-larena-asset-key="{{ $asset['key'] }}">@endif @endforeach
     @foreach($assets as $asset)@if($asset['kind'] === 'javascript')<script defer src="{{ $asset['path'] }}" data-larena-asset-key="{{ $asset['key'] }}"></script>@endif @endforeach

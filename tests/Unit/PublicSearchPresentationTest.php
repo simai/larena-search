@@ -33,5 +33,6 @@ public_search_assert(in_array('simai.framework.core.js', array_column($assets, '
 $view = (string) file_get_contents(dirname(__DIR__, 2) . '/resources/views/public/search.blade.php');
 public_search_assert(str_contains($view, "{!! \$hit['snippet'] !!}") && str_contains($view, "{{ \$hit['title'] }}"), 'Only the escaped presenter snippet may cross the raw HTML boundary.');
 public_search_assert(!str_contains($view, "source_ref") && !str_contains($view, "payload"), 'Public view must not reference private index fields.');
+public_search_assert(str_contains($view, 'content="noindex,follow"'), 'Internal search result pages must not be indexed by crawlers.');
 
 echo "PublicSearchPresentationTest passed.\n";

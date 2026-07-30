@@ -26,9 +26,9 @@ $publicShape = json_decode(json_encode($presented, JSON_THROW_ON_ERROR), true, 5
 public_search_assert(is_array($publicShape) && array_keys($publicShape) === ['title', 'locator', 'snippet', 'provider'], 'Presenter must not expose internal identifiers or payload.');
 
 $assets = (new PublicSearchAssets())->all();
-public_search_assert(count($assets) >= 4, 'Public Search must activate the pinned SIMAI Framework runtime pair.');
-public_search_assert(in_array('simai.framework.core.css', array_column($assets, 'key'), true), 'SIMAI Framework core CSS must be activated.');
-public_search_assert(in_array('simai.framework.core.js', array_column($assets, 'key'), true), 'SIMAI Framework core JavaScript must be activated.');
+public_search_assert(count($assets) >= 4, 'Public Search must activate the pinned Simai Framework runtime pair.');
+public_search_assert(in_array('simai.framework.core.css', array_column($assets, 'key'), true), 'Simai Framework core CSS must be activated.');
+public_search_assert(in_array('simai.framework.core.js', array_column($assets, 'key'), true), 'Simai Framework core JavaScript must be activated.');
 
 $view = (string) file_get_contents(dirname(__DIR__, 2) . '/resources/views/public/search.blade.php');
 public_search_assert(str_contains($view, "{!! \$hit['snippet'] !!}") && str_contains($view, "{{ \$hit['title'] }}"), 'Only the escaped presenter snippet may cross the raw HTML boundary.');

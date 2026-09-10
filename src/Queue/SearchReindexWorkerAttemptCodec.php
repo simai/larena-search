@@ -114,6 +114,10 @@ final readonly class SearchReindexWorkerAttemptCodec
         }
         $decoded = base64_decode(strtr($value, '-_', '+/') . str_repeat('=', (4 - strlen($value) % 4) % 4), true);
 
-        return is_string($decoded) ? $decoded : null;
+        if (!is_string($decoded) || $this->base64UrlEncode($decoded) !== $value) {
+            return null;
+        }
+
+        return $decoded;
     }
 }

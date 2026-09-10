@@ -20,6 +20,7 @@ final class SearchAdminNavigationContributor implements AdminNavigationContribut
             statusCap: 'public_search_index_operations', order: 50, group: 'operations',
             knownLimitations: ['not_production_ready', 'frontend_not_complete'], surface: 'product',
             labelKey: 'larena-search::admin.navigation', activeRoutePattern: 'larena.search.admin.*',
+            icon: 'search',
         )];
     }
 }

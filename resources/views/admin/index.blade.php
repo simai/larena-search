@@ -6,12 +6,7 @@
 @section('description', __('larena-search::admin.description'))
 
 @section('content')
-@if ($errors->any())
-    {!! \Larena\Admin\Runtime\AdminControls::alert(implode(' ', $errors->all()), 'danger') !!}
-@endif
-@if (session('status'))
-    {!! \Larena\Admin\Runtime\AdminControls::alert((string) session('status'), 'success') !!}
-@endif
+{{-- Success, error and validation notices come from the admin shell. --}}
 
 @if (is_array($selected))
 <section id="search-provider" class="larena-panel larena-panel-padded" aria-labelledby="search-provider-title" data-larena-search-provider="{{ $selected['provider_id'] }}">

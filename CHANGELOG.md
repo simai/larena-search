@@ -4,6 +4,8 @@ All notable package changes are recorded here. The package does not currently pu
 
 ## Unreleased
 
+- Document the `storage.site_pages` source: how a published Storage entry maps to a Search projection and why its `projection_version` satisfies the revision fence.
+
 ### Fixed
 
 - Reindex execution now enforces the same locked transition table in the

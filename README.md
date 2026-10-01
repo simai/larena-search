@@ -22,7 +22,7 @@ The current database/native baseline provides:
 
 The database-native public route rejects non-empty terms shorter than two characters, caps input at 200 characters, returns at most 20 results per page, and caps pagination at page 500. These are the explicit bounded-query limits.
 
-The package owns `/search` and the optional local/testing `/admin/search` operations surface. Content and Docara remain the only owners of the published projections; Search never reads their private tables or draft payload. External engines, vector/semantic search and crawler/analytics are not included. The package does not claim production readiness, frontend completeness or readiness of all Larena packages.
+The package owns `/search` and the optional local/testing `/admin/search` operations surface. The source packages own the published projections — Storage (site pages, `storage.site_pages`), Content and Docara — and Search never reads their private tables or draft payload. External engines, vector/semantic search and crawler/analytics are not included. The package does not claim production readiness, frontend completeness or readiness of all Larena packages.
 
 Canonical specifications are in `simai/larena-specs`.
 

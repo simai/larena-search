@@ -53,3 +53,29 @@ from leaking into a later request after Laravel clears scoped instances.
 
 Provider discovery and scheduling use registered IDs only. They must not open a
 source connection or execute a canonical source query.
+
+## Storage Site Pages Source
+
+The composed application registers `storage.site_pages`: one document per
+published Storage record of the site role (`site_node@v1`) and locale.
+
+| Search field | Storage source |
+| --- | --- |
+| `source_ref` | `<locale>:<record_id>` |
+| `source_revision` | `projection_version` of the published entry |
+| `title` | the `title` field, else the key field |
+| `locator` | `/site/<locale>/<key field value>` |
+| `snippet`, `searchable_text` | the entry's other public text fields |
+| `locale` | the publication locale |
+| `access_scope` | `public` |
+
+`projection_version` is the newest publication log id plus the newest localized
+value id of the record in that locale. It only grows and moves on every
+publication transition and translation, so the revision fence holds: a
+withdrawal always outranks the indexed document and a republication of the
+same revision outranks the withdrawal. The document carries what was written
+for its own locale, without falling back to another one, because a fallback
+would change the text under one revision. Storage's `PublicationObserver`
+upserts or removes the document as each transition commits; `search:reindex`
+rebuilds the provider from Storage's keyset projection.
+

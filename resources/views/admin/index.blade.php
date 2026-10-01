@@ -6,12 +6,44 @@
 @section('description', __('larena-search::admin.description'))
 
 @section('content')
-<section class="larena-admin-card"><div class="larena-admin-table-wrap"><table class="larena-admin-table"><thead><tr><th>{{ __('larena-search::admin.provider') }}</th><th>{{ __('larena-search::admin.state') }}</th><th>{{ __('larena-search::admin.progress') }}</th><th>{{ __('larena-search::admin.generation') }}</th><th>{{ __('larena-search::admin.error') }}</th><th>{{ __('larena-search::admin.actions') }}</th></tr></thead><tbody>
-@forelse($providers as $provider)<tr><td><code>{{ $provider['provider_id'] }}</code></td><td>{{ $provider['state'] }}</td><td>{{ $provider['processed_count'] }} / {{ $provider['batch_count'] }}</td><td><code>{{ $provider['generation_ref'] ? substr($provider['generation_ref'], 0, 20) : '—' }}</code></td><td>{{ $provider['error_code'] ?? '—' }}</td><td>
-@if($canSchedule && in_array($provider['state'], ['idle', 'completed'], true))<form method="post" action="{{ route('larena.search.admin.schedule', $provider['provider_id']) }}">@csrf<input type="hidden" name="expected_state" value="{{ $provider['state'] }}"><button class="sf-button" type="submit">{{ __('larena-search::admin.schedule') }}</button></form>@endif
-@if($canRun && $provider['state'] === 'scheduled' && $provider['run_ref'])<form method="post" action="{{ route('larena.search.admin.run', [$provider['provider_id'], $provider['run_ref']]) }}">@csrf<input type="hidden" name="expected_state" value="scheduled"><button class="sf-button" type="submit">{{ __('larena-search::admin.run') }}</button></form>@endif
-@if($canResume && $provider['state'] === 'running' && $provider['run_ref'])<form method="post" action="{{ route('larena.search.admin.resume', [$provider['provider_id'], $provider['run_ref']]) }}">@csrf<input type="hidden" name="expected_state" value="running"><button class="sf-button" type="submit">{{ __('larena-search::admin.resume') }}</button></form>@endif
-@if($canRetry && $provider['state'] === 'failed' && $provider['run_ref'])<form method="post" action="{{ route('larena.search.admin.retry', [$provider['provider_id'], $provider['run_ref']]) }}">@csrf<input type="hidden" name="expected_state" value="failed"><button class="sf-button" type="submit">{{ __('larena-search::admin.retry') }}</button></form>@endif
-</td></tr>@empty<tr><td colspan="6">{{ __('larena-search::admin.empty') }}</td></tr>@endforelse
-</tbody></table></div></section>
+@if ($errors->any())
+    {!! \Larena\Admin\Runtime\AdminControls::alert(implode(' ', $errors->all()), 'danger') !!}
+@endif
+@if (session('status'))
+    {!! \Larena\Admin\Runtime\AdminControls::alert((string) session('status'), 'success') !!}
+@endif
+
+@if (is_array($selected))
+<section id="search-provider" class="larena-panel larena-panel-padded" aria-labelledby="search-provider-title" data-larena-search-provider="{{ $selected['provider_id'] }}">
+    <h2 id="search-provider-title"><code>{{ $selected['provider_id'] }}</code></h2>
+    <dl>
+        <dt>{{ __('larena-search::admin.state') }}</dt><dd>{{ $selected['state'] }}</dd>
+        <dt>{{ __('larena-search::admin.progress') }}</dt><dd>{{ $selected['processed_count'] }} / {{ $selected['batch_count'] }}</dd>
+        <dt>{{ __('larena-search::admin.generation') }}</dt><dd><code>{{ $selected['generation_ref'] ? substr($selected['generation_ref'], 0, 20) : '—' }}</code></dd>
+        <dt>{{ __('larena-search::admin.error') }}</dt><dd>{{ $selected['error_code'] ?? '—' }}</dd>
+    </dl>
+    <div class="larena-form-actions">
+    @if ($canSchedule && in_array($selected['state'], ['idle', 'completed'], true))
+        <form method="post" action="{{ route('larena.search.admin.schedule', $selected['provider_id']) }}">@csrf<input type="hidden" name="expected_state" value="{{ $selected['state'] }}">{!! \Larena\Admin\Runtime\AdminControls::submit(__('larena-search::admin.schedule'), 'primary') !!}</form>
+    @endif
+    @if ($canRun && $selected['state'] === 'scheduled' && $selected['run_ref'])
+        <form method="post" action="{{ route('larena.search.admin.run', [$selected['provider_id'], $selected['run_ref']]) }}">@csrf<input type="hidden" name="expected_state" value="scheduled">{!! \Larena\Admin\Runtime\AdminControls::submit(__('larena-search::admin.run'), 'primary') !!}</form>
+    @endif
+    @if ($canResume && $selected['state'] === 'running' && $selected['run_ref'])
+        <form method="post" action="{{ route('larena.search.admin.resume', [$selected['provider_id'], $selected['run_ref']]) }}">@csrf<input type="hidden" name="expected_state" value="running">{!! \Larena\Admin\Runtime\AdminControls::submit(__('larena-search::admin.resume')) !!}</form>
+    @endif
+    @if ($canRetry && $selected['state'] === 'failed' && $selected['run_ref'])
+        <form method="post" action="{{ route('larena.search.admin.retry', [$selected['provider_id'], $selected['run_ref']]) }}">@csrf<input type="hidden" name="expected_state" value="failed">{!! \Larena\Admin\Runtime\AdminControls::submit(__('larena-search::admin.retry')) !!}</form>
+    @endif
+    </div>
+</section>
+@endif
+
+@if (is_array($providersView))
+    @include('larena-admin::dataview.page', ['dataview' => $providersView, 'sectionId' => 'search-providers', 'owner' => 'larena/search',
+        'ariaLabel' => __('larena-search::admin.heading'), 'queryUrl' => route('larena.search.admin.index', [], false),
+        'matchedCount' => count($providers), 'source' => 'search_operations_projection'])
+@else
+    <section class="larena-panel larena-panel-padded"><p>{{ __('larena-search::admin.empty') }}</p></section>
+@endif
 @endsection

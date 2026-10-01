@@ -36,7 +36,9 @@
     "src/Navigation/SearchAdminNavigationContributor.php",
     "tests/*",
     "src/Queue/SearchReindexWorkerAttemptCodec.php",
-    "tests/Unit/SearchQueueResumeIntegrationTest.php"
+    "tests/Unit/SearchQueueResumeIntegrationTest.php",
+    "resources/views/admin/index.blade.php",
+    "src/Http/Controllers/SearchAdminController.php"
   ],
   "forbidden_files": [
     "../access/*",

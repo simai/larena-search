@@ -11,6 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Str;
 use Larena\Access\Runtime\AccessOperationAuthorizer;
+use Larena\Admin\Assets\AdminProductAssetManifest;
+use Larena\Admin\Runtime\AdminDataviewPage;
+use Larena\Admin\Runtime\AdminDataviewPagePresenter;
 use Larena\Search\Exceptions\SearchReindexRejected;
 use Larena\Search\Operations\SearchIndexOperationsQuery;
 use Larena\Search\Queue\SearchReindexDispatcher;
@@ -25,18 +28,67 @@ final readonly class SearchAdminController
         private Factory $views,
         private Redirector $redirector,
         private Translator $translator,
+        private AdminDataviewPagePresenter $dataviews,
     ) {
     }
 
     public function index(Request $request): mixed
     {
+        $providers = $this->operations->providers();
+        $requested = $request->query('provider');
+        $selected = null;
+        foreach ($providers as $provider) {
+            if (is_string($requested) && $provider['provider_id'] === $requested) {
+                $selected = $provider;
+            }
+        }
+
         return $this->views->make('larena-search::admin.index', [
-            'providers' => $this->operations->providers(),
+            'providers' => $providers,
+            'providersView' => $this->providersView($providers),
+            'selected' => $selected,
             'canSchedule' => $this->access->authorize($request, 'search.reindex.schedule')->isAllowed(),
             'canRun' => $this->access->authorize($request, 'search.reindex.run')->isAllowed(),
             'canResume' => $this->access->authorize($request, 'search.reindex.resume')->isAllowed(),
             'canRetry' => $this->access->authorize($request, 'search.reindex.retry')->isAllowed(),
         ]);
+    }
+
+    /**
+     * The providers as a shared admin data view with their rows in place
+     * (larena.admin-dataview-page); a row opens its provider's actions on the page.
+     *
+     * @param list<array<string, mixed>> $providers
+     * @return array<string, mixed>|null
+     */
+    private function providersView(array $providers): ?array
+    {
+        if ($providers === []) {
+            return null;
+        }
+        $rows = array_map(static fn (array $provider): array => [
+            'id' => (string) $provider['provider_id'],
+            'provider' => (string) $provider['provider_id'],
+            'state' => (string) $provider['state'],
+            'progress' => $provider['processed_count'].' / '.$provider['batch_count'],
+            'generation' => $provider['generation_ref'] ? substr((string) $provider['generation_ref'], 0, 20) : '—',
+            'error' => (string) ($provider['error_code'] ?? '—'),
+        ], $providers);
+        try {
+            return $this->dataviews->present(new AdminDataviewPage(
+                instanceId: 'search-providers',
+                title: $this->text('heading'),
+                columns: array_map(fn (string $key): array => ['key' => $key, 'label' => $this->text($key)], ['provider', 'state', 'progress', 'generation', 'error']),
+                total: count($rows),
+                pageId: 'page.admin.search-index',
+                rows: $rows,
+                rowLinks: ['view' => '?provider=__ID__#search-provider'],
+                countLabel: (string) $this->translator->get('larena-admin::admin.minimal_cms.record_count'),
+                tableViewLabel: (string) $this->translator->get('larena-admin::admin.minimal_cms.table_view'),
+            ), AdminProductAssetManifest::dataviewActivation());
+        } catch (Throwable) {
+            return null;
+        }
     }
 
     public function schedule(Request $request, string $providerId): RedirectResponse

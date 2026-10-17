@@ -38,7 +38,12 @@
     "src/Queue/SearchReindexWorkerAttemptCodec.php",
     "tests/Unit/SearchQueueResumeIntegrationTest.php",
     "resources/views/admin/index.blade.php",
-    "src/Http/Controllers/SearchAdminController.php"
+    "src/Http/Controllers/SearchAdminController.php",
+    "resources/lang/en/admin.php",
+    "resources/lang/ru/admin.php",
+    "routes/admin.php",
+    "src/Admin/SearchProviderPropertyViewPort.php",
+    "src/Admin/SearchProviderRows.php"
   ],
   "forbidden_files": [
     "../access/*",

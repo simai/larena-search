@@ -11,6 +11,11 @@ Route::prefix((string) config('larena-search.admin.prefix', 'admin/search'))
     ->group(static function (): void {
         Route::get('/', [SearchAdminController::class, 'index'])
             ->middleware((array) config('larena-search.admin.read_middleware', []))->name('index');
+        // The providers list's host port (reindex steps from a row; each checks its own right) and a provider's record.
+        Route::post('/port', [SearchAdminController::class, 'port'])
+            ->middleware((array) config('larena-search.admin.read_middleware', []))->name('port');
+        Route::post('/record-port', [SearchAdminController::class, 'recordPort'])
+            ->middleware((array) config('larena-search.admin.read_middleware', []))->name('record-port');
         Route::post('/providers/{providerId}/schedule', [SearchAdminController::class, 'schedule'])
             ->where('providerId', '[a-z][a-z0-9_.-]{1,119}')
             ->middleware((array) config('larena-search.admin.schedule_middleware', []))->name('schedule');

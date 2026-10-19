@@ -63,6 +63,7 @@
     "scripts": {
         "test": [
             "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchContractTest.php",
+            "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchProviderRowsTest.php",
             "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchFailsClosedTest.php",
             "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemorySearchRuntimeTest.php",
             "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/InMemorySearchRuntimeFailsClosedTest.php",

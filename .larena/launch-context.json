@@ -43,7 +43,9 @@
     "resources/lang/ru/admin.php",
     "routes/admin.php",
     "src/Admin/SearchProviderPropertyViewPort.php",
-    "src/Admin/SearchProviderRows.php"
+    "src/Admin/SearchProviderRows.php",
+    "src/Operations/SearchIndexOperationsQuery.php",
+    "tests/Unit/SearchProviderRowsTest.php"
   ],
   "forbidden_files": [
     "../access/*",

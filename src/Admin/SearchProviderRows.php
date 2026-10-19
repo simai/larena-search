@@ -18,10 +18,13 @@ final class SearchProviderRows
     public static function cells(array $provider, callable $text): array
     {
         $state = (string) $provider['state'];
-        $label = $text('states.'.$state);
+        // A step in the queue that no worker has taken yet reads as waiting, not as stuck.
+        $label = $text(($provider['waiting'] ?? false) === true && in_array($state, ['scheduled', 'running'], true) ? 'states.waiting' : 'states.'.$state);
+        $id = (string) $provider['provider_id'];
+        $name = $text('providers.'.$id);
 
         return [
-            'provider' => (string) $provider['provider_id'],
+            'provider' => str_starts_with($name, 'larena-search::') ? $id : $name,
             'state' => str_starts_with($label, 'larena-search::') ? $state : $label,
             'progress' => $provider['processed_count'].' / '.$provider['batch_count'],
             'generation' => $provider['generation_ref'] ? substr((string) $provider['generation_ref'], 0, 20) : '—',
@@ -39,6 +42,10 @@ final class SearchProviderRows
     {
         $steps = [];
         foreach (self::STEPS as $step => $states) {
+            // A run whose step already waits in the queue is not sent again.
+            if (in_array($step, ['run', 'resume'], true) && ($provider['waiting'] ?? false) === true) {
+                continue;
+            }
             if (in_array($provider['state'], $states, true) && ($step === 'schedule' || is_string($provider['run_ref'] ?? null))) {
                 $steps[] = $step;
             }

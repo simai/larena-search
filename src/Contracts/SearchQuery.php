@@ -11,7 +11,13 @@ final readonly class SearchQuery
     /** @var list<string> */
     public array $accessScopes;
 
-    /** @param array<mixed> $accessScopes */
+    /** The decoded `after` cursor, or null for an offset page. */
+    public ?SearchCursor $cursor;
+
+    /**
+     * @param array<mixed> $accessScopes
+     * @param string|null $after A page's `nextCursor`: the page starts after it, and `offset` then only numbers the page.
+     */
     public function __construct(
         public string $term,
         public ?string $providerId = null,
@@ -19,6 +25,7 @@ final readonly class SearchQuery
         array $accessScopes = ['public'],
         public int $limit = 20,
         public int $offset = 0,
+        public ?string $after = null,
     ) {
         if (trim($this->term) === '' || mb_strlen($this->term) > 200) {
             throw new InvalidArgumentException('search_query_term_invalid');
@@ -41,5 +48,6 @@ final readonly class SearchQuery
         }
 
         $this->accessScopes = $safeScopes;
+        $this->cursor = $this->after === null ? null : SearchCursor::decode($this->after);
     }
 }

@@ -9,6 +9,8 @@ use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use InvalidArgumentException;
+use Larena\Search\Contracts\SearchCursor;
 use Larena\Search\Contracts\SearchQuery;
 use Larena\Search\Exceptions\SearchPersistenceFailed;
 use Larena\Search\Http\PublicSearchPresenter;
@@ -37,6 +39,8 @@ final readonly class PublicSearchController
             'q' => ['nullable', 'string', 'min:' . $minimumTermLength, 'max:200'],
             'locale' => ['nullable', 'string', 'in:' . implode(',', $locales)],
             'page' => ['nullable', 'integer', 'min:1', 'max:' . (int) $this->config->get('larena-search.public.maximum_page', 500)],
+            // The next page's position (SearchCursor): the page starts after it instead of at an offset.
+            'after' => ['nullable', 'string', 'max:' . SearchCursor::MAX_ENCODED_LENGTH, 'regex:/^[A-Za-z0-9_-]+$/'],
         ]);
         $term = trim((string) ($validated['q'] ?? ''));
         $locale = (string) ($validated['locale'] ?? $defaultLocale);
@@ -49,13 +53,7 @@ final readonly class PublicSearchController
 
         if ($term !== '') {
             try {
-                $result = $this->index->queryPage(new SearchQuery(
-                    term: $term,
-                    locale: $locale,
-                    accessScopes: ['public'],
-                    limit: $perPage,
-                    offset: ($page - 1) * $perPage,
-                ));
+                $result = $this->index->queryPage($this->query($term, $locale, $perPage, $page, $validated['after'] ?? null));
                 $hits = array_map(fn ($hit): array => $this->presenter->hit($hit, $term), $result->hits);
                 if ($hits === []) {
                     $state = 'no_results';
@@ -69,5 +67,26 @@ final readonly class PublicSearchController
         $response = $this->views->make('larena-search::public.search', compact('term', 'locale', 'locales', 'page', 'result', 'hits', 'state', 'assets'));
 
         return $state === 'error' ? new Response($response->render(), 503) : $response;
+    }
+
+    /** The query of a page; a cursor that does not decode is ignored and the page read by its number. */
+    private function query(string $term, string $locale, int $perPage, int $page, mixed $after): SearchQuery
+    {
+        $query = static fn (?string $cursor): SearchQuery => new SearchQuery(
+            term: $term,
+            locale: $locale,
+            accessScopes: ['public'],
+            limit: $perPage,
+            offset: ($page - 1) * $perPage,
+            after: $cursor,
+        );
+        if (is_string($after) && $after !== '' && $page > 1) {
+            try {
+                return $query($after);
+            } catch (InvalidArgumentException) {
+            }
+        }
+
+        return $query(null);
     }
 }

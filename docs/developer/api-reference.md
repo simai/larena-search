@@ -18,7 +18,11 @@ The optional non-null `generationRef` is reserved for the reindex service and mu
 
 `SearchProjection` carries `providerId`, `sourceRef`, monotonic positive `sourceRevision`, safe title/locator/snippet/locale/access scope/searchable text and a scalar-only payload. Sensitive-looking payload field names fail closed.
 
-`SearchQuery` requires a non-empty term, one to twenty explicit access scopes and a limit from 1 to 100. Provider and locale filters are optional and exact. Matching is a case-insensitive literal substring; SQL wildcard characters are escaped.
+`SearchQuery` requires a non-empty term, one to twenty explicit access scopes and a limit from 1 to 100. Provider and locale filters are optional and exact. The optional `after` takes a page's `SearchPage::$nextCursor` (`SearchCursor`, an opaque URL-safe string): the page starts after it and `offset` then only numbers the page; a malformed cursor is refused as `search_query_cursor_invalid`. A cursor only positions a query and never widens its scopes, provider or locale.
+
+Matching is word-prefix (`SearchText`, the same rule as Storage's record lists): the query is split on whitespace into terms, and a document matches when every term starts a word of its title or searchable text, in any order. Words are runs of letters, combining marks, digits and underscores, lowercased; punctuation separates words, so `sku-0001` finds "SKU-0001" and a query of punctuation alone finds nothing. `chair` finds "Chair" and "chairs", not "armchair". `ё` and `е` are different letters for matching. A term's words are consecutive and never span the title and the text.
+
+Hits are ordered by the title's sort key (lowercased, whitespace collapsed, `ё` ordered as `е`, the first 191 characters, compared byte for byte) and then by the document id; MySQL and SQLite give the same order. `queryPage()` returns `SearchPage` (`hits`, `page`, `perPage`, `hasNext`, `nextCursor`).
 
 `SearchHit` returns only the persisted safe projection. Canonical source data is never loaded by Search query.
 

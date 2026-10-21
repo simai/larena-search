@@ -29,7 +29,7 @@
             <ol>@foreach($hits as $hit)<li><article><p>{{ $hit['provider'] }}</p><h3><a href="{{ $hit['locator'] }}">{{ $hit['title'] }}</a></h3><p>{!! $hit['snippet'] !!}</p></article></li>@endforeach</ol>
             <nav aria-label="{{ __('larena-search::public.pagination') }}">
                 @if($page > 1)<a rel="prev" href="{{ route('larena.search.public', ['q' => $term, 'locale' => $locale, 'page' => $page - 1]) }}">{{ __('larena-search::public.previous') }}</a>@endif
-                @if($result?->hasNext)<a rel="next" href="{{ route('larena.search.public', ['q' => $term, 'locale' => $locale, 'page' => $page + 1]) }}">{{ __('larena-search::public.next') }}</a>@endif
+                @if($result?->hasNext)<a rel="next" href="{{ route('larena.search.public', array_filter(['q' => $term, 'locale' => $locale, 'page' => $page + 1, 'after' => $result->nextCursor], static fn ($value): bool => $value !== null)) }}">{{ __('larena-search::public.next') }}</a>@endif
             </nav>
         @endif
     </section>

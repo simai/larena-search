@@ -97,6 +97,7 @@ final class SearchTestDatabase
             dirname(__DIR__, 2) . '/database/migrations/2026_07_13_000002_create_larena_search_source_states.php',
             dirname(__DIR__, 2) . '/database/migrations/2026_07_13_000003_create_larena_search_reindex_runs.php',
             dirname(__DIR__, 2) . '/database/migrations/2026_07_13_000004_create_larena_search_provider_states.php',
+            dirname(__DIR__, 2) . '/database/migrations/2026_10_22_000101_create_larena_search_document_texts.php',
         );
 
         foreach ($paths as $path) {

@@ -16,6 +16,7 @@ composer run quality:gate
 - `InMemorySearchRuntimeTest.php`
 - `InMemorySearchRuntimeFailsClosedTest.php`
 - `DatabaseSearchIndexTest.php`
+- `DatabaseSearchSemanticsTest.php` (word-prefix semantics, order, cursor and offset paging, visibility, the SQLite plan and the migration backfill, against the PHP reference in `tests/Support/search-semantics-fixture.php`)
 - `SearchSourceRegistryTest.php`
 - `SearchReindexServiceTest.php`
 - `SearchLaravelPackageContractTest.php`
@@ -46,5 +47,7 @@ The persistent tests cover:
 
 Current lifetime-correction evidence is stored at
 `docs/project-management/evidence/content-model-administration-api-v1-search-lifetime/`.
+
+`composer test:mysql` (opt-in, not part of the gate) runs `tests/Integration/SearchMySqlIndexTest.php` on a throwaway MySQL database it creates and drops (credentials from the root's ignored, owner-only `.env.auth-mfa-mysql-test`, local hosts only): the migration's INSTANT column, FULLTEXT side table and INPLACE index, the same corpus and queries against the reference and against SQLite, both ways of answering, and rollback/backfill. `composer bench -- --driver=sqlite|mysql --documents=100000` times the public query before and after.
 
 The package suite is SQLite-focused and proves both legal linearized outcomes. True two-connection row-lock races, including a barrier between first schedule and first realtime write, are proved by the root MySQL acceptance harness and are not inferred from package-only green checks.

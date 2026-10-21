@@ -105,6 +105,7 @@ try {
 
     $database->rollback();
     search_index_assert(!Schema::hasTable('larena_search_documents'), 'Rollback must remove Search documents.');
+    search_index_assert(!Schema::hasTable('larena_search_document_texts'), 'Rollback must remove the search texts.');
     search_index_assert(!Schema::hasTable('larena_search_source_states'), 'Rollback must remove source-state tombstones.');
     search_index_assert(!Schema::hasTable('larena_search_reindex_runs'), 'Rollback must remove reindex runs.');
     search_index_assert(!Schema::hasTable('larena_search_provider_states'), 'Rollback must remove durable provider fences.');

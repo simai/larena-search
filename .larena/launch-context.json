@@ -45,7 +45,15 @@
     "src/Admin/SearchProviderPropertyViewPort.php",
     "src/Admin/SearchProviderRows.php",
     "src/Operations/SearchIndexOperationsQuery.php",
-    "tests/Unit/SearchProviderRowsTest.php"
+    "tests/Unit/SearchProviderRowsTest.php",
+    "src/Persistence/SearchText.php",
+    "src/Contracts/SearchCursor.php",
+    "database/migrations/2026_10_22_000101_create_larena_search_document_texts.php",
+    "tests/Unit/DatabaseSearchSemanticsTest.php",
+    "tests/Support/search-semantics-fixture.php",
+    "tests/Support/mysql-disposable-database.php",
+    "tests/Integration/SearchMySqlIndexTest.php",
+    "scripts/search-bench.php"
   ],
   "forbidden_files": [
     "../access/*",

@@ -2,7 +2,7 @@
 
 ## Search Returns Nothing
 
-Check exact access scopes, optional provider/locale filters and whether the source state is a tombstone. Matching is literal and case-insensitive. No HTTP/API query endpoint exists in this package.
+Check exact access scopes, optional provider/locale filters and whether the source state is a tombstone. Matching is word-prefix and case-insensitive: every term of the query must start a word of the title or searchable text (`arm` finds "Armchair", `chair` does not). Documents written before the indexed-search migration are filled by it; a document whose search text is missing (for example after a manual edit of `larena_search_documents`) is found again after `search:reindex`. No HTTP/API query endpoint exists in this package.
 
 ## Reindex Source Is Unknown
 

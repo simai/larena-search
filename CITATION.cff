@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you refer to Larena Search, please cite it as below."
+title: "Larena Search"
+abstract: "Larena Search: Search and indexing layer for access-aware discovery across storage records, content, documentation, file metadata, file-manager views, REST/MCP contexts and future package-defined sources."
+type: software
+authors:
+  - family-names: "Zabarov"
+    given-names: "Rim"
+    email: "rim@zabarov.com"
+license: Apache-2.0
+repository-code: "https://github.com/simai/larena-search"

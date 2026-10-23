@@ -53,7 +53,12 @@
     "tests/Support/search-semantics-fixture.php",
     "tests/Support/mysql-disposable-database.php",
     "tests/Integration/SearchMySqlIndexTest.php",
-    "scripts/search-bench.php"
+    "scripts/search-bench.php",
+    "LICENSE",
+    "NOTICE",
+    "AUTHORS",
+    "CITATION.cff",
+    "REUSE.toml"
   ],
   "forbidden_files": [
     "../access/*",

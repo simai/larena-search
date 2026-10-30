@@ -22,7 +22,7 @@ search_package_assert(
     ($composer['extra']['laravel']['providers'] ?? []) === [SearchServiceProvider::class],
     'Composer must auto-discover the Search service provider.',
 );
-foreach (['illuminate/console', 'illuminate/database', 'illuminate/http', 'illuminate/routing', 'illuminate/support', 'larena/access', 'larena/admin', 'larena/audit', 'larena/queue', 'larena/scheduler', 'larena/ui'] as $dependency) {
+foreach (['illuminate/console', 'illuminate/database', 'illuminate/http', 'illuminate/routing', 'illuminate/support', 'larena/access', 'larena/audit', 'larena/queue', 'larena/scheduler'] as $dependency) {
     search_package_assert(isset($composer['require'][$dependency]), "Missing runtime dependency {$dependency}.");
 }
 search_package_assert(class_exists(SearchServiceProvider::class), 'Search service provider must autoload.');

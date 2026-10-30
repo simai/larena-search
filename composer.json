@@ -17,11 +17,9 @@
         "illuminate/routing": "^13.0",
         "illuminate/support": "^13.0",
         "larena/access": "dev-main",
-        "larena/admin": "dev-main",
         "larena/audit": "dev-main",
         "larena/queue": "dev-main",
         "larena/scheduler": "dev-main",
-        "larena/ui": "dev-main",
         "php": "^8.3"
     },
     "repositories": [
@@ -59,7 +57,13 @@
         }
     },
     "require-dev": {
+        "larena/admin": "dev-main",
+        "larena/ui": "dev-main",
         "phpstan/phpstan": "^2.0"
+    },
+    "suggest": {
+        "larena/admin": "The admin's search screen and menu entry (/admin/search). Search contributes them only where the admin is installed.",
+        "larena/ui": "The public search page (/search) draws its Framework runtime. Without it Search registers no public page; the index and search:reindex keep working."
     },
     "scripts": {
         "test": [
@@ -72,7 +76,8 @@
             "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/DatabaseSearchSemanticsTest.php",
             "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchSourceRegistryTest.php",
             "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchReindexServiceTest.php",
-            "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchLaravelPackageContractTest.php"
+            "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchLaravelPackageContractTest.php",
+            "php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchWithoutAdminTest.php"
             ,"php -d zend.assertions=1 -d assert.exception=1 tests/Unit/PublicSearchPresentationTest.php"
             ,"php -d zend.assertions=1 -d assert.exception=1 tests/Unit/SearchQueueResumeIntegrationTest.php"
         ],

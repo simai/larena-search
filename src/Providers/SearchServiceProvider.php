@@ -31,6 +31,7 @@ use Larena\Search\Reindex\SearchReindexService;
 use Larena\Search\Runtime\SearchSourceRegistry;
 use Larena\Search\Scheduler\SearchScheduledReindexHandler;
 use Larena\Scheduler\Runtime\ScheduledOperationRegistry;
+use Larena\Ui\Frontend\FrontendRuntimeLock;
 
 final class SearchServiceProvider extends ServiceProvider
 {
@@ -98,15 +99,19 @@ final class SearchServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'larena-search');
         $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'larena-search');
 
-        if ((bool) $config->get('larena-search.public.enabled', true)) {
+        // The public page draws the Framework runtime of larena/ui; without it a node searches through its own API.
+        if (class_exists(FrontendRuntimeLock::class) && (bool) $config->get('larena-search.public.enabled', true)) {
             $this->loadRoutesFrom(__DIR__ . '/../../routes/public.php');
         }
-        if ($this->app->environment((array) $config->get('larena-search.admin.allowed_environments', ['local', 'testing']))
-            && (bool) $config->get('larena-search.admin.enabled', false)) {
-            $this->loadRoutesFrom(__DIR__ . '/../../routes/admin.php');
-        }
-        if ($this->app->bound(AdminNavigationRegistry::class)) {
-            $this->app->make(AdminNavigationRegistry::class)->registerContributor(new SearchAdminNavigationContributor());
+        // The screen, its provider record and the menu entry are composed only where larena/admin is installed.
+        if (class_exists(AdminNavigationRegistry::class)) {
+            if ($this->app->environment((array) $config->get('larena-search.admin.allowed_environments', ['local', 'testing']))
+                && (bool) $config->get('larena-search.admin.enabled', false)) {
+                $this->loadRoutesFrom(__DIR__ . '/../../routes/admin.php');
+            }
+            if ($this->app->bound(AdminNavigationRegistry::class)) {
+                $this->app->make(AdminNavigationRegistry::class)->registerContributor(new SearchAdminNavigationContributor());
+            }
         }
         if ($this->app->bound(JobTypeRegistry::class) && self::workerKeyAvailable($this->app)) {
             self::registerQueueJobs($this->app->make(JobTypeRegistry::class), $this->app);

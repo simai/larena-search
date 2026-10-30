@@ -22,10 +22,8 @@ runtime:
 dependencies:
   - larena/access
   - larena/audit
-  - larena/admin
   - larena/queue
   - larena/scheduler
-  - larena/ui
 access_operations:
   - search.reindex.read
   - search.reindex.schedule

@@ -173,7 +173,7 @@ $expectedRevisions = [
     'larena/dataview' => 'b84e964b4ed78e1ca08a46c88e7651b02744ee47',
 ];
 $lockedRevisions = [];
-foreach ($lock['packages'] ?? [] as $package) {
+foreach ([...($lock['packages'] ?? []), ...($lock['packages-dev'] ?? [])] as $package) {
     $name = (string) ($package['name'] ?? '');
     if (isset($expectedRevisions[$name])) {
         $lockedRevisions[$name] = (string) ($package['dist']['reference'] ?? '');

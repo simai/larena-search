@@ -15,6 +15,7 @@
     "search.admin_diagnostics"
   ],
   "allowed_files": [
+    "src/Contracts/PublicSearchScope.php",
     ".larena/launch-context.json",
     ".larena/spec-ref.json",
     "CHANGELOG.md",

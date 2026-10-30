@@ -191,8 +191,9 @@ if (str_contains($launchRecordRef, 'larena-public-search-index-operations-v1.jso
         }
     }
     $publicController = is_file('src/Http/Controllers/PublicSearchController.php') ? (string) file_get_contents('src/Http/Controllers/PublicSearchController.php') : '';
-    if (!str_contains($publicController, "accessScopes: ['public']")) {
-        $errors[] = 'Public Search controller must query only the public access scope.';
+    // One access scope only: public, or the one site the application's PublicSearchScope answers for the request.
+    if (!str_contains($publicController, 'accessScopes: [$scope]') || !str_contains($publicController, "accessScope(\$request) ?? 'public'")) {
+        $errors[] = 'Public Search controller must query one access scope: public, or the request site\'s from PublicSearchScope.';
     }
     foreach (['resources/views/public/search.blade.php', 'resources/views/admin/index.blade.php'] as $view) {
         $source = is_file($view) ? (string) file_get_contents($view) : '';

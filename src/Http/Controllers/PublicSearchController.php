@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use InvalidArgumentException;
+use Larena\Search\Contracts\PublicSearchScope;
 use Larena\Search\Contracts\SearchCursor;
 use Larena\Search\Contracts\SearchQuery;
 use Larena\Search\Exceptions\SearchPersistenceFailed;
@@ -26,6 +27,7 @@ final readonly class PublicSearchController
         private Factory $views,
         private Config $config,
         private Translator $translator,
+        private ?PublicSearchScope $scopes = null,
     ) {
     }
 
@@ -53,7 +55,7 @@ final readonly class PublicSearchController
 
         if ($term !== '') {
             try {
-                $result = $this->index->queryPage($this->query($term, $locale, $perPage, $page, $validated['after'] ?? null));
+                $result = $this->index->queryPage($this->query($this->scopes?->accessScope($request) ?? 'public', $term, $locale, $perPage, $page, $validated['after'] ?? null));
                 $hits = array_map(fn ($hit): array => $this->presenter->hit($hit, $term), $result->hits);
                 if ($hits === []) {
                     $state = 'no_results';
@@ -70,12 +72,12 @@ final readonly class PublicSearchController
     }
 
     /** The query of a page; a cursor that does not decode is ignored and the page read by its number. */
-    private function query(string $term, string $locale, int $perPage, int $page, mixed $after): SearchQuery
+    private function query(string $scope, string $term, string $locale, int $perPage, int $page, mixed $after): SearchQuery
     {
         $query = static fn (?string $cursor): SearchQuery => new SearchQuery(
             term: $term,
             locale: $locale,
-            accessScopes: ['public'],
+            accessScopes: [$scope],
             limit: $perPage,
             offset: ($page - 1) * $perPage,
             after: $cursor,

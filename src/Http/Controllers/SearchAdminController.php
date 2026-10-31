@@ -81,8 +81,8 @@ final readonly class SearchAdminController
                 portKind: 'host',
                 portCapabilities: ['row-actions'],
                 hostPanels: ['view' => '?record_id=__ID__&record_mode=view'],
-                countLabel: (string) $this->translator->get('larena-admin::admin.minimal_cms.record_count'),
-                tableViewLabel: (string) $this->translator->get('larena-admin::admin.minimal_cms.table_view'),
+                countLabel: (string) $this->translator->get('larena-admin::admin.record_list.record_count'),
+                tableViewLabel: (string) $this->translator->get('larena-admin::admin.record_list.table_view'),
             ), AdminProductAssetManifest::dataviewActivation());
         } catch (Throwable) {
             return null;
